@@ -6,9 +6,7 @@
 
 ## 2. 스토리보드 및 와이어프레임
 
-![스토리보드1](/uploads/3bcc17c055f85e42fe6b0bec6320f142/스토리보드1.jpg)
-
-![스토리보드2](/uploads/015ac6d7202c4e3bd23bce210d8f1830/스토리보드2.jpg)
+![Team-Dashboard-Free-Resource-Shakir260](/uploads/197441594915dee79590b2a9b824d416/Team-Dashboard-Free-Resource-Shakir260.jpg)
 
 
 ## 3. 프로젝트 구성
