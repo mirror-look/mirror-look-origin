@@ -56,7 +56,7 @@ function Weather() {
   return (
     <WeatherBox>
       <WeatherText>오늘의 날씨</WeatherText>
-      <RealWeather>(날씨 받아와서 띄우기)</RealWeather>
+      <RealWeather>(날씨)</RealWeather>
     </WeatherBox>
   );
 }
@@ -79,10 +79,58 @@ const WeatherText = styled(Box)`
   font-size: 20px;
   line-height: 24px;
   text-align: center;
-  margin: 18px;
+  margin: 20px;
 `;
 
-const RealWeather = styled(Box)``;
+const RealWeather = styled(Box)`
+  border: 3px dotted black;
+  border-radius: 150px;
+  padding: 100px;
+`;
+
+function TodayOOTD() {
+  return <TodayOOTDBox>오늘의 OOTD</TodayOOTDBox>;
+}
+
+const TodayOOTDBox = styled(Box)`
+  width: 395px;
+  height: 764px;
+  background: #ffffff;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 30px;
+
+  font-family: Rubik;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 20px;
+  line-height: 24px;
+  margin: 30px;
+  padding: 30px;
+  text-align: center;
+`;
+
+function Calendar() {
+  return <StyledCalender>OOTD 캘린더</StyledCalender>;
+}
+
+const StyledCalender = styled(Box)`
+  width: 417px;
+  height: 764px;
+
+  background: #ffffff;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 30px;
+  margin: 30px;
+  padding: 30px;
+  text-align: center;
+
+  font-family: Rubik;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 20px;
+  line-height: 24px;
+  /* identical to box height, or 120% */
+`;
 
 function Main() {
   // api server에서 username을 받아와야함
@@ -100,8 +148,8 @@ function Main() {
           <Profile username={username} />
           <Weather />
         </UserInfo>
-        {/*<TodayOOTD></TodayOOTD>
-        <Calendar></Calendar>*/}
+        <TodayOOTD></TodayOOTD>
+        <Calendar></Calendar>
       </Body>
     </MainLayout>
   );
