@@ -3,8 +3,7 @@
 import styled from 'styled-components';
 //import Button from '@material-ui/core/Button';
 import Box from '@material-ui/core/Box';
-import Logo from '../components/common/Logo';
-import UserName from '../components/common/UserName';
+import Header from '../components/common/Header';
 //import Calendar from './Calendar';
 
 function Hello({ username }) {
@@ -138,10 +137,7 @@ function Main() {
   const username = '김윤주';
   return (
     <MainLayout>
-      <Header>
-        <Logo />
-        <UserName username={username} />
-      </Header>
+      <Header username={username} />
       <Body>
         <UserInfo>
           <Hello username={username} />
@@ -158,12 +154,6 @@ function Main() {
 const MainLayout = styled('div')`
   display: flex;
   flex-direction: column;
-`;
-
-const Header = styled('div')`
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
 `;
 
 const Body = styled('div')`
