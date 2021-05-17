@@ -12,8 +12,7 @@ const StyledLogo = styled(Box)`
   font-size: 50px;
   line-height: 40px;
   color: #8f00ff;
-  margin-top: 300px;
-  margin-bottom: 50px;
+  margin: 25px;
 `;
 
 export default Logo;

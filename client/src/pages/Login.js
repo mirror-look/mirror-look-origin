@@ -1,11 +1,11 @@
 import styled from 'styled-components';
 import Button from '@material-ui/core/Button';
-import Logo from '../components/common/Logo';
+import Box from '@material-ui/core/Box';
 
 function Login() {
   return (
     <FlexDiv>
-      <Logo />
+      <StyledLogo> Mirror-Look </StyledLogo>
       <KakaoButton variant="contained">카카오로 로그인</KakaoButton>
     </FlexDiv>
   );
@@ -23,6 +23,17 @@ const KakaoButton = styled(Button)`
   color: #3a1d1d;
   padding: 5px 100px;
   font-weight: bold;
+`;
+
+const StyledLogo = styled(Box)`
+  font-family: Rubik;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 50px;
+  line-height: 40px;
+  color: #8f00ff;
+  margin-top: 300px;
+  margin-bottom: 50px;
 `;
 
 export default Login;
