@@ -1,6 +1,6 @@
 
-# Created by https://www.toptal.com/developers/gitignore/api/python,flask,visualstudiocode,react
-# Edit at https://www.toptal.com/developers/gitignore?templates=python,flask,visualstudiocode,react
+# Created by https://www.toptal.com/developers/gitignore/api/python,flask,visualstudiocode,react,opencv
+# Edit at https://www.toptal.com/developers/gitignore?templates=python,flask,visualstudiocode,react,opencv
 
 ### Flask ###
 instance/*
@@ -156,6 +156,15 @@ Thumbs.db
 .prof
 
 
+### OpenCV ###
+#OpenCV for Mac and Linux
+#build and release folders
+*/CMakeFiles
+*/CMakeCache.txt
+*/Makefile
+*/cmake_install.cmake
+.DS_Store
+
 ### Python ###
 # Byte-compiled / optimized / DLL files
 
@@ -253,4 +262,4 @@ sketch
 .history
 .ionide
 
-# End of https://www.toptal.com/developers/gitignore/api/python,flask,visualstudiocode,react
+# End of https://www.toptal.com/developers/gitignore/api/python,flask,visualstudiocode,react,opencv
