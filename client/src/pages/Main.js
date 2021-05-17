@@ -22,7 +22,8 @@ const StyledHello = styled('div')`
 function Profile({ username }) {
   return (
     <ProfileBox>
-      {/*// 이미지
+      <ProfileContent>{username}</ProfileContent>
+      {/*// 이미지 ..아마 path로 받을듯?
 			// 이름
 			// 별명?
 			// 이상한 숫자??
@@ -31,15 +32,57 @@ function Profile({ username }) {
   );
 }
 
+const ProfileContent = styled(Box)`
+  margin: 30px;
+`;
+
 const ProfileBox = styled(Box)`
   width: 364px;
   height: 380px;
   left: 131px;
   top: 216px;
 
+  background: #ffffff;
   filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
   border-radius: 30px;
+  margin: 30px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 `;
+
+function Weather() {
+  return (
+    <WeatherBox>
+      <WeatherText>오늘의 날씨</WeatherText>
+      <RealWeather>(날씨 받아와서 띄우기)</RealWeather>
+    </WeatherBox>
+  );
+}
+
+const WeatherBox = styled(Box)`
+  width: 365px;
+  height: 315px;
+  border-radius: 30px;
+  background: linear-gradient(1.51deg, #ebf1ff 5.34%, #f2f5fe 72.41%);
+  box-shadow: 0px 4px 50px rgba(0, 0, 0, 0.25);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
+
+const WeatherText = styled(Box)`
+  font-family: Rubik;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 20px;
+  line-height: 24px;
+  text-align: center;
+  margin: 18px;
+`;
+
+const RealWeather = styled(Box)``;
 
 function Main() {
   // api server에서 username을 받아와야함
@@ -54,8 +97,8 @@ function Main() {
       <Body>
         <UserInfo>
           <Hello username={username} />
-          <Profile />
-          {/*<Wether />*/}
+          <Profile username={username} />
+          <Weather />
         </UserInfo>
         {/*<TodayOOTD></TodayOOTD>
         <Calendar></Calendar>*/}
