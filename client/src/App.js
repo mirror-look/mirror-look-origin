@@ -4,17 +4,20 @@ import Dashboard from './pages/Dashboard.js';
 import Detail from './pages/Detail.js';
 import Camera from './pages/Camera.js';
 import Calendar from './pages/Calendar.js';
+import Main from './pages/Main.js';
 import './App.css';
+import { StylesProvider } from '@material-ui/core';
 
 function App() {
   return (
-    <div>
+    <StylesProvider injectFirst>
       <Route exact path="/login" component={Login} />
       <Route path="/dashboard" component={Dashboard} />
       <Route path="/camera" component={Camera} />
       <Route path="/calendar" component={Calendar} />
       <Route path="/detail" component={Detail} />
-    </div>
+      <Route exact path="/" component={Main} />
+    </StylesProvider>
   );
 }
 
