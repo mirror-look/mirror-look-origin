@@ -79,7 +79,6 @@ const SearchFile = styled(Button)`
   font-weight: bold;
   font-size: 25px;
   line-height: 24px;
-  /* identical to box height, or 96% */
 
   display: flex;
   align-items: center;
@@ -100,7 +99,6 @@ const TakePhoto = styled(Button)`
   font-weight: bold;
   font-size: 25px;
   line-height: 24px;
-  /* identical to box height, or 96% */
 
   display: flex;
   align-items: center;
@@ -121,7 +119,6 @@ const Confirm = styled(Button)`
   font-weight: bold;
   font-size: 25px;
   line-height: 24px;
-  /* identical to box height, or 96% */
 
   display: flex;
   align-items: center;

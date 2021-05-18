@@ -9,10 +9,10 @@ function Photo() {
       alt="사진"
       width="364px"
       height="740px"
-      //아무리 해도 둥글게 crop이 안됨ㅠ
-      //border-radius="30%"
-      //overflow="hidden"
-      //object-fit="cover"
+      border="1px solid black"
+      border-radius="30%"
+      overflow="hidden"
+      object-fit="cover"
     />
   );
 }
@@ -27,7 +27,6 @@ function Info({ username }) {
         어떨까요?
       </p>
     </div>
-    // 이부분 props 어떻게 할 것인지?
   );
 }
 
