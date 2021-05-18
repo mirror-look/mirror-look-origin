@@ -5,8 +5,8 @@ from flask import Blueprint, jsonify
 # import cv2
 from app import get_database
 
-# 카카오 로그인 API를 통해 유저 정보 가져오기
-from .kakao_login import logged_in_as, kakao_user_info
+# # 카카오 로그인 API를 통해 유저 정보 가져오기
+# from .kakao_login import logged_in_as, kakao_user_info
 
 # pymongo cursor 객체 인코딩
 from bson import json_util

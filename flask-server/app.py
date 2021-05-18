@@ -39,11 +39,9 @@ def get_database():
 def create_app():
     app = Flask(__name__)
     app.secret_key = os.urandom(24)
+    app.config['JSON_AS_ASCII'] = False
 
     CORS(app)
-
-    from modules_for_app.user import user
-    app.register_blueprint(user)
 
     from modules_for_app.calendar import calendar
     app.register_blueprint(calendar)
