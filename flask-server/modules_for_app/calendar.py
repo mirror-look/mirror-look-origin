@@ -1,8 +1,9 @@
 import os
 import sys
 from flask_restx import reqparse, Api, Resource
-from flask import Blueprint, jsonify
-# import cv2
+from flask import Blueprint, jsonify, url_for
+import cv2
+from werkzeug.datastructures import FileStorage
 from app import get_database
 
 # # 카카오 로그인 API를 통해 유저 정보 가져오기
@@ -31,7 +32,7 @@ api = Api(calendar)
 test_callendar_doc = {
     'user_id': '60a22ad2a453e4e5ba8d203f',
     'date': '2021-04-01',
-    'ootd': 'img_path/in/blob/storage',
+    'ootd_path': 'img_path/in/blob/storage',
     'clothes_feature': {
         'color': 'red',
         'fabric': 'cotton',
@@ -45,7 +46,8 @@ test_callendar_doc = {
 parser_calendar = reqparse.RequestParser()
 parser_calendar.add_argument('user_id')
 parser_calendar.add_argument('date')
-parser_calendar.add_argument('ootd')
+parser_calendar.add_argument(
+    'ootd_img', type=FileStorage, location='files', required=True)
 
 # clothes_feature
 parser_calendar.add_argument('fabric')
@@ -71,7 +73,7 @@ class Calendar(Resource):
         document = {
             'user_id': args['user_id'],
             'date': args['date'],
-            'ootd': args['ootd'],
+            'ootd_path': f"ootd_storage/{args['user_id']}/{args['date']}.png",
             'clothes_feature': {
                 'fabric': args['fabric'],
                 'color': args['color'],
@@ -80,13 +82,13 @@ class Calendar(Resource):
         }
 
         calendar_collection.insert_one(document)
-
         del document['_id']
 
         return jsonify(
             status=200,
             ootd_created=document
         )
+
     # Read
 
     def get(self):
