@@ -2,7 +2,7 @@ import os
 import sys
 from flask_restx import reqparse, Api, Resource
 from flask import Blueprint, jsonify
-import cv2
+# import cv2
 from app import get_database
 
 # 카카오 로그인 API를 통해 유저 정보 가져오기

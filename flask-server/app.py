@@ -48,6 +48,10 @@ def create_app():
     from modules_for_app.calendar import calendar
     app.register_blueprint(calendar)
 
+    from modules_for_app.kakao_login import kakaoOauth
+    app.register_blueprint(kakaoOauth)
+
+
     return app
 
 
