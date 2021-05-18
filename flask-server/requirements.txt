@@ -30,3 +30,5 @@ idna==2.10
 requests==2.25.1
 urllib3==1.26.4
 # Werkzeug==2.0.0
+
+opencv-python==4.5.2.52
