@@ -3,7 +3,10 @@ from flask import Flask, Blueprint
 from flask_cors import CORS
 from flask_restx import Api
 import pymongo
+from datetime import timedelta
+from flask_jwt_extended import JWTManager
 
+from config import JWT_SECRET_KEY
 
 def get_database():
     # DB 연결
@@ -41,6 +44,15 @@ def create_app():
     app.secret_key = os.urandom(24)
     app.config['JSON_AS_ASCII'] = False
 
+
+    # flask_jwt_extended를 위한 secret_key 설정
+    app.config["JWT_SECRET_KEY"] = JWT_SECRET_KEY
+    app.config['JWT_TOKEN_LOCATION'] = ['headers', 'query_string']
+    app.config['JWT_BLACKLIST_ENABLED'] = True
+    app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(hours = 1)
+    app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(days = 30)
+    jwt = JWTManager(app)
+
     CORS(app)
 
     from modules_for_app.calendar import calendar
@@ -49,6 +61,11 @@ def create_app():
     from modules_for_app.kakao_login import kakaoOauth
     app.register_blueprint(kakaoOauth)
 
+    from modules_for_app.search import search
+    app.register_blueprint(search)
+
+    from modules_for_app.weather import weather
+    app.register_blueprint(weather)
 
     return app
 
