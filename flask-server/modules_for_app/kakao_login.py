@@ -1,4 +1,3 @@
-from config import CLIENT_ID
 from flask import Blueprint, json, request, redirect, render_template, jsonify, make_response, session
 from flask.helpers import url_for
 import requests
@@ -17,9 +16,9 @@ from .json_encoder_for_pymongo import MongoEngineJSONEncoder
 database = get_database()
 user_collection = database['User']
 
+from config import CLIENT_ID
 
-kakaoOauth = Blueprint("kakaoOauth", __name__, url_prefix="/kakaoOauth")
-
+kakaoOauth = Blueprint("kakaoOauth", __name__, url_prefix = "/kakaoOauth")
 
 @kakaoOauth.route("/")
 def hello():
@@ -64,14 +63,13 @@ def callback():
         data = profile_request.json()
         kakao_id_number = data.get("id")
         user_name = data.get("kakao_account").get("profile").get("nickname")
-        profile_img = data.get("kakao_account").get(
-            "profile").get("profile_image_url")
+        profile_img = data.get("kakao_account").get("profile").get("profile_image_url")
         user_info = {
             'user_name': user_name,
             'kakao_id_number': kakao_id_number,
             'profile_img': profile_img
         }
-        token = create_access_token(identity=kakao_id_number)
+        token = create_access_token(identity = kakao_id_number)
         # DB에 유저 정보가 있는지 확인
         query = {'kakao_id_number': kakao_id_number}
         user_info_from_db = list(user_collection.find(query))
@@ -83,20 +81,19 @@ def callback():
                 {'$set': {'user_name': user_name}}
             )
             user_info_from_db = list(user_collection.find(query))
-            return jsonify(status=200, token=token, user=True)
+            return jsonify(status = 200, token = token, user = True)
 
         # 유저가 로그인한 이력이 없는 경우 DB에 유저 정보 저장
         else:
             user_collection.insert_one(user_info)
             user_info_from_db = list(user_collection.find(query))
-            return jsonify(status=200, token=token, user=False)  # 처음 로그인
+            return jsonify(status = 200, token = token, user = False) #처음 로그인
 
     except KeyError:
         return make_response({"message": "INVALID_TOKEN"}, 400)
 
     except access_token.DoesNotExist:
         return make_response({"message": "INVALID_TOKEN"}, 400)
-
 
 @kakaoOauth.route("/logout")
 def logout():
@@ -116,18 +113,17 @@ def logout():
 
     # return jsonify(status = 200, data=data)
 
-
 @kakaoOauth.route("/protected")
 @jwt_required()
 def protected():
     current_user = get_jwt_identity()
     if current_user:
         return jsonify(
-            status=200,
-            logged_in_as=current_user
+            status = 200,
+            logged_in_as = current_user
         )
     else:
         return jsonify(
-            status=400,
-            error="access_token is expired"
+            status = 400,
+            error = "access_token is expired"
         )
