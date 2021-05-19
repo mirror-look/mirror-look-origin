@@ -61,6 +61,11 @@ def create_app():
     from modules_for_app.kakao_login import kakaoOauth
     app.register_blueprint(kakaoOauth)
 
+    from modules_for_app.search import search
+    app.register_blueprint(search)
+
+    from modules_for_app.weather import weather
+    app.register_blueprint(weather)
 
     return app
 

@@ -24,6 +24,7 @@ kakaoOauth = Blueprint("kakaoOauth", __name__, url_prefix = "/kakaoOauth")
 def hello():
     return render_template('test.html')
 
+
 @kakaoOauth.route("/login")
 def login():
     client_id = CLIENT_ID
@@ -31,22 +32,25 @@ def login():
     kakao_oauthurl = f"https://kauth.kakao.com/oauth/authorize?client_id={client_id}&redirect_uri={redirect_uri}&response_type=code"
     return redirect(kakao_oauthurl)
 
-@kakaoOauth.route("/callback") # 위 라우팅에서 redirect 됨
+
+@kakaoOauth.route("/callback")  # 위 라우팅에서 redirect 됨
 def callback():
     try:
         code = request.args.get("code")  # callback 뒤에 붙어오는 request token
         client_id = CLIENT_ID
         redirect_uri = "http://127.0.0.1:5000/kakaoOauth/callback"
 
-        #Python에서 HTTP 요청을 보내는 모듈인 requests
+        # Python에서 HTTP 요청을 보내는 모듈인 requests
         token_request = requests.get(
             f"https://kauth.kakao.com/oauth/token?grant_type=authorization_code&client_id={client_id}&redirect_uri={redirect_uri}&code={code}"
         )
-        token_json = token_request.json()  # 위의 get 요청을 통해 받아온 데이터를 json화 해주면 이곳에 access token이 존재
-        error = token_json.get("error",None)
-        if error is not None :
-            return make_response({"message": "INVALID_CODE"}, 400) # 에러 처리
-        access_token = token_json.get("access_token") # 카카오 소셜로그인을 통해 유저에 대한 정보를 받을 권한이 있는 토큰
+        # 위의 get 요청을 통해 받아온 데이터를 json화 해주면 이곳에 access token이 존재
+        token_json = token_request.json()
+        error = token_json.get("error", None)
+        if error is not None:
+            return make_response({"message": "INVALID_CODE"}, 400)  # 에러 처리
+        # 카카오 소셜로그인을 통해 유저에 대한 정보를 받을 권한이 있는 토큰
+        access_token = token_json.get("access_token")
         # access token 받아오는 통신
 
         # 로그아웃에 쓰기 위해 세션에 저장
@@ -54,8 +58,8 @@ def callback():
 
         # access token 기반으로 유저 정보 요청하는 통신
         profile_request = requests.get(
-                "https://kapi.kakao.com/v2/user/me", headers={"Authorization" : f"Bearer {access_token}"},
-            )
+            "https://kapi.kakao.com/v2/user/me", headers={"Authorization": f"Bearer {access_token}"},
+        )
         data = profile_request.json()
         kakao_id_number = data.get("id")
         user_name = data.get("kakao_account").get("profile").get("nickname")
@@ -86,10 +90,10 @@ def callback():
             return jsonify(status = 200, token = token, user = False) #처음 로그인
 
     except KeyError:
-        return make_response({"message" : "INVALID_TOKEN"}, 400)
+        return make_response({"message": "INVALID_TOKEN"}, 400)
 
     except access_token.DoesNotExist:
-        return make_response({"message" : "INVALID_TOKEN"}, 400)
+        return make_response({"message": "INVALID_TOKEN"}, 400)
 
 @kakaoOauth.route("/logout")
 def logout():

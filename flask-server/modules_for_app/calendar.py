@@ -1,10 +1,11 @@
 import os
 import sys
 from flask_restx import reqparse, Api, Resource
-from flask import Blueprint, jsonify, url_for
+from flask import Blueprint, jsonify, url_for, send_file
 import cv2
 from werkzeug.datastructures import FileStorage
 from app import get_database
+import uuid
 
 # # 카카오 로그인 API를 통해 유저 정보 가져오기
 # from .kakao_login import logged_in_as, kakao_user_info
@@ -47,7 +48,7 @@ parser_calendar = reqparse.RequestParser()
 parser_calendar.add_argument('user_id')
 parser_calendar.add_argument('date')
 parser_calendar.add_argument(
-    'ootd_img', type=FileStorage, location='files', required=True)
+    'ootd_img', type=FileStorage, location='files')
 
 # clothes_feature
 parser_calendar.add_argument('fabric')
@@ -70,10 +71,15 @@ class Calendar(Resource):
         Validation 추가 예정(라이브러리 활용 or 하드코딩??)
         '''
 
+        # 테스트용, 이후 Blob Storage Upload 부분 추가 예정
+        local_file_name = str(uuid.uuid4()) + '.png'
+        local_file_path = os.path.join('ootd_storage', local_file_name)
+        args['ootd_img'].save(local_file_path)
+
         document = {
             'user_id': args['user_id'],
             'date': args['date'],
-            'ootd_path': f"ootd_storage/{args['user_id']}/{args['date']}.png",
+            'ootd_path': local_file_name,
             'clothes_feature': {
                 'fabric': args['fabric'],
                 'color': args['color'],
@@ -93,28 +99,51 @@ class Calendar(Resource):
 
     def get(self):
         args = parser_calendar.parse_args()
-        query = {'user_id': args['user_id'], 'ootd': args['ootd']}
+        query = {'user_id': args['user_id'], 'date': args['date']}
         ootd_info_from_db = list(calendar_collection.find(query))
 
-        return jsonify(
-            status=200,
-            ootd_info=str(ootd_info_from_db[0])
-        )
+        local_file_name = str(ootd_info_from_db[0]['ootd_path'])
+        local_file_path = os.path.join('ootd_storage', local_file_name)
+
+        # return jsonify(
+        #     status=200,
+        #     ootd_info=str(ootd_info_from_db[0]['ootd_path'])
+        # )
+        return send_file(local_file_path)
 
     # Update
     '''
     DB에 있는 img_path를 수정하지 않고 blob storage 경로상의 파일을 수정하면 되지 않을까??
     '''
-    # def put(self):
-    #     args = parser_calendar.parse_args()
-    #     query =
-    #     calendar_collection.update_one
+
+    def put(self):
+        args = parser_calendar.parse_args()
+
+        query = {'user_id': args['user_id'], 'date': args['date']}
+
+        old_local_file_name = str(
+            list(calendar_collection.find(query))[0]['ootd_path'])
+        old_local_file_path = os.path.join('ootd_storage', old_local_file_name)
+        os.remove(old_local_file_path)
+
+        new_local_file_name = str(uuid.uuid4()) + '.png'
+        new_local_file_path = os.path.join('ootd_storage', new_local_file_name)
+        args['ootd_img'].save(new_local_file_path)
+
+        new_values = {"$set": {"ootd_path": new_local_file_name}}
+
+        calendar_collection.update_one(query, new_values)
+
+        return jsonify(
+            status=200,
+            ootd_updated=str(list(calendar_collection.find(query))[0])
+        )
 
     # Delete
-    def delete(self):
-        args = parser_calendar.parse_args()
-        query = {'user_id': args['user_id'], 'ootd': args['ootd']}
-        calendar_collection.delete_one(query)
+    # def delete(self):
+    #     args = parser_calendar.parse_args()
+    #     query = {'user_id': args['user_id'], 'ootd': args['ootd']}
+    #     calendar_collection.delete_one(query)
 
         return jsonify(
             status=200,
