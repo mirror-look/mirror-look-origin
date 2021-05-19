@@ -34,3 +34,5 @@ urllib3==1.26.4
 opencv-python==4.5.2.52
 uuid==1.30
 Werkzeug==1.0.1
+
+Flask-JWT-Extended==4.2.1
