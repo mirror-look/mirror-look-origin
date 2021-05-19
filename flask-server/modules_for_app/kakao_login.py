@@ -113,7 +113,6 @@ def logout():
 @jwt_required()
 def protected():
     current_user = get_jwt_identity()
-    print("cu",current_user)
     if current_user:
         return jsonify(
             status = 200,
