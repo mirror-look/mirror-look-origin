@@ -1,6 +1,8 @@
 import styled from 'styled-components';
 import Box from '@material-ui/core/Box';
 import Header from '../components/common/Header';
+import NavBar from '../components/common/NavBar';
+import WindowWrapper from '../components/common/WindowWrapper';
 
 function Photo() {
   return (
@@ -42,18 +44,21 @@ function Recommend({ username }) {
 function Detail() {
   const username = '김윤주';
   return (
-    <MainLayout>
-      <Header username={username} />
-      <ShowDetail>
-        <PhotoBox>
-          <Photo />
-        </PhotoBox>
-        <Story>
-          <Info username={username}></Info>
-          <Recommend username={username}></Recommend>
-        </Story>
-      </ShowDetail>
-    </MainLayout>
+    <WindowWrapper>
+      <NavBar />
+      <MainLayout>
+        <Header username={username} />
+        <ShowDetail>
+          <PhotoBox>
+            <Photo />
+          </PhotoBox>
+          <Story>
+            <Info username={username}></Info>
+            <Recommend username={username}></Recommend>
+          </Story>
+        </ShowDetail>
+      </MainLayout>
+    </WindowWrapper>
   );
 }
 

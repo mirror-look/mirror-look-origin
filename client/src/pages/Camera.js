@@ -2,21 +2,27 @@ import styled from 'styled-components';
 import Button from '@material-ui/core/Button';
 import Box from '@material-ui/core/Box';
 import Header from '../components/common/Header';
+import NavBar from '../components/common/NavBar';
+import WindowWrapper from '../components/common/WindowWrapper';
 
 function Camera() {
   const username = '김윤주';
   return (
-    <MainLayout>
-      <Header username={username} />
-      <StyledBox>
-        <Window>Drag and drop!!</Window>
-        <StyledButton>
-          <SearchFile>파일 찾기</SearchFile>
-          <TakePhoto>촬영 하기</TakePhoto>
-          <Confirm>확인</Confirm>
-        </StyledButton>
-      </StyledBox>
-    </MainLayout>
+    <WindowWrapper>
+      <NavBar />
+
+      <MainLayout>
+        <Header username={username} />
+        <StyledBox>
+          <Window>Drag and drop!!</Window>
+          <StyledButton>
+            <SearchFile>파일 찾기</SearchFile>
+            <TakePhoto>촬영 하기</TakePhoto>
+            <Confirm>확인</Confirm>
+          </StyledButton>
+        </StyledBox>
+      </MainLayout>
+    </WindowWrapper>
   );
 }
 
