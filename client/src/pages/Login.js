@@ -2,23 +2,23 @@ import styled from 'styled-components';
 import Button from '@material-ui/core/Button';
 import Box from '@material-ui/core/Box';
 import NavBar from '../components/common/NavBar';
+import WindowWrapper from '../components/common/WindowWrapper';
 
 function Login() {
   return (
-    <Window>
+    <WindowWrapper>
       <NavBar />
       <FlexDiv>
         <StyledLogo> Mirror-Look </StyledLogo>
         <KakaoButton variant="contained">카카오로 로그인</KakaoButton>
       </FlexDiv>
-    </Window>
+    </WindowWrapper>
   );
 }
 
-const Window = styled('div')``;
-
 const FlexDiv = styled('div')`
   display: flex;
+  width: 100%;
   flex-direction: column;
   justify-content: center;
   align-items: center;
@@ -38,8 +38,7 @@ const StyledLogo = styled(Box)`
   font-size: 50px;
   line-height: 40px;
   color: #8f00ff;
-  margin-top: 300px;
-  margin-bottom: 50px;
+  margin: 50px;
 `;
 
 export default Login;

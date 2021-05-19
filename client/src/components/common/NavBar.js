@@ -121,12 +121,13 @@ function NavBar() {
 
 const Nav = styled(Toolbar)`
   padding: 10px;
-  position: absolute;
+  position: fixed;
   display: flex;
   flex-direction: column;
   height: 100%;
   width: 50px;
   background-color: #f4f5fa;
+  left: 0;
 `;
 
 export default NavBar;

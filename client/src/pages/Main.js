@@ -5,6 +5,8 @@ import styled from 'styled-components';
 import Box from '@material-ui/core/Box';
 import Header from '../components/common/Header';
 import NavBar from '../components/common/NavBar';
+import WindowWrapper from '../components/common/WindowWrapper';
+
 //import Calendar from './Calendar';
 
 function Hello({ username }) {
@@ -137,7 +139,7 @@ function Main() {
   //  const [username, setUsername] = useState();
   const username = '김윤주';
   return (
-    <Window>
+    <WindowWrapper>
       <NavBar />
       <MainLayout>
         <Header username={username} />
@@ -151,13 +153,9 @@ function Main() {
           <Calendar></Calendar>
         </Body>
       </MainLayout>
-    </Window>
+    </WindowWrapper>
   );
 }
-
-const Window = styled('div')`
-  display: flex;
-`;
 
 const MainLayout = styled('div')`
   display: flex;
