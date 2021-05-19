@@ -20,9 +20,9 @@ from config import CLIENT_ID
 
 kakaoOauth = Blueprint("kakaoOauth", __name__, url_prefix = "/kakaoOauth")
 
-# @kakaoOauth.route("/")
-# def hello():
-#     return render_template('test.html')
+@kakaoOauth.route("/")
+def hello():
+    return render_template('test.html')
 
 @kakaoOauth.route("/login")
 def login():
@@ -108,3 +108,19 @@ def logout():
     # session.pop('access_token', None)
 
     # return jsonify(status = 200, data=data)
+
+@kakaoOauth.route("/protected")
+@jwt_required()
+def protected():
+    current_user = get_jwt_identity()
+    print("cu",current_user)
+    if current_user:
+        return jsonify(
+            status = 200,
+            logged_in_as = current_user
+        )
+    else:
+        return jsonify(
+            status = 400,
+            error = "access_token is expired"
+        )

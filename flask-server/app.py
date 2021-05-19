@@ -46,7 +46,9 @@ def create_app():
 
 
     # flask_jwt_extended를 위한 secret_key 설정
-    app.config["JWT_SECRET_KEY"] = JWT_SECRET_KEY # 나중에 config 파일에 넣어서 비공개로 설정
+    app.config["JWT_SECRET_KEY"] = JWT_SECRET_KEY
+    app.config['JWT_TOKEN_LOCATION'] = ['headers', 'query_string']
+    app.config['JWT_BLACKLIST_ENABLED'] = True
     app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(hours = 1)
     app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(days = 30)
     jwt = JWTManager(app)
