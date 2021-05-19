@@ -4,6 +4,7 @@ import styled from 'styled-components';
 //import Button from '@material-ui/core/Button';
 import Box from '@material-ui/core/Box';
 import Header from '../components/common/Header';
+import NavBar from '../components/common/NavBar';
 //import Calendar from './Calendar';
 
 function Hello({ username }) {
@@ -136,20 +137,27 @@ function Main() {
   //  const [username, setUsername] = useState();
   const username = '김윤주';
   return (
-    <MainLayout>
-      <Header username={username} />
-      <Body>
-        <UserInfo>
-          <Hello username={username} />
-          <Profile username={username} />
-          <Weather />
-        </UserInfo>
-        <TodayOOTD></TodayOOTD>
-        <Calendar></Calendar>
-      </Body>
-    </MainLayout>
+    <Window>
+      <NavBar />
+      <MainLayout>
+        <Header username={username} />
+        <Body>
+          <UserInfo>
+            <Hello username={username} />
+            <Profile username={username} />
+            <Weather />
+          </UserInfo>
+          <TodayOOTD></TodayOOTD>
+          <Calendar></Calendar>
+        </Body>
+      </MainLayout>
+    </Window>
   );
 }
+
+const Window = styled('div')`
+  display: flex;
+`;
 
 const MainLayout = styled('div')`
   display: flex;

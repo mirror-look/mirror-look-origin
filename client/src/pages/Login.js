@@ -1,15 +1,21 @@
 import styled from 'styled-components';
 import Button from '@material-ui/core/Button';
 import Box from '@material-ui/core/Box';
+import NavBar from '../components/common/NavBar';
 
 function Login() {
   return (
-    <FlexDiv>
-      <StyledLogo> Mirror-Look </StyledLogo>
-      <KakaoButton variant="contained">카카오로 로그인</KakaoButton>
-    </FlexDiv>
+    <Window>
+      <NavBar />
+      <FlexDiv>
+        <StyledLogo> Mirror-Look </StyledLogo>
+        <KakaoButton variant="contained">카카오로 로그인</KakaoButton>
+      </FlexDiv>
+    </Window>
   );
 }
+
+const Window = styled('div')``;
 
 const FlexDiv = styled('div')`
   display: flex;
