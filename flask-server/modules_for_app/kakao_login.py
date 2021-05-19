@@ -1,5 +1,6 @@
 from flask import Blueprint, request, redirect, render_template, jsonify, make_response
 import requests
+from config import CLIENT_ID
 
 kakaoOauth = Blueprint("kakaoOauth", __name__, url_prefix="/kakaoOauth")
 

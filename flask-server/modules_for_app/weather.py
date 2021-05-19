@@ -36,6 +36,7 @@ def get_weather_info():
     response = requests.get(api_url)
     data = json.loads(response.text)
 
-    # API response 데이터 전처리
-    current_weather = data['current']
+    # API response 데이터 전처리(미구현)
+    # current_weather = data['current']
+
     return data

@@ -30,7 +30,7 @@ parser_search.add_argument('user_name')
 parser_search.add_argument('user_id')
 parser_search.add_argument('date')
 
-# Search by User
+# 유저 검색
 
 
 @search.route('/user-search', methods=['POST'])
@@ -48,6 +48,8 @@ def search_user():
         searched_user_list=user_name_list
     )
 
+# 유저별 OOTD 검색
+
 
 @ search.route('/user-ootd', methods=['POST'])
 def search_ootd_by_user():
@@ -64,7 +66,7 @@ def search_ootd_by_user():
         ootd_info_of_selected_user=ootd_info_of_selected_user
     )
 
-# Search by Day
+# 날짜별 OOTD 검색
 
 
 @ search.route('/day-ootd', methods=['POST'])
