@@ -133,7 +133,7 @@ Anno/
 dataset/
 Eval/
 Img/
-DeepFashion(Customized)/
+DeepFashion/
 
 # Spyder project settings
 .spyderproject
