@@ -39,21 +39,22 @@ function Login({ history }) {
   }
 
   return (
-
     <WindowWrapper>
       <NavBar />
       <FlexDiv>
         <StyledLogo> Mirror-Look </StyledLogo>
-        <KakaoButton variant="contained">카카오로 로그인</KakaoButton>
-          {modalOpen === true ? (
-        <AgreementModal
-          setAgreement={setAgreement}
-          modalTitle={modalTitle}
-          modalComment={modalComment}
-        />
-      ) : (
-        ''
-      )}
+        <KakaoButton onClick={handleClick} variant="contained">
+          카카오로 로그인
+        </KakaoButton>
+        {modalOpen === true ? (
+          <AgreementModal
+            setAgreement={setAgreement}
+            modalTitle={modalTitle}
+            modalComment={modalComment}
+          />
+        ) : (
+          ''
+        )}
       </FlexDiv>
     </WindowWrapper>
   );
