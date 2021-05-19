@@ -126,6 +126,16 @@ env.bak/
 venv.bak/
 pythonenv*
 
+# AI
+ai-requirements.txt
+ai2-requirements.txt
+# Datasets
+Anno/
+dataset/
+Eval/
+Img/
+DeepFashion/
+
 # Spyder project settings
 .spyderproject
 .spyproject
