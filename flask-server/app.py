@@ -67,6 +67,9 @@ def create_app():
     from modules_for_app.weather import weather
     app.register_blueprint(weather)
 
+    from modules_for_app.userinfo import userinfo
+    app.register_blueprint(userinfo)
+
     return app
 
 

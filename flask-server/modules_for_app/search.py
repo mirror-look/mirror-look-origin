@@ -2,7 +2,6 @@ import os
 import sys
 from flask_restx import reqparse
 from flask import Blueprint, jsonify, url_for, send_file
-import cv2
 from app import get_database
 import uuid
 from collections import defaultdict
