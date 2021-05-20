@@ -1,39 +1,11 @@
 import React from 'react';
 import { useState } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
+import styled from 'styled-components';
 import Modal from '@material-ui/core/Modal';
 import Button from '@material-ui/core/Button';
-
-function rand() {
-  return Math.round(Math.random() * 20) - 10;
-}
-
-function getModalStyle() {
-  const top = 50;
-  const left = 50;
-
-  return {
-    top: `${top}%`,
-    left: `${left}%`,
-    transform: `translate(-${top}%, -${left}%)`
-  };
-}
-
-const useStyles = makeStyles((theme) => ({
-  paper: {
-    position: 'absolute',
-    width: 400,
-    backgroundColor: theme.palette.background.paper,
-    border: '2px solid #000',
-    boxShadow: theme.shadows[5],
-    padding: theme.spacing(2, 4, 3)
-  }
-}));
+import Paper from '@material-ui/core/Paper';
 
 function AgreementModal({ setAgreement, modalTitle, modalComment }) {
-  const classes = useStyles();
-  // getModalStyle is not a pure function, we roll the style only on the first render
-  const [modalStyle] = useState(getModalStyle);
   const [open, setOpen] = useState(true);
 
   const handleClose = () => {
@@ -41,7 +13,7 @@ function AgreementModal({ setAgreement, modalTitle, modalComment }) {
   };
 
   const body = (
-    <div style={modalStyle} className={classes.paper}>
+    <StyledPaper>
       <center>
         <h2 id="simple-modal-title">{modalTitle}</h2>
         <p id="simple-modal-description">{modalComment}</p>
@@ -67,21 +39,41 @@ function AgreementModal({ setAgreement, modalTitle, modalComment }) {
           나중에요!
         </Button>
       </center>
-    </div>
+    </StyledPaper>
   );
 
   return (
-    <div>
-      <Modal
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="simple-modal-title"
-        aria-describedby="simple-modal-description"
-      >
-        {body}
-      </Modal>
-    </div>
+    <StyledModal
+      aria-labelledby="simple-modal-title"
+      aria-describedby="simple-modal-description"
+      open={open}
+      onClose={handleClose}
+    >
+      {body}
+    </StyledModal>
   );
 }
+
+const StyledPaper = styled(Paper)`
+  width: 30vw;
+  height: 30vh;
+  padding: 50px;
+  position: 'absolute';
+  backgroundcolor: 'white';
+  border: '2px solid #000';
+  border-radius: 30px;
+`;
+const StyledModal = styled(Modal)`
+  margin-left: 35vw;
+  margin-top: 25vh;
+  position: 'flex';
+  z-index: 1300;
+  inset: 10% 5% 5% 5%;
+  width: 40vw;
+  height: 380px;
+  backgroundcolor: 'white';
+  border: '2px solid #000';
+  border-radius: 30px;
+`;
 
 export default AgreementModal;
