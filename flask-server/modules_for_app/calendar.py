@@ -2,7 +2,6 @@ import os
 import sys
 from flask_restx import reqparse, Api, Resource
 from flask import Blueprint, jsonify, url_for, send_file
-import cv2
 from werkzeug.datastructures import FileStorage
 from app import get_database
 import uuid
