@@ -1,0 +1,64 @@
+.react-calendar {
+  height: 95%;
+  width: 95%;
+  margin: 25px 0px 25px 25px;
+  padding: 10px;
+  filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+  border-radius: 10px;
+  border: 1px solid #f4f5fa;
+}
+
+.react-calendar__month-view__days {
+  height: 100%;
+  padding: 25px 0;
+}
+
+/* 날짜 */
+.react-calendar button {
+  padding: 20px 0px;
+  border: 0;
+  font-size: 20px;
+  outline: none;
+}
+
+.react-calendar__tile--now {
+  background: #f4f5fa;
+  color: black;
+}
+
+.react-calendar__tile--now:enabled:hover,
+.react-calendar__tile--now:enabled:focus {
+  background: #f4f5fa;
+}
+
+.react-calendar__tile--active {
+  background: #ccacff;
+  color: white;
+}
+
+.react-calendar__tile--active:enabled:hover,
+.react-calendar__tile--active:enabled:focus {
+  background: #ccacff;
+}
+
+/* 요일 */
+.react-calendar__month-view__weekdays__weekday {
+  font-size: 20px;
+  color: black;
+}
+
+/* 날짜 별 간격 조정 */
+.react-calendar__month-view__weekdays__weekday {
+  padding: 25px 0;
+}
+
+/* 화살표 가운데 정렬 */
+.react-calendar__navigation {
+  display: flex;
+  align-items: center;
+}
+
+/* 주말 */
+.react-calendar__month-view__days__day--weekend {
+  color: #8f00ff;
+}
