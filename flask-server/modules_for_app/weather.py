@@ -4,7 +4,9 @@ from flask_restx import reqparse
 from flask import Blueprint, jsonify, url_for, send_file
 import requests
 import json
-import time
+from time import localtime
+import datetime
+from collections import defaultdict
 
 # 상위 디렉토리 import를 위한 경로 설정
 current_dir = os.path.dirname(os.path.abspath(__file__))
@@ -34,9 +36,23 @@ def get_weather_info():
 
     # 날씨 정보 요청
     response = requests.get(api_url)
+
     data = json.loads(response.text)
-
+    print(type(data))
     # API response 데이터 전처리(미구현)
-    # current_weather = data['current']
+    current_weather = data['current']['weather'][0]['description']
+    hourly_weathers_of_the_day_raw = data['hourly']
+    hourly_weathers_of_the_day = defaultdict(str)
 
-    return data
+    for hourly_weather in hourly_weathers_of_the_day_raw:
+        time = localtime(hourly_weather['dt'])
+        day_time = datetime.datetime.utcfromtimestamp(
+            hourly_weather['dt']).strftime("%Y-%m-%d %H:%M")
+
+        description = hourly_weather['weather'][0]['description']
+        hourly_weathers_of_the_day[day_time] = description
+
+    return jsonify(
+        current_weather=current_weather,
+        hourly_weather=hourly_weathers_of_the_day
+    )
