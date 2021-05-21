@@ -20,23 +20,13 @@ from config import CLIENT_ID
 
 kakaoOauth = Blueprint("kakaoOauth", __name__, url_prefix = "/kakaoOauth")
 
-@kakaoOauth.route("/")
-def hello():
-    return render_template('test.html')
-
-@kakaoOauth.route("/login")
-def login():
-    client_id = CLIENT_ID
-    redirect_uri = "http://127.0.0.1:5000/kakaoOauth/callback"
-    kakao_oauthurl = f"https://kauth.kakao.com/oauth/authorize?client_id={client_id}&redirect_uri={redirect_uri}&response_type=code"
-    return redirect(kakao_oauthurl)
-
-@kakaoOauth.route("/callback") # 위 라우팅에서 redirect 됨
+@kakaoOauth.route("/callback") # 프론트에서 redirect 됨
 def callback():
+    print("실행")
     try:
         code = request.args.get("code")  # callback 뒤에 붙어오는 request token
         client_id = CLIENT_ID
-        redirect_uri = "http://127.0.0.1:5000/kakaoOauth/callback"
+        redirect_uri = "http://localhost:3000/oauth/callback/kakao"
 
         #Python에서 HTTP 요청을 보내는 모듈인 requests
         token_request = requests.get(
@@ -93,7 +83,7 @@ def callback():
 
 @kakaoOauth.route("/logout")
 def logout():
-    # 카카오계정과 함께 로그아웃하는 방법 redirect 에러가 난다
+    # 카카오계정과 함께 로그아웃하는 방법
     client_id = CLIENT_ID
     redirect_uri = "http://localhost:3000/login"
     kakao_oauthurl = f"https://kauth.kakao.com/oauth/logout?client_id={client_id}&logout_redirect_uri={redirect_uri}"

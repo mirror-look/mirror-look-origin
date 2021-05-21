@@ -6,6 +6,7 @@
 Calendar API
 Search API
 Weather API
+UserInfo API
 ```
 
 ## Calendar API
@@ -277,6 +278,34 @@ user-search URI에서 가져온 user_id값으로 request 요청
         "2021-05-22 04:00": "맑음",
         "2021-05-22 05:00": "맑음",
         "2021-05-22 06:00": "맑음"
+    }
+}
+```
+
+## UserInfo API
+
+### READ
+
+#### (1). REQUEST
+
+```js
+const token = `Bearer ${localStorage.getItem("token")}`;
+
+axios.get("/userinfo", {
+    headers: {
+        Authorization: token,
+    },
+});
+```
+
+#### (2). RESPONSE
+
+```js
+{
+    "status": 200,
+    "user_info": {
+        "profile_img": "http://k.kakaocdn.net/dn/bXmxMW/btq5c6BLVx0/UVMWI7rjrk0BgsG8umfpNK/img_640x640.jpg",
+        "user_name": "김윤주"
     }
 }
 ```
