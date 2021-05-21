@@ -11,19 +11,19 @@ function OAuthRedirectHandler() {
   const modalTitle = '위치 정보 제공 동의';
   const modalComment =
     'Mirror-Look은 날씨 기반 추천 서비스예요. 저희가 위치 정보를 열람해도 될까요?';
-  setModalOpen(true);
   useEffect(() => {
-    if (!!code & !!agreement) {
-      let data = { agreement: agreement };
-      axios
-        .post(`http://localhost:5000/login?code=${code}`, data)
-        .then(function (response) {
-          console.log(response.data);
-        })
-        .catch(function (err) {
-          console.log(err);
-        });
-    }
+    setModalOpen(true);
+    // if (!!code & !!agreement) {
+    //   let data = { agreement: agreement };
+    axios
+      .get(`http://localhost:5000/kakaoOauth/callback?code=${code}`)
+      .then(function (response) {
+        console.log(response.data);
+      })
+      .catch(function (err) {
+        console.log(err);
+      });
+    // }
   }, []);
 
   return (
