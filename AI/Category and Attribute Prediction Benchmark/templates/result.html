@@ -1,0 +1,21 @@
+{% extends "base.html" %} {% block content %}
+<div class="container">
+  <h1>Predicted Class:</h1>
+  <ul>
+    {% for label, prob in data.predictions %}
+    <li>{{ label }} : {{ prob }}</li>
+    {% endfor %}
+  </ul>
+  <hr />
+  <div>
+    <img
+      src="{{ data.image_path }}"
+      class="img-rounded"
+      width="auto"
+      height="200"
+    />
+  </div>
+  <a href="{{ url_for('index') }}" class="btn btn-default">Back</a>
+</div>
+
+{% endblock %}
