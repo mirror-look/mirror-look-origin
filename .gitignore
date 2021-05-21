@@ -251,6 +251,7 @@ Thumbs.db
 logs
 **/*.backup.*
 **/*.back.*
+client/src/Config.js
 
 node_modules
 bower_components
