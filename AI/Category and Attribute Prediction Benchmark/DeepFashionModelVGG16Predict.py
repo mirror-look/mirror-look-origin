@@ -13,7 +13,7 @@ def get_prediction(image_path):
     img = img / 255.
     input_data = tf.expand_dims(img, axis=0)
 
-    interpreter = tf.lite.Interpreter(model_path='/home/azure/passion/AI/Category and Attribute Prediction Benchmark/dataset/output/my_checkpoint3.tflite')
+    interpreter = tf.lite.Interpreter(model_path='/home/azure/passion/AI/Category and Attribute Prediction Benchmark/dataset/output/my_checkpoint4.tflite')
     interpreter.allocate_tensors()
 
     input_details = interpreter.get_input_details()
@@ -39,6 +39,18 @@ def get_prediction(image_path):
 
     return results
 
-image_path = '/home/azure/passion/AI/Category and Attribute Prediction Benchmark/dataset/test/Button-Down/Classic_Collared_Button-Down_img_00000004_gt_34-69-185-271_iou_1.0.jpg'
+# class indices of train dataset:
+# {'Anorak': 0, 'Blazer': 1, 'Blouse': 2, 'Bomber': 3, 'Button-Down': 4, 'Caftan': 5,
+# 'Cape': 6, 'Capris': 7, 'Cardigan': 8, 'Chinos': 9, 'Coat': 10,
+# 'Coverup': 11, 'Culottes': 12, 'Cutoffs': 13, 'Dress': 14, 'Flannel': 15,
+# 'Gauchos': 16, 'Halter': 17, 'Henley': 18, 'Hoodie': 19, 'Jacket': 20,
+# 'Jeans': 21, 'Jeggings': 22, 'Jersey': 23, 'Jodhpurs': 24, 'Joggers': 25,
+# 'Jumpsuit': 26, 'Kaftan': 27, 'Kimono': 28, 'Leggings': 29, 'Nightdress': 30,
+# 'Onesie': 31, 'Parka': 32, 'Peacoat': 33, 'Poncho': 34, 'Robe': 35,
+# 'Romper': 36, 'Sarong': 37, 'Shirtdress': 38, 'Shorts': 39, 'Skirt': 40,
+# 'Sundress': 41, 'Sweater': 42, 'Sweatpants': 43, 'Sweatshorts': 44, 'Tank': 45,
+# 'Tee': 46, 'Top': 47, 'Trunks': 48, 'Turtleneck': 49}
+
+image_path = '/home/azure/passion/AI/Category and Attribute Prediction Benchmark/dataset/test/Jodhpurs/Topstitched_Jodhpurs_img_00000007_gt_54-97-164-287_iou_1.0.jpg'
 results = get_prediction(image_path)
 print(results)

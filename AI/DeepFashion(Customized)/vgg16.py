@@ -83,15 +83,15 @@ full_model.summary()
 # full_model.summary()
 
 ## Register Callbacks
-csv_log_filename = '/home/azure/passion/AI/DeepFashion(Customized)/DeepFashion/output'
-csv_log = CSVLogger(csv_log_filename, seperator=' ', append=False)
+csv_log_filename = '/home/azure/passion/AI/DeepFashion(Customized)/DeepFashion/output/csv_log.csv'
+csv_log = CSVLogger(csv_log_filename, separator=' ', append=False)
 
 early_stopping = EarlyStopping(
-    monitor='loss', patience=early_stopping_patience, verbose=1, mode='min'
+    monitor='loss', patience=500, verbose=1, mode='min'
 )
 
-checkpoint_filepath = '/home/azure/passion/AI/DeepFashion(Customized)/DeepFashion/output'
-checkpoint = ModelCheckpoint(checkpoint_filepath, monitor='val_loss', verbose=1,
+checkpoint_filepath = '/home/azure/passion/AI/DeepFashion(Customized)/DeepFashion/output/best-weights-{epoch:03d}-{val_loss:.4f}.ckpt'
+checkpoint = ModelCheckpoint(filepath=checkpoint_filepath, monitor='val_loss', verbose=1,
 save_best_only=True, save_weights_only=False, mode='min', period=1
 )
 
