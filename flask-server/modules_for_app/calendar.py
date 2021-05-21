@@ -2,7 +2,6 @@ import os
 import sys
 from flask_restx import reqparse, Api, Resource
 from flask import Blueprint, jsonify, url_for, send_file
-import cv2
 from werkzeug.datastructures import FileStorage
 from app import get_database
 import uuid
@@ -58,7 +57,7 @@ parser_calendar.add_argument('sleeve')
 # 캘린더 CRUD
 
 '''
-blob storage에 저장될 이미지 파일에 대한 처리는 포함되어 있지 않음 (추후 확정 필요)
+blob storage에 저장될 이미지 파일에 대한 처리는 추후 배포용 VM 수령 후 진행
 '''
 
 
@@ -68,7 +67,7 @@ class Calendar(Resource):
         args = parser_calendar.parse_args()
 
         '''
-        Validation 추가 예정(라이브러리 활용 or 하드코딩??)
+        Validation 추가 예정
         '''
 
         # 테스트용, 이후 Blob Storage Upload 부분 추가 예정
@@ -112,9 +111,6 @@ class Calendar(Resource):
         return send_file(local_file_path)
 
     # Update
-    '''
-    DB에 있는 img_path를 수정하지 않고 blob storage 경로상의 파일을 수정하면 되지 않을까??
-    '''
 
     def put(self):
         args = parser_calendar.parse_args()
@@ -133,10 +129,12 @@ class Calendar(Resource):
         new_values = {"$set": {"ootd_path": new_local_file_name}}
 
         calendar_collection.update_one(query, new_values)
+        ootd_updated = list(calendar_collection.find(query))[0]
+        del ootd_updated['_id']
 
         return jsonify(
             status=200,
-            ootd_updated=str(list(calendar_collection.find(query))[0])
+            ootd_updated=ootd_updated
         )
 
     # Delete
@@ -145,10 +143,10 @@ class Calendar(Resource):
     #     query = {'user_id': args['user_id'], 'ootd': args['ootd']}
     #     calendar_collection.delete_one(query)
 
-        return jsonify(
-            status=200,
-            ootd_deleted=query
-        )
+    #     return jsonify(
+    #         status=200,
+    #         ootd_deleted=query
+    #     )
 
 
 api.add_resource(Calendar, '/calendar')

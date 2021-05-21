@@ -2,9 +2,9 @@ import os
 import sys
 from flask_restx import reqparse
 from flask import Blueprint, jsonify, url_for, send_file
-import cv2
 from app import get_database
 import uuid
+from collections import defaultdict
 
 # pymongo cursor 객체 인코딩
 from bson import json_util
@@ -39,47 +39,49 @@ def search_user():
     query = {'user_name': {'$regex': args['user_name']}}
     searched_user_list = list(user_collection.find(query))
 
-    user_name_list = []
+    user_name_list = defaultdict(int)
     for user in searched_user_list:
-        user_name_list.append(user['user_name'])
+        user_name_list[user['user_name']
+                       ] = user['kakao_id_number']
 
     return jsonify(
         status=200,
         searched_user_list=user_name_list
     )
 
-# 유저별 OOTD 검색
-
 
 @ search.route('/user-ootd', methods=['POST'])
+# 유저별 OOTD 검색
 def search_ootd_by_user():
     args = parser_search.parse_args()
     query = {'user_id': args['user_id']}
     calendar_info_of_selected_user = list(calendar_collection.find(query))
 
-    ootd_info_of_selected_user = []
+    ootd_info_of_selected_user = defaultdict(str)
     for ootd_info in calendar_info_of_selected_user:
-        ootd_info_of_selected_user.append(ootd_info['ootd_path'])
+        ootd_info_of_selected_user[ootd_info['date']] = ootd_info['ootd_path']
 
     return jsonify(
         status=200,
-        ootd_info_of_selected_user=ootd_info_of_selected_user
+        ootd_info_of_selected_user=ootd_info_of_selected_user,
+        user_id=args['user_id']
     )
-
-# 날짜별 OOTD 검색
 
 
 @ search.route('/day-ootd', methods=['POST'])
+# 날짜별 OOTD 검색
 def search_ootd_by_day():
     args = parser_search.parse_args()
     query = {'date': args['date']}
     calendar_info_of_selected_day = list(calendar_collection.find(query))
 
-    ootd_info_of_selected_day = []
+    ootd_info_of_selected_day = defaultdict(str)
     for ootd_info in calendar_info_of_selected_day:
-        ootd_info_of_selected_day.append(ootd_info['ootd_path'])
+        ootd_info_of_selected_day[ootd_info['user_id']
+                                  ] = ootd_info['ootd_path']
 
     return jsonify(
         status=200,
-        ootd_info_of_selected_day=ootd_info_of_selected_day
+        ootd_info_of_selected_day=ootd_info_of_selected_day,
+        date=args['date']
     )
