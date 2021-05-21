@@ -20,18 +20,7 @@ from config import CLIENT_ID
 
 kakaoOauth = Blueprint("kakaoOauth", __name__, url_prefix = "/kakaoOauth")
 
-# @kakaoOauth.route("/")
-# def hello():
-#     return render_template('test.html')
-
-# @kakaoOauth.route("/login")
-# def login():
-#     client_id = CLIENT_ID
-#     redirect_uri = "http://127.0.0.1:5000/kakaoOauth/callback"
-#     kakao_oauthurl = f"https://kauth.kakao.com/oauth/authorize?client_id={client_id}&redirect_uri={redirect_uri}&response_type=code"
-#     return redirect(kakao_oauthurl)
-
-@kakaoOauth.route("/callback") # 위 라우팅에서 redirect 됨
+@kakaoOauth.route("/callback") # 프론트에서 redirect 됨
 def callback():
     print("실행")
     try:
