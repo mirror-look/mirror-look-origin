@@ -3,12 +3,12 @@ import Button from '@material-ui/core/Button';
 import Box from '@material-ui/core/Box';
 import NavBar from '../components/common/NavBar';
 import WindowWrapper from '../components/common/WindowWrapper';
+import { ClientID } from '../config';
 
 function Login() {
   function handleClick() {
     console.log('로그인 클릭했다!');
-    window.location.href =
-      'https://kauth.kakao.com/oauth/authorize?client_id=e7d2d5d4698806cd0bc1f0b197e41389&redirect_uri=http://localhost:3000/oauth/callback/kakao&response_type=code';
+    window.location.href = `https://kauth.kakao.com/oauth/authorize?client_id=${ClientID}&redirect_uri=http://localhost:3000/oauth/callback/kakao&response_type=code`;
   }
 
   return (
