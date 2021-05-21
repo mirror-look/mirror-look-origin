@@ -5,6 +5,8 @@ import Detail from './pages/Detail.js';
 import Camera from './pages/Camera.js';
 import FashionCalendar from './pages/FashionCalendar.js';
 import Main from './pages/Main.js';
+import OAuthRedirectHandler from './pages/OAuthRedirectHandler.js';
+
 import './App.css';
 import { StylesProvider } from '@material-ui/core';
 
@@ -16,6 +18,7 @@ function App() {
       <Route path="/camera" component={Camera} />
       <Route path="/calendar" component={FashionCalendar} />
       <Route path="/detail" component={Detail} />
+      <Route path="/oauth/callback/kakao" component={OAuthRedirectHandler} />
       <Route exact path="/" component={Main} />
     </StylesProvider>
   );
