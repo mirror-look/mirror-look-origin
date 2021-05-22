@@ -13,44 +13,59 @@ def get_prediction(image_path):
     img = img / 255.
     input_data = tf.expand_dims(img, axis=0)
 
-    interpreter = tf.lite.Interpreter(model_path='/home/azure/passion/AI/CategoryandAttributePredictionBenchmark/dataset/output/my_checkpoint4.tflite')
+    interpreter = tf.lite.Interpreter(model_path='/home/azure/passion/AI/CategoryandAttributePredictionBenchmark/dataset/output/my_checkpoint5serving.tflite')
     interpreter.allocate_tensors()
 
     input_details = interpreter.get_input_details()
     output_details = interpreter.get_output_details()
+    print("input_details: ", input_details)
+    print("output_details: ", output_details)
 
     input_shape = input_details[0]['shape']
-    print(input_shape)
+    print("input_shape: ", input_shape)
 
     interpreter.set_tensor(input_details[0]['index'], input_data)
     interpreter.invoke()
-    print(output_details[0].keys())
-    print(output_details[0]['shape'])
+    print("output_details_keys: ", output_details[0].keys())
+    print("output_details_shape: ", output_details[0]['shape'])
 
     output_data = interpreter.get_tensor(output_details[0]['index'])
-    print(output_data)
+    print("output_data: ", output_data)
+
+    class_indices = {'Blazer': 0, 'Blouse': 1, 'Cardigan': 2, 'Coat': 3,
+                    'Cutoffs': 4, 'Dress': 5, 'Hoodie': 6, 'Jacket': 7,
+                    'Jeans': 8, 'Joggers': 9, 'Jumpsuit': 10, 'Leggings': 11,
+                    'Nightdress': 12, 'Parka': 13, 'Poncho': 14, 'Romper': 15,
+                    'Shirtdress': 16, 'Shirts': 17, 'Shorts': 18, 'Skirt': 19,
+                    'Sundress': 20, 'Sweater': 21, 'Tank': 22, 'Tee': 23,
+                    'Top': 24, 'Trunks': 25
+                    }
+
+    new_class_indices = {}
+
+    for k,v in class_indices.items():
+        new_class_indices[v] = k
+
+    # print(new_class_indices)
 
     results = dict()
 
     for label, prob in enumerate(output_data[0]):
-        results[label] = prob
+        results[new_class_indices[label]] = prob
 
     results = sorted(results.items(), key=lambda x: x[1], reverse=True)
 
     return results
 
-# class indices of train dataset:
-# {'Anorak': 0, 'Blazer': 1, 'Blouse': 2, 'Bomber': 3, 'Button-Down': 4, 'Caftan': 5,
-# 'Cape': 6, 'Capris': 7, 'Cardigan': 8, 'Chinos': 9, 'Coat': 10,
-# 'Coverup': 11, 'Culottes': 12, 'Cutoffs': 13, 'Dress': 14, 'Flannel': 15,
-# 'Gauchos': 16, 'Halter': 17, 'Henley': 18, 'Hoodie': 19, 'Jacket': 20,
-# 'Jeans': 21, 'Jeggings': 22, 'Jersey': 23, 'Jodhpurs': 24, 'Joggers': 25,
-# 'Jumpsuit': 26, 'Kaftan': 27, 'Kimono': 28, 'Leggings': 29, 'Nightdress': 30,
-# 'Onesie': 31, 'Parka': 32, 'Peacoat': 33, 'Poncho': 34, 'Robe': 35,
-# 'Romper': 36, 'Sarong': 37, 'Shirtdress': 38, 'Shorts': 39, 'Skirt': 40,
-# 'Sundress': 41, 'Sweater': 42, 'Sweatpants': 43, 'Sweatshorts': 44, 'Tank': 45,
-# 'Tee': 46, 'Top': 47, 'Trunks': 48, 'Turtleneck': 49}
+# class indices of test dataset:
+# {'Blazer': 0, 'Blouse': 1, 'Cardigan': 2, 'Coat': 3,
+# 'Cutoffs': 4, 'Dress': 5, 'Hoodie': 6, 'Jacket': 7,
+# 'Jeans': 8, 'Joggers': 9, 'Jumpsuit': 10, 'Leggings': 11,
+# 'Nightdress': 12, 'Parka': 13, 'Poncho': 14, 'Romper': 15,
+# 'Shirtdress': 16, 'Shirts': 17, 'Shorts': 18, 'Skirt': 19,
+# 'Sundress': 20, 'Sweater': 21, 'Tank': 22, 'Tee': 23,
+# 'Top': 24, 'Trunks': 25}
 
-image_path = '/home/azure/passion/AI/CategoryandAttributePredictionBenchmark/dataset/test/Blazer/Abstract_Print_Draped_Blazer_img_00000003_gt_55-47-139-148_iou_1.0.jpg'
+image_path = '/home/azure/passion/AI/CategoryandAttributePredictionBenchmark/dataset/test/Cutoffs/Acid_Wash_Denim_Cutoffs_img_00000012_gt_1-60-200-218_iou_1.0.jpg'
 results = get_prediction(image_path)
 print(results)
