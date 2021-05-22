@@ -143,6 +143,7 @@ function Main() {
   const [userName, setUserName] = useState();
   const [userProfileImage, setUserProfileImage] = useState();
   const [userAgreement, setUserAgreement] = useState();
+  const [userKakaoId, setUserKakaoId] = useState();
   const [modalOpen, setModalOpen] = useState(true);
   const modalTitle = '위치 정보 제공 동의';
   const modalComment = `Mirror-Look은 날씨 기반 추천 서비스예요. 저희가 ${userName} 님의 위치 정보를 열람해도 될까요?`;
@@ -158,7 +159,7 @@ function Main() {
         console.log('사용자 정보 받아왔다!');
         setUserName(response.data.user_info.user_name);
         setUserProfileImage(response.data.user_info.profile_img);
-        setUserAgreement(response.data.user_info.agreement);
+        setUserKakaoId(response.data.user_info.kakao_id_number);
       })
       .catch(function (err) {
         console.log(err);
