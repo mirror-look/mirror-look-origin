@@ -6,6 +6,10 @@ import Box from '@material-ui/core/Box';
 import Header from '../components/common/Header';
 import NavBar from '../components/common/NavBar';
 import WindowWrapper from '../components/common/WindowWrapper';
+import AgreementModal from '../components/common/AgreementModal';
+
+import { useEffect, useState } from 'react';
+import axios from 'axios';
 
 //import Calendar from './Calendar';
 
@@ -136,23 +140,57 @@ const StyledCalender = styled(Box)`
 
 function Main() {
   // api server에서 username을 받아와야함
-  //  const [username, setUsername] = useState();
-  const username = '김윤주';
+  const [userName, setUserName] = useState();
+  const [userProfileImage, setUserProfileImage] = useState();
+  const [userAgreement, setUserAgreement] = useState();
+  const [modalOpen, setModalOpen] = useState(true);
+  const modalTitle = '위치 정보 제공 동의';
+  const modalComment = `Mirror-Look은 날씨 기반 추천 서비스예요. 저희가 ${userName} 님의 위치 정보를 열람해도 될까요?`;
+  useEffect(() => {
+    const token = `Bearer ${window.sessionStorage.getItem('token')}`;
+    axios
+      .get('http://localhost:63712/userinfo', {
+        headers: {
+          Authorization: token
+        }
+      })
+      .then(function (response) {
+        console.log('사용자 정보 받아왔다!');
+        setUserName(response.data.user_info.user_name);
+        setUserProfileImage(response.data.user_info.profile_img);
+        setUserAgreement(response.data.user_info.agreement);
+      })
+      .catch(function (err) {
+        console.log(err);
+      });
+  }, []);
+
   return (
     <WindowWrapper>
       <NavBar />
       <MainLayout>
-        <Header username={username} />
+        <Header username={userName} />
         <Body>
           <UserInfo>
-            <Hello username={username} />
-            <Profile username={username} />
+            <Hello username={userName} />
+            <Profile username={userName} />
             <Weather />
           </UserInfo>
           <TodayOOTD></TodayOOTD>
           <Calendar></Calendar>
         </Body>
       </MainLayout>
+      {modalOpen === true ? (
+        <AgreementModal
+          setModalOpen={setModalOpen}
+          modalOpen={modalOpen}
+          setUserAgreement={setUserAgreement}
+          modalTitle={modalTitle}
+          modalComment={modalComment}
+        />
+      ) : (
+        ''
+      )}
     </WindowWrapper>
   );
 }
