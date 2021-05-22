@@ -1,3 +1,4 @@
+from flask.helpers import url_for
 from flask_restx import Api, Resource
 from flask import Blueprint, jsonify, request
 
@@ -19,9 +20,12 @@ userinfo = Blueprint("userinfo", __name__)
 userinfo.json_encoder = MongoEngineJSONEncoder
 api = Api(userinfo)
 
-# headers Authorization Bearer token 필요
+"""
+Userinfo APIs - 유저 정보 RU (headers Authorization Bearer token 필요)
+Read API : 유저 정보를 열람
+Update API : 유저 정보(위치동의)를 수정
+"""
 
-# 유저정보 R
 class Userinfo(Resource):
     # Read
     @jwt_required()
@@ -32,12 +36,25 @@ class Userinfo(Resource):
         print(user_info_from_db)
         user_info = {
             'user_name' : user_info_from_db[0]['user_name'],
-            'profile_img' : user_info_from_db[0]['profile_img']
+            'profile_img' : user_info_from_db[0]['profile_img'],
+            'agreement' : user_info_from_db[0]['agreement']
         }
 
         return jsonify(
             status = 200,
             user_info = user_info
         )
+
+    # Update
+    @jwt_required()
+    def put(self):
+        kakao_id = get_jwt_identity()
+        params = request.get_json()
+        user_collection.update_one(
+                {'kakao_id_number': kakao_id},
+                {'$set': {'agreement': params['agreement']}}
+            )
+
+        return jsonify(status = 200)
 
 api.add_resource(Userinfo, '/userinfo')
