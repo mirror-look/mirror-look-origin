@@ -35,7 +35,7 @@ function OAuthRedirectHandler({ history }) {
     //    });
     //} else if (!token) {
     axios
-      .get(`http://127.0.0.1:63712/kakaoOauth/callback?code=${code}`)
+      .get(`http://127.0.0.1:5000/kakaoOauth/callback?code=${code}`)
       .then(function (response) {
         console.log('토큰 받아왔다!');
         setToken(response.data.token);
