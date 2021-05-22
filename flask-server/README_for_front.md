@@ -304,8 +304,31 @@ axios.get("/userinfo", {
 {
     "status": 200,
     "user_info": {
+        "agreement" : true 또는 false
         "profile_img": "http://k.kakaocdn.net/dn/bXmxMW/btq5c6BLVx0/UVMWI7rjrk0BgsG8umfpNK/img_640x640.jpg",
         "user_name": "김윤주"
     }
+}
+```
+
+### UPDATE
+
+#### (1). REQUEST
+
+```js
+const token = `Bearer ${localStorage.getItem("token")}`;
+
+axios.put("/userinfo", data, { // data는 json 형식으로 ex) {"agreement":true}
+    headers: {
+        Authorization: token
+    },
+});
+```
+
+#### (2). RESPONSE
+
+```js
+{
+    "status": 200
 }
 ```
