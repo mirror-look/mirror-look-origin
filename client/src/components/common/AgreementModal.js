@@ -4,12 +4,17 @@ import styled from 'styled-components';
 import Modal from '@material-ui/core/Modal';
 import Button from '@material-ui/core/Button';
 import Paper from '@material-ui/core/Paper';
+import axios from 'axios';
 
-function AgreementModal({ setAgreement, modalTitle, modalComment }) {
-  const [open, setOpen] = useState(true);
-
+function AgreementModal({
+  setModalOpen,
+  modalOpen,
+  setUserAgreement,
+  modalTitle,
+  modalComment
+}) {
   const handleClose = () => {
-    setOpen(false);
+    setModalOpen(false);
   };
 
   const body = (
@@ -21,7 +26,7 @@ function AgreementModal({ setAgreement, modalTitle, modalComment }) {
           variant="contained"
           color="primary"
           onClick={() => {
-            setAgreement(true);
+            setUserAgreement('Y');
             handleClose();
           }}
         >
@@ -32,7 +37,7 @@ function AgreementModal({ setAgreement, modalTitle, modalComment }) {
           variant="contained"
           color="primary"
           onClick={() => {
-            setAgreement(false);
+            setUserAgreement('N');
             handleClose();
           }}
         >
@@ -46,7 +51,7 @@ function AgreementModal({ setAgreement, modalTitle, modalComment }) {
     <StyledModal
       aria-labelledby="simple-modal-title"
       aria-describedby="simple-modal-description"
-      open={open}
+      open={modalOpen}
       onClose={handleClose}
     >
       {body}
