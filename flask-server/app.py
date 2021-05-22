@@ -6,7 +6,7 @@ import pymongo
 from datetime import timedelta
 from flask_jwt_extended import JWTManager
 
-from config import JWT_SECRET_KEY
+from config import JWT_SECRET_KEY, UPLOAD_FOLDER
 
 def get_database():
     # DB 연결
@@ -44,6 +44,7 @@ def create_app():
     app.secret_key = os.urandom(24)
     app.config['JSON_AS_ASCII'] = False
 
+    app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
     # flask_jwt_extended를 위한 secret_key 설정
     app.config["JWT_SECRET_KEY"] = JWT_SECRET_KEY
@@ -69,6 +70,9 @@ def create_app():
 
     from modules_for_app.userinfo import userinfo
     app.register_blueprint(userinfo)
+
+    from modules_for_app.classification import classification
+    app.register_blueprint(classification)
 
     return app
 
