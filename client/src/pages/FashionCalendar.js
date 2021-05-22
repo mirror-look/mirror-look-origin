@@ -8,6 +8,8 @@ import 'react-calendar/dist/Calendar.css';
 import './FashionCalendar.css';
 import axios from 'axios';
 
+const URL = 'http://localhost:5000';
+
 function getFormatDate(date) {
   var year = date.getFullYear();
   var month = 1 + date.getMonth();
@@ -18,8 +20,6 @@ function getFormatDate(date) {
 }
 
 const tileClassName = ({ date }) => (date.getDay() === 0 ? 'sunday' : '');
-
-const URL = 'http://localhost:5000';
 
 function FashionCalendar() {
   const [value, setValue] = useState(new Date());
@@ -45,7 +45,7 @@ function FashionCalendar() {
       setDates(data.ootd_enrolled_dates);
     } catch (e) {
       console.error(e);
-      setDates(['2021-05-01', '2021-05-25', '2021-05-17']);
+      setDates(['2021-05-01', '2021-05-25', '2021-05-17', '2021-04-11']);
     }
   };
 
