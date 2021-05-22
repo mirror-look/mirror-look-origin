@@ -13,7 +13,7 @@ def get_prediction(image_path):
     img = img / 255.
     input_data = tf.expand_dims(img, axis=0)
 
-    interpreter = tf.lite.Interpreter(model_path='/home/azure/passion/AI/Category and Attribute Prediction Benchmark/dataset/output/my_checkpoint4.tflite')
+    interpreter = tf.lite.Interpreter(model_path='/home/azure/passion/AI/CategoryandAttributePredictionBenchmark/dataset/output/my_checkpoint4.tflite')
     interpreter.allocate_tensors()
 
     input_details = interpreter.get_input_details()
@@ -51,6 +51,6 @@ def get_prediction(image_path):
 # 'Sundress': 41, 'Sweater': 42, 'Sweatpants': 43, 'Sweatshorts': 44, 'Tank': 45,
 # 'Tee': 46, 'Top': 47, 'Trunks': 48, 'Turtleneck': 49}
 
-image_path = '/home/azure/passion/AI/Category and Attribute Prediction Benchmark/dataset/test/Jodhpurs/Topstitched_Jodhpurs_img_00000007_gt_54-97-164-287_iou_1.0.jpg'
+image_path = '/home/azure/passion/AI/CategoryandAttributePredictionBenchmark/dataset/test/Blazer/Abstract_Print_Draped_Blazer_img_00000003_gt_55-47-139-148_iou_1.0.jpg'
 results = get_prediction(image_path)
 print(results)

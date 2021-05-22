@@ -2,6 +2,7 @@ import tensorflow as tf
 
 def get_prediction(image_path):
 
+    import pdb; pdb.set_trace()
     img = tf.keras.preprocessing.image.load_img(
         image_path,
         target_size=[224, 224],
@@ -39,17 +40,17 @@ def get_prediction(image_path):
 
     return results
 
-# class indices of train dataset:
-# {'Anorak': 0, 'Blazer': 1, 'Blouse': 2, 'Bomber': 3, 'Button-Down': 4, 'Caftan': 5,
-# 'Cape': 6, 'Capris': 7, 'Cardigan': 8, 'Chinos': 9, 'Coat': 10,
-# 'Coverup': 11, 'Culottes': 12, 'Cutoffs': 13, 'Dress': 14, 'Flannel': 15,
-# 'Gauchos': 16, 'Halter': 17, 'Henley': 18, 'Hoodie': 19, 'Jacket': 20,
-# 'Jeans': 21, 'Jeggings': 22, 'Jersey': 23, 'Jodhpurs': 24, 'Joggers': 25,
-# 'Jumpsuit': 26, 'Kaftan': 27, 'Kimono': 28, 'Leggings': 29, 'Nightdress': 30,
-# 'Onesie': 31, 'Parka': 32, 'Peacoat': 33, 'Poncho': 34, 'Robe': 35,
-# 'Romper': 36, 'Sarong': 37, 'Shirtdress': 38, 'Shorts': 39, 'Skirt': 40,
-# 'Sundress': 41, 'Sweater': 42, 'Sweatpants': 43, 'Sweatshorts': 44, 'Tank': 45,
-# 'Tee': 46, 'Top': 47, 'Trunks': 48, 'Turtleneck': 49}
+# # class indices of train dataset:
+# # {'Anorak': 0, 'Blazer': 1, 'Blouse': 2, 'Bomber': 3, 'Button-Down': 4, 'Caftan': 5,
+# # 'Cape': 6, 'Capris': 7, 'Cardigan': 8, 'Chinos': 9, 'Coat': 10,
+# # 'Coverup': 11, 'Culottes': 12, 'Cutoffs': 13, 'Dress': 14, 'Flannel': 15,
+# # 'Gauchos': 16, 'Halter': 17, 'Henley': 18, 'Hoodie': 19, 'Jacket': 20,
+# # 'Jeans': 21, 'Jeggings': 22, 'Jersey': 23, 'Jodhpurs': 24, 'Joggers': 25,
+# # 'Jumpsuit': 26, 'Kaftan': 27, 'Kimono': 28, 'Leggings': 29, 'Nightdress': 30,
+# # 'Onesie': 31, 'Parka': 32, 'Peacoat': 33, 'Poncho': 34, 'Robe': 35,
+# # 'Romper': 36, 'Sarong': 37, 'Shirtdress': 38, 'Shorts': 39, 'Skirt': 40,
+# # 'Sundress': 41, 'Sweater': 42, 'Sweatpants': 43, 'Sweatshorts': 44, 'Tank': 45,
+# # 'Tee': 46, 'Top': 47, 'Trunks': 48, 'Turtleneck': 49}
 
 image_path = '/home/azure/passion/flask-server/ootd_storage/3c15427e-9bdd-44ca-9e1b-6e972711d692.png'
 results = get_prediction(image_path)
