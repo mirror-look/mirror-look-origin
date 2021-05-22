@@ -62,30 +62,47 @@ train_dataset, val_dataset = DataLoad(preprocessing=vgg16.preprocess_input)
 
 X_train, y_train = next(train_dataset)
 
-X_train = X_train / 255.0
+print("X_train_shape: ", X_train.shape)
+print("y_train_shape: ", y_train.shape)
 
-X_train = np.asarray(X_train)
+X_val, y_val = next(val_dataset)
 
-print(X_train.shape)
-print(y_train.shape)
+print("X_val_shape: ", X_val.shape)
+print("y_val_shape: ", y_val.shape)
 
 conv_model = vgg16.VGG16(weights='imagenet', include_top=False, input_shape=(224, 224, 3))
 
 x = keras.layers.Flatten()(conv_model.output)
 
-x = keras.layers.Dense(256, activation='relu')(x)
-x = keras.layers.Dropout(rate=0.5)(x)
-x = keras.layers.Dense(256, activation='relu')(x)
-x = keras.layers.Dropout(rate=0.5)(x)
+x = keras.layers.Dense(128, activation='relu')(x)
+x = keras.layers.Dense(128, activation='relu')(x)
+x = keras.layers.Dense(128, activation='relu')(x)
+
 
 predictions = keras.layers.Dense(50, activation='softmax')(x)
 
 full_model = keras.models.Model(inputs=conv_model.input, outputs=predictions)
 full_model.summary()
 
-## Register Callbacks
-filename = '/home/azure/passion/AI/Category and Attribute Prediction Benchmark/dataset/output/model_train.csv'
-csv_log = CSVLogger(filename, seperator=' ', append=False)
+# ## Register Callbacks
+
+# # CSVLogger
+# filename = '/home/azure/passion/AI/Category and Attribute Prediction Benchmark/dataset/output/model_train.csv'
+# csv_log = keras.callbacks.CSVLogger(filename, separator=' ', append=False)
+
+# # EarlyStopping
+# early_stopping = keras.callbacks.EarlyStopping(
+#     monitor='loss', patience=500, verbose=1, mode='min'
+# )
+
+# # ModelCheckpoint
+# filepath = '/home/azure/passion/AI/Category and Attribute Prediction Benchmark/dataset/output/best-weights-{epoch:03d}-{val_loss:.4f}.ckpt'
+# checkpoint = keras.callbacks.ModelCheckpoint(
+#     filepath, monitor='val_loss', verbose=1,
+#     save_best_only=True, save_weights_only=False, mode='min', period=1
+# )
+
+# callbacks_list = [csv_log, early_stopping]
 
 full_model.compile(
     loss='binary_crossentropy',
@@ -95,9 +112,10 @@ full_model.compile(
 
 history = full_model.fit(
     train_dataset,
-    validation_data = val_dataset,
+    validation_data = (X_val, y_val),
     workers=0,
-    epochs=10
+    epochs=10,
+    verbose=2
 )
 
 if __name__ == '__main__':
