@@ -22,10 +22,13 @@ function Photo({ imgSrc, imgAlt }) {
   );
 }
 
-function Info({ username }) {
+function Info({ date, username }) {
   return (
     <div>
-      <h3>2021년 n월 n일 {username}님은 이런 옷을 입었네요!</h3>
+      <h3>
+        {date.slice(0, 4)}년 {date.slice(5, 7)}월 {date.slice(8)}일 {username}
+        님은 이런 옷을 입었네요!
+      </h3>
     </div>
   );
 }
@@ -50,7 +53,7 @@ function Dashboard() {
             <Photo src={imgSrc} alt={imgAlt} />
           </PhotoBox>
           <Story>
-            <Info username={username}></Info>
+            <Info date={date} username={username}></Info>
           </Story>
         </ShowDetail>
       </MainLayout>
