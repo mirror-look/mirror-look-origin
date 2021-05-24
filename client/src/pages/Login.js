@@ -26,7 +26,7 @@ const FlexDiv = styled('div')`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  transform: translate(-75px, -32px);
+  transform: translate(0px, -32px);
 `;
 
 const KakaoButton = styled(Button)`

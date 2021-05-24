@@ -31,6 +31,13 @@ function Dashboard() {
 
   let { search } = useLocation();
   console.log(search);
+  if (search === '') {
+    return (
+      <StyledBox>
+        <div> [CAUTION] 올바르지 않은 주소입니다. 뒤로가기를 눌러주세요 </div>
+      </StyledBox>
+    );
+  }
   const { userId, date } = queryString.parse(search);
   console.log(userId, date);
   const imgSrc = `calendar?user_id=${userId}&date=${date}`;
@@ -47,6 +54,17 @@ function Dashboard() {
     </ShowDetail>
   );
 }
+
+const StyledBox = styled('div')`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: #8f00ff;
+  font-size: 25px;
+  font-weight: bold;
+`;
 
 const ShowDetail = styled('div')`
   display: flex;
