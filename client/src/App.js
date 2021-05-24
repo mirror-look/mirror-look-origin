@@ -10,6 +10,7 @@ import OAuthRedirectHandler from './pages/OAuthRedirectHandler.js';
 import './App.css';
 import { StylesProvider } from '@material-ui/core';
 import FriendsList from './pages/FriendsList.js';
+import FriendPage from './pages/FriendPage.js';
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
       <Route path="/oauth/callback/kakao" component={OAuthRedirectHandler} />
       <Route exact path="/" component={Main} />
       <Route path="/friendslist" component={FriendsList} />
+      <Route path="/friendPage" component={FriendPage} />
     </StylesProvider>
   );
 }
