@@ -1,14 +1,6 @@
-import { useState } from 'react';
-
 import styled from 'styled-components';
-//import Button from '@material-ui/core/Button';
 import Box from '@material-ui/core/Box';
-import Header from '../components/common/Header';
-import NavBar from '../components/common/NavBar';
 import Input from '@material-ui/core/Input';
-import WindowWrapper from '../components/common/WindowWrapper';
-
-//import Calendar from './Calendar';
 
 function SearchUser() {
   return (
@@ -122,25 +114,13 @@ const StyledFriends = styled(Box)`
 function FriendsList() {
   // api server에서 username을 받아와야함
   //  const [username, setUsername] = useState();
-  const username = '김윤주';
   return (
-    <WindowWrapper>
-      <NavBar />
-      <MainLayout>
-        <Header username={username} />
-        <Body>
-          <SearchUser />
-          <Friends />
-        </Body>
-      </MainLayout>
-    </WindowWrapper>
+    <Body>
+      <SearchUser />
+      <Friends />
+    </Body>
   );
 }
-
-const MainLayout = styled('div')`
-  display: flex;
-  flex-direction: column;
-`;
 
 const Body = styled('div')`
   display: flex;

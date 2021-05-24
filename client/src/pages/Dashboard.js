@@ -1,25 +1,18 @@
-import React, { useState, useEffect } from 'react';
 import queryString from 'query-string';
 import { useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import Box from '@material-ui/core/Box';
-import Header from '../components/common/Header';
-import NavBar from '../components/common/NavBar';
-import WindowWrapper from '../components/common/WindowWrapper';
+
+const styledPhoto = {
+  width: '364px',
+  height: '740px',
+  borderRadius: '5%',
+  overflow: 'hidden',
+  objectFit: 'cover'
+};
 
 function Photo({ imgSrc, imgAlt }) {
-  return (
-    <img
-      src={imgSrc}
-      alt={imgAlt}
-      width="364px"
-      height="740px"
-      border="1px solid black"
-      border-radius="30%"
-      overflow="hidden"
-      object-fit="cover"
-    />
-  );
+  return <img src={imgSrc} alt={imgAlt} style={styledPhoto} />;
 }
 
 function Info({ date, username }) {
@@ -44,27 +37,16 @@ function Dashboard() {
   const imgAlt = 'clothes img';
 
   return (
-    <WindowWrapper>
-      <NavBar />
-      <MainLayout>
-        <Header username={username} />
-        <ShowDetail>
-          <PhotoBox>
-            <Photo src={imgSrc} alt={imgAlt} />
-          </PhotoBox>
-          <Story>
-            <Info date={date} username={username}></Info>
-          </Story>
-        </ShowDetail>
-      </MainLayout>
-    </WindowWrapper>
+    <ShowDetail>
+      <PhotoBox>
+        <Photo src={imgSrc} alt={imgAlt} />
+      </PhotoBox>
+      <Story>
+        <Info date={date} username={username}></Info>
+      </Story>
+    </ShowDetail>
   );
 }
-
-const MainLayout = styled('div')`
-  display: flex;
-  flex-direction: column;
-`;
 
 const ShowDetail = styled('div')`
   display: flex;

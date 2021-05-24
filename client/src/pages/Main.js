@@ -1,13 +1,6 @@
-//import { useState } from 'react';
-
 import styled from 'styled-components';
-//import Button from '@material-ui/core/Button';
 import Box from '@material-ui/core/Box';
-import Header from '../components/common/Header';
-import NavBar from '../components/common/NavBar';
-import WindowWrapper from '../components/common/WindowWrapper';
-
-//import Calendar from './Calendar';
+import Profile from '../components/common/Profile';
 
 function Hello({ username }) {
   return <StyledHello>{username}님 안녕하세요!</StyledHello>;
@@ -19,39 +12,6 @@ const StyledHello = styled('div')`
   font-weight: 500;
   font-size: 30px;
   line-height: 40px;
-`;
-
-function Profile({ username }) {
-  return (
-    <ProfileBox>
-      <ProfileContent>{username}</ProfileContent>
-      {/*// 이미지 ..아마 path로 받을듯?
-			// 이름
-			// 별명?
-			// 이상한 숫자??
-			// 나의 코디*/}
-    </ProfileBox>
-  );
-}
-
-const ProfileContent = styled(Box)`
-  margin: 30px;
-`;
-
-const ProfileBox = styled(Box)`
-  width: 364px;
-  height: 380px;
-  left: 131px;
-  top: 216px;
-
-  background: #ffffff;
-  filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
-  border-radius: 30px;
-  margin: 30px;
-
-  display: flex;
-  flex-direction: column;
-  align-items: center;
 `;
 
 function Weather() {
@@ -139,28 +99,17 @@ function Main() {
   //  const [username, setUsername] = useState();
   const username = '김윤주';
   return (
-    <WindowWrapper>
-      <NavBar />
-      <MainLayout>
-        <Header username={username} />
-        <Body>
-          <UserInfo>
-            <Hello username={username} />
-            <Profile username={username} />
-            <Weather />
-          </UserInfo>
-          <TodayOOTD></TodayOOTD>
-          <Calendar></Calendar>
-        </Body>
-      </MainLayout>
-    </WindowWrapper>
+    <Body>
+      <UserInfo>
+        <Hello username={username} />
+        <Profile username={username} />
+        <Weather />
+      </UserInfo>
+      <TodayOOTD></TodayOOTD>
+      <Calendar></Calendar>
+    </Body>
   );
 }
-
-const MainLayout = styled('div')`
-  display: flex;
-  flex-direction: column;
-`;
 
 const Body = styled('div')`
   display: flex;

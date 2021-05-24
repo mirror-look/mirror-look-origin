@@ -1,8 +1,6 @@
 import styled from 'styled-components';
 import Button from '@material-ui/core/Button';
 import Box from '@material-ui/core/Box';
-import NavBar from '../components/common/NavBar';
-import WindowWrapper from '../components/common/WindowWrapper';
 import { ClientID } from '../Config';
 
 function Login() {
@@ -12,15 +10,12 @@ function Login() {
   }
 
   return (
-    <WindowWrapper>
-      <NavBar />
-      <FlexDiv>
-        <StyledLogo> Mirror-Look </StyledLogo>
-        <KakaoButton onClick={handleClick} variant="contained">
-          카카오로 로그인
-        </KakaoButton>
-      </FlexDiv>
-    </WindowWrapper>
+    <FlexDiv>
+      <StyledLogo> Mirror-Look </StyledLogo>
+      <KakaoButton onClick={handleClick} variant="contained">
+        카카오로 로그인
+      </KakaoButton>
+    </FlexDiv>
   );
 }
 

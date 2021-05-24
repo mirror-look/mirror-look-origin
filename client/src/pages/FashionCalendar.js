@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import Calendar from 'react-calendar';
-import NavBar from '../components/common/NavBar';
 import styled from 'styled-components';
-import Header from '../components/common/Header';
 import 'react-calendar/dist/Calendar.css';
 import './FashionCalendar.css';
 import axios from 'axios';
@@ -54,30 +52,21 @@ function FashionCalendar() {
   }, []);
 
   return (
-    <WindowWrapper>
-      <NavBar />
-      <FlexDiv>
-        <Header username={username} />
-        <Calendar
-          onChange={setValue}
-          onClickDay={onClickDay}
-          nextLabel={'▶'}
-          next2Label={'▷'}
-          prevLabel={'◀'}
-          prev2Label={'◁'}
-          value={value}
-          tileDisabled={noData}
-          tileClassName={tileClassName}
-        />
-      </FlexDiv>
-    </WindowWrapper>
+    <FlexDiv>
+      <Calendar
+        onChange={setValue}
+        onClickDay={onClickDay}
+        nextLabel={'▶'}
+        next2Label={'▷'}
+        prevLabel={'◀'}
+        prev2Label={'◁'}
+        value={value}
+        tileDisabled={noData}
+        tileClassName={tileClassName}
+      />
+    </FlexDiv>
   );
 }
-
-const WindowWrapper = styled('div')`
-  display: flex;
-  height: 100vh;
-`;
 
 const FlexDiv = styled('div')`
   display: flex;
