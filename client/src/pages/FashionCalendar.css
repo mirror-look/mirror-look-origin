@@ -67,3 +67,10 @@
 .react-calendar__month-view__days__day--weekend {
   color: #a93efa;
 }
+
+/* 오늘 날짜 */
+.react-calendar__tile--active {
+  background: #ccacff;
+  color: black;
+  font-weight: bold;
+}
