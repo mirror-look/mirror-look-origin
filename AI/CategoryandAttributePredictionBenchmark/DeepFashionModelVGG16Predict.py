@@ -13,7 +13,7 @@ def get_prediction(image_path):
     img = img / 255.
     input_data = tf.expand_dims(img, axis=0)
 
-    interpreter = tf.lite.Interpreter(model_path='/home/azure/passion/AI/CategoryandAttributePredictionBenchmark/dataset/output/my_checkpoint5serving.tflite')
+    interpreter = tf.lite.Interpreter(model_path='/home/azure/passion/AI/CategoryandAttributePredictionBenchmark/dataset/output/my_checkpoint6serving.tflite')
     interpreter.allocate_tensors()
 
     input_details = interpreter.get_input_details()
@@ -32,14 +32,18 @@ def get_prediction(image_path):
     output_data = interpreter.get_tensor(output_details[0]['index'])
     print("output_data: ", output_data)
 
-    class_indices = {'Blazer': 0, 'Blouse': 1, 'Cardigan': 2, 'Coat': 3,
-                    'Cutoffs': 4, 'Dress': 5, 'Hoodie': 6, 'Jacket': 7,
-                    'Jeans': 8, 'Joggers': 9, 'Jumpsuit': 10, 'Leggings': 11,
-                    'Nightdress': 12, 'Parka': 13, 'Poncho': 14, 'Romper': 15,
-                    'Shirtdress': 16, 'Shirts': 17, 'Shorts': 18, 'Skirt': 19,
-                    'Sundress': 20, 'Sweater': 21, 'Tank': 22, 'Tee': 23,
-                    'Top': 24, 'Trunks': 25
-                    }
+    # class_indices = {'Blazer': 0, 'Blouse': 1, 'Cardigan': 2, 'Coat': 3,
+    #                 'Cutoffs': 4, 'Dress': 5, 'Hoodie': 6, 'Jacket': 7,
+    #                 'Jeans': 8, 'Joggers': 9, 'Jumpsuit': 10, 'Leggings': 11,
+    #                 'Nightdress': 12, 'Parka': 13, 'Poncho': 14, 'Romper': 15,
+    #                 'Shirtdress': 16, 'Shirts': 17, 'Shorts': 18, 'Skirt': 19,
+    #                 'Sundress': 20, 'Sweater': 21, 'Tank': 22, 'Tee': 23,
+    #                 'Top': 24, 'Trunks': 25
+    #                 }
+
+    class_indices = {'Blazer' : 0, 'Cardigan' : 1, 'Coat' : 2, 'Cutoffs' : 3, 'Dress' : 4,
+    'Hoodie' : 5, 'Jacket' : 6, 'Jeans' : 7, 'Joggers' : 8, 'Jumpsuit' : 9, 'Leggings' : 10,
+    'Parka' : 11, 'Romper' : 12, 'Shirts' : 13, 'Shorts' : 14, 'Sweater' : 15, 'Tank' : 16, 'Top' : 17, 'Trunks' : 18}
 
     new_class_indices = {}
 
@@ -66,6 +70,6 @@ def get_prediction(image_path):
 # 'Sundress': 20, 'Sweater': 21, 'Tank': 22, 'Tee': 23,
 # 'Top': 24, 'Trunks': 25}
 
-image_path = '/home/azure/passion/AI/CategoryandAttributePredictionBenchmark/dataset/test/Cutoffs/Acid_Wash_Denim_Cutoffs_img_00000012_gt_1-60-200-218_iou_1.0.jpg'
-results = get_prediction(image_path)
-print(results)
+# image_path = '/home/azure/passion/AI/CategoryandAttributePredictionBenchmark/dataset/test/Hoodie/ASPCA_Happy_Face_Hoodie_img_00000032_gt_40-26-286-300_iou_1.0.jpg'
+# results = get_prediction(image_path)
+# print(results)
