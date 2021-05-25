@@ -2,20 +2,16 @@ import os
 from flask import Flask, Blueprint
 from flask_cors import CORS
 from flask_restx import Api
-import pymongo
+from mongoengine import *
 from datetime import timedelta
 from flask_jwt_extended import JWTManager
 
 from config import JWT_SECRET_KEY, UPLOAD_FOLDER
 
+
 def get_database():
     # DB 연결
-    connection = pymongo.MongoClient("localhost", 27017)
-    # 로컬 DB 초기화시 주석 해제후 실행
-    # connection.drop_database('mirror_look_DB')
-
-    # 로컬 테스트 DB 생성
-    database = connection['mirror_look_DB']
+    database = connect("mirror_look_DB", host='127.0.0.1', port=27017)
 
     return database
 
@@ -50,8 +46,8 @@ def create_app():
     app.config["JWT_SECRET_KEY"] = JWT_SECRET_KEY
     app.config['JWT_TOKEN_LOCATION'] = ['headers', 'query_string']
     app.config['JWT_BLACKLIST_ENABLED'] = True
-    app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(hours = 1)
-    app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(days = 30)
+    app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(hours=1)
+    app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(days=30)
     jwt = JWTManager(app)
 
     CORS(app)
