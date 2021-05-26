@@ -1,8 +1,6 @@
 import styled from 'styled-components';
 import Box from '@material-ui/core/Box';
 import Profile from '../components/common/Profile';
-import Header from '../components/common/Header';
-import NavBar from '../components/common/NavBar';
 import WindowWrapper from '../components/common/WindowWrapper';
 import AgreementModal from '../components/common/AgreementModal';
 
@@ -22,39 +20,6 @@ const StyledHello = styled('div')`
   font-weight: 500;
   font-size: 30px;
   line-height: 40px;
-`;
-
-function Profile({ userName }) {
-  return (
-    <ProfileBox>
-      <ProfileContent>{userName}</ProfileContent>
-      {/*// 이미지 ..아마 path로 받을듯?
-			// 이름
-			// 별명?
-			// 이상한 숫자??
-			// 나의 코디*/}
-    </ProfileBox>
-  );
-}
-
-const ProfileContent = styled(Box)`
-  margin: 30px;
-`;
-
-const ProfileBox = styled(Box)`
-  width: 364px;
-  height: 380px;
-  left: 131px;
-  top: 216px;
-
-  background: #ffffff;
-  filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
-  border-radius: 30px;
-  margin: 30px;
-
-  display: flex;
-  flex-direction: column;
-  align-items: center;
 `;
 
 function Weather() {
@@ -169,58 +134,54 @@ function Main() {
       });
   }, []);
 
-  if (!agreement) {
-    setModalOpen(true);
-    const token = `Bearer ${window.sessionStorage.getItem('token')}`;
-    const data = { agreement: userAgreement };
-    axios
-      .put('http://localhost:5000/userinfo', data, {
-        headers: {
-          Authorization: token
-        }
-      })
-      .then(function (response) {
-        console.log('위치동의여부 넣었다!');
-      })
-      .catch(function (err) {
-        console.log(err);
-      });
-  } else if (!!agreement) {
-    setModalOpen(false);
-  }
+  //if (!agreement) {
+  //  setModalOpen(true);
+  //  const token = `Bearer ${window.sessionStorage.getItem('token')}`;
+  //  const data = { agreement: userAgreement };
+  //  axios
+  //    .put('http://localhost:5000/userinfo', data, {
+  //      headers: {
+  //        Authorization: token
+  //      }
+  //    })
+  //    .then(function (response) {
+  //      console.log('위치동의여부 넣었다!');
+  //    })
+  //    .catch(function (err) {
+  //      console.log(err);
+  //    });
+  //} else if (!!agreement) {
+  //  setModalOpen(false);
+  //}
 
-  if (!!userAgreement) {
-    const token = `Bearer ${window.sessionStorage.getItem('token')}`;
-    const data = { agreement: userAgreement };
-    axios
-      .put('http://localhost:5000/userinfo', data, {
-        headers: {
-          Authorization: token
-        }
-      })
-      .then(function (response) {
-        console.log('위치동의여부 넣었다!');
-      })
-      .catch(function (err) {
-        console.log(err);
-      });
-  }
+  //if (!!userAgreement) {
+  //  const token = `Bearer ${window.sessionStorage.getItem('token')}`;
+  //  const data = { agreement: userAgreement };
+  //  axios
+  //    .put('http://localhost:5000/userinfo', data, {
+  //      headers: {
+  //        Authorization: token
+  //      }
+  //    })
+  //    .then(function (response) {
+  //      console.log('위치동의여부 넣었다!');
+  //    })
+  //    .catch(function (err) {
+  //      console.log(err);
+  //    });
+  //}
 
   return (
     <WindowWrapper>
-      <NavBar />
-      <MainLayout>
-        <Header userName={userName} />
-        <Body>
-          <UserInfo>
-            <Hello userName={userName} />
-            <Profile userName={userName} />
-            <Weather />
-          </UserInfo>
-          <TodayOOTD></TodayOOTD>
-          <Calendar></Calendar>
-        </Body>
-      </MainLayout>
+      <Body>
+        <UserInfo>
+          <Hello userName={userName} />
+          <Profile userName={userName} />
+          <Weather />
+        </UserInfo>
+        <TodayOOTD></TodayOOTD>
+        <Calendar></Calendar>
+      </Body>
       {modalOpen === true ? (
         <AgreementModal
           setModalOpen={setModalOpen}
