@@ -70,6 +70,6 @@ def get_prediction(image_path):
 # 'Sundress': 20, 'Sweater': 21, 'Tank': 22, 'Tee': 23,
 # 'Top': 24, 'Trunks': 25}
 
-# image_path = '/home/azure/passion/AI/CategoryandAttributePredictionBenchmark/dataset/test/Hoodie/ASPCA_Happy_Face_Hoodie_img_00000032_gt_40-26-286-300_iou_1.0.jpg'
-# results = get_prediction(image_path)
-# print(results)
+image_path = '/home/azure/passion/AI/YOLOv3/image/trousers_2_0.962722.jpg'
+results = get_prediction(image_path)
+print(results)
