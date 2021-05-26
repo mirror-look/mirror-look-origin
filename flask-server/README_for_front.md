@@ -87,12 +87,27 @@ axios.post(
 // 예시 setState
 const [userId, setUserId] = useState();
 const [date, setDate] = useState();
+const [month, setMonth] = useState();
 
 setUserId(123456789);
 setDate("2021-05-25");
+setMonth("05");
+// 월은 '01', '02', '03', ... '12'
 ```
 
+##### 2). METHOD : GET
+
 ```js
+// 월별 OOTD를 등록한 날짜 ARRAY를 받는 경우
+// 캘린더 화살표를 눌러서 월을 변경할 때마다 useEffect로 get 요청
+axios.get("/calendar", {
+  params: {
+    user_id: userId,
+    month: month,
+  },
+});
+
+// 사용자가 OOTD를 등록한 날짜를 클릭하여 OOTD 이미지를 받는 경우
 axios.get("/calendar", {
   params: {
     user_id: userId,
@@ -102,6 +117,21 @@ axios.get("/calendar", {
 ```
 
 #### (2). RESPONSE
+
+##### 1). 월별 사용자의 OOTD 등록 날짜를 ARRAY로 받는 경우
+
+```js
+{
+    "ootd_enrolled_dates": [
+        "2021-05-25",
+        "2021-05-26",
+        "2021-05-28"
+    ],
+    "status": 200
+}
+```
+
+##### 2). 사용자가 OOTD를 등록한 날짜를 클릭하는 경우
 
 별도의 RESPONSE는 없으나 REQUEST URL에 이미지 파일이 업로드된다. 캘린더 내의 컴포넌트 등에 img src 게시하여 사용
 
@@ -292,9 +322,9 @@ user-search URI에서 가져온 user_id값으로 request 요청
 const token = `Bearer ${localStorage.getItem("token")}`;
 
 axios.get("/userinfo", {
-    headers: {
-        Authorization: token,
-    },
+  headers: {
+    Authorization: token,
+  },
 });
 ```
 
@@ -304,8 +334,31 @@ axios.get("/userinfo", {
 {
     "status": 200,
     "user_info": {
+        "agreement" : true 또는 false
         "profile_img": "http://k.kakaocdn.net/dn/bXmxMW/btq5c6BLVx0/UVMWI7rjrk0BgsG8umfpNK/img_640x640.jpg",
         "user_name": "김윤주"
     }
+}
+```
+
+### UPDATE
+
+#### (1). REQUEST
+
+```js
+const token = `Bearer ${localStorage.getItem("token")}`;
+
+axios.put("/userinfo", data, { // data는 json 형식으로 ex) {"agreement":true}
+    headers: {
+        Authorization: token
+    },
+});
+```
+
+#### (2). RESPONSE
+
+```js
+{
+    "status": 200
 }
 ```

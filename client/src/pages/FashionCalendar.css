@@ -58,7 +58,12 @@
   align-items: center;
 }
 
-/* 주말 */
+/* 일요일 */
+
+.sunday {
+  color: #8f00ff !important;
+}
+
 .react-calendar__month-view__days__day--weekend {
-  color: #8f00ff;
+  color: #a93efa;
 }

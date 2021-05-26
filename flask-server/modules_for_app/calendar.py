@@ -54,6 +54,9 @@ parser_calendar.add_argument('fabric')
 parser_calendar.add_argument('color')
 parser_calendar.add_argument('sleeve')
 
+# 캘린더 화면 OOTD 등록 표시용
+parser_calendar.add_argument('month')
+
 # 캘린더 CRUD
 
 '''
@@ -98,17 +101,27 @@ class Calendar(Resource):
 
     def get(self):
         args = parser_calendar.parse_args()
-        query = {'user_id': args['user_id'], 'date': args['date']}
-        ootd_info_from_db = list(calendar_collection.find(query))
+        # user_id, date가 함께 params로 요청되는 경우 : OOTD 이미지 반환
+        if args['date']:
+            query = {'user_id': args['user_id'], 'date': args['date']}
+            ootd_info_from_db = list(calendar_collection.find(query))
+            local_file_name = str(ootd_info_from_db[0]['ootd_path'])
+            local_file_path = os.path.join('ootd_storage', local_file_name)
 
-        local_file_name = str(ootd_info_from_db[0]['ootd_path'])
-        local_file_path = os.path.join('ootd_storage', local_file_name)
+            return send_file(local_file_path)
+        # user_id, month가 전달되는 경우 : 유저가 OOTD를 등록한 날짜 리스트 반환
+        else:
+            query = {'user_id': args['user_id'], 'date': {
+                '$regex': '-' + args['month'] + '-'}}
+            ootd_infos_from_db = list(calendar_collection.find(query))
+            ootd_enrolled_dates = list()
+            for ootd_info in ootd_infos_from_db:
+                ootd_enrolled_dates.append(ootd_info['date'])
 
-        # return jsonify(
-        #     status=200,
-        #     ootd_info=str(ootd_info_from_db[0]['ootd_path'])
-        # )
-        return send_file(local_file_path)
+            return jsonify(
+                status=200,
+                ootd_enrolled_dates=ootd_enrolled_dates
+            )
 
     # Update
 

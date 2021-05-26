@@ -40,7 +40,7 @@ def callback():
         # access token 받아오는 통신
 
         # 로그아웃에 쓰기 위해 세션에 저장
-        session['access_token'] = access_token
+        # session['access_token'] = access_token
 
         # access token 기반으로 유저 정보 요청하는 통신
         profile_request = requests.get(

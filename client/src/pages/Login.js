@@ -3,7 +3,7 @@ import Button from '@material-ui/core/Button';
 import Box from '@material-ui/core/Box';
 import NavBar from '../components/common/NavBar';
 import WindowWrapper from '../components/common/WindowWrapper';
-import { ClientID } from '../config';
+import { ClientID } from '../Config';
 
 function Login() {
   function handleClick() {
