@@ -136,6 +136,7 @@ dataset/
 Eval/
 Img/
 DeepFashion/
+/home/azure/passion/AI/CategoryandAttributePredictionBenchmark/static
 
 # Spyder project settings
 .spyderproject
