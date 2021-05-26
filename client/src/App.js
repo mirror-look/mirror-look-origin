@@ -1,4 +1,4 @@
-import { Route, useLocation } from 'react-router-dom';
+import { Route, useLocation, Redirect } from 'react-router-dom';
 import Login from './pages/Login.js';
 import Dashboard from './pages/Dashboard.js';
 import Detail from './pages/Detail.js';
@@ -21,9 +21,10 @@ function App() {
   let { pathname } = useLocation();
   console.log('pathname == ', pathname);
   return (
+<<<<<<< client/src/App.js
     <StylesProvider injectFirst>
       {pathname === '/login' ? (
-        <Route exact path="/login" component={Login} />
+        {!sessionStorage.getItem('token') ? <Redirect to="/login" /> : ''}
       ) : (
         <WindowWrapper>
           <NavBar />

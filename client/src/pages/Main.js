@@ -1,9 +1,19 @@
 import styled from 'styled-components';
 import Box from '@material-ui/core/Box';
 import Profile from '../components/common/Profile';
+import Header from '../components/common/Header';
+import NavBar from '../components/common/NavBar';
+import WindowWrapper from '../components/common/WindowWrapper';
+import AgreementModal from '../components/common/AgreementModal';
 
-function Hello({ username }) {
-  return <StyledHello>{username}님 안녕하세요!</StyledHello>;
+import { useEffect, useState } from 'react';
+import { useLocation } from 'react-router';
+import axios from 'axios';
+
+//import Calendar from './Calendar';
+
+function Hello({ userName }) {
+  return <StyledHello>{userName}님 안녕하세요!</StyledHello>;
 }
 
 const StyledHello = styled('div')`
@@ -12,6 +22,39 @@ const StyledHello = styled('div')`
   font-weight: 500;
   font-size: 30px;
   line-height: 40px;
+`;
+
+function Profile({ userName }) {
+  return (
+    <ProfileBox>
+      <ProfileContent>{userName}</ProfileContent>
+      {/*// 이미지 ..아마 path로 받을듯?
+			// 이름
+			// 별명?
+			// 이상한 숫자??
+			// 나의 코디*/}
+    </ProfileBox>
+  );
+}
+
+const ProfileContent = styled(Box)`
+  margin: 30px;
+`;
+
+const ProfileBox = styled(Box)`
+  width: 364px;
+  height: 380px;
+  left: 131px;
+  top: 216px;
+
+  background: #ffffff;
+  filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+  border-radius: 30px;
+  margin: 30px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 `;
 
 function Weather() {
@@ -95,19 +138,101 @@ const StyledCalender = styled(Box)`
 `;
 
 function Main() {
-  // api server에서 username을 받아와야함
-  //  const [username, setUsername] = useState();
-  const username = '김윤주';
+  const location = useLocation();
+  // api server에서 userName을 받아와야함
+  const [userName, setUserName] = useState('');
+  const [userProfileImage, setUserProfileImage] = useState('');
+  const [userAgreement, setUserAgreement] = useState();
+  const [agreement, setAgreement] = useState();
+  const [userKakaoId, setUserKakaoId] = useState('');
+  const [modalOpen, setModalOpen] = useState();
+  const modalTitle = '위치 정보 제공 동의';
+  const modalComment = `Mirror-Look은 날씨 기반 추천 서비스예요. 저희가 위치 정보를 열람해도 될까요?`;
+
+  useEffect(() => {
+    const token = `Bearer ${window.sessionStorage.getItem('token')}`;
+    axios
+      .get('http://localhost:5000/userinfo', {
+        headers: {
+          Authorization: token
+        }
+      })
+      .then(function (response) {
+        setUserName(response.data.userInfo.user_name);
+        setUserKakaoId(response.data.userInfo.kakao_id_number);
+        setUserProfileImage(response.data.userInfo.profile_img);
+        setAgreement(response.data.userInfo.agreement);
+        console.log('사용자 정보 받았다!');
+      })
+      .catch(function (err) {
+        console.log(err);
+      });
+  }, []);
+
+  if (!agreement) {
+    setModalOpen(true);
+    const token = `Bearer ${window.sessionStorage.getItem('token')}`;
+    const data = { agreement: userAgreement };
+    axios
+      .put('http://localhost:5000/userinfo', data, {
+        headers: {
+          Authorization: token
+        }
+      })
+      .then(function (response) {
+        console.log('위치동의여부 넣었다!');
+      })
+      .catch(function (err) {
+        console.log(err);
+      });
+  } else if (!!agreement) {
+    setModalOpen(false);
+  }
+
+  if (!!userAgreement) {
+    const token = `Bearer ${window.sessionStorage.getItem('token')}`;
+    const data = { agreement: userAgreement };
+    axios
+      .put('http://localhost:5000/userinfo', data, {
+        headers: {
+          Authorization: token
+        }
+      })
+      .then(function (response) {
+        console.log('위치동의여부 넣었다!');
+      })
+      .catch(function (err) {
+        console.log(err);
+      });
+  }
+
   return (
-    <Body>
-      <UserInfo>
-        <Hello username={username} />
-        <Profile username={username} />
-        <Weather />
-      </UserInfo>
-      <TodayOOTD></TodayOOTD>
-      <Calendar></Calendar>
-    </Body>
+    <WindowWrapper>
+      <NavBar />
+      <MainLayout>
+        <Header userName={userName} />
+        <Body>
+          <UserInfo>
+            <Hello userName={userName} />
+            <Profile userName={userName} />
+            <Weather />
+          </UserInfo>
+          <TodayOOTD></TodayOOTD>
+          <Calendar></Calendar>
+        </Body>
+      </MainLayout>
+      {modalOpen === true ? (
+        <AgreementModal
+          setModalOpen={setModalOpen}
+          modalOpen={modalOpen}
+          setUserAgreement={setUserAgreement}
+          modalTitle={modalTitle}
+          modalComment={modalComment}
+        />
+      ) : (
+        ''
+      )}
+    </WindowWrapper>
   );
 }
 

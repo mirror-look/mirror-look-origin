@@ -36,6 +36,7 @@ class Userinfo(Resource):
         print(user_info_from_db)
         user_info = {
             'user_name' : user_info_from_db[0]['user_name'],
+            'kakao_id_number' : user_info_from_db[0]['kakao_id_number'],
             'profile_img' : user_info_from_db[0]['profile_img'],
             'agreement' : user_info_from_db[0]['agreement']
         }

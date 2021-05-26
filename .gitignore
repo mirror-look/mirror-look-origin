@@ -1,4 +1,4 @@
-
+test/
 # Created by https://www.toptal.com/developers/gitignore/api/python,flask,visualstudiocode,react,opencv
 # Edit at https://www.toptal.com/developers/gitignore?templates=python,flask,visualstudiocode,react,opencv
 
@@ -8,6 +8,7 @@ instance/*
 .webassets-cache
 .env
 flask-server/config.py
+flask-server/data
 
 ### Flask.Python Stack ###
 # Byte-compiled / optimized / DLL files
@@ -125,6 +126,7 @@ ENV/
 env.bak/
 venv.bak/
 pythonenv*
+flask-env/
 
 # AI
 ai-requirements.txt
@@ -268,6 +270,7 @@ sketch
 !.vscode/launch.json
 !.vscode/extensions.json
 *.code-workspace
+.vscode/
 
 ### VisualStudioCode Patch ###
 # Ignore all local history of files
