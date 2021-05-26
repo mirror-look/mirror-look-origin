@@ -16,25 +16,6 @@ def get_database():
     return database
 
 
-# 최초 DB 연동 테스트시 주석 해제 후 python app.py 실행
-# test_user_doc = {
-#     'user_name': '홍길동',
-#     'profile_image': 'img_path/from/kakao/login'
-# }
-
-# test_callendar_doc = {
-#     'user_id': 'ObjectId(~_~_~_~_)',
-#     'data': '2021-04-01',
-#     'ootd': 'img_path/in/blob/storage',
-#     'clothes_feature': {
-#         'color': 'red',
-#         'fabric': 'cotton',
-#         'sleeve': 'long',
-#         'etc': '...etc'
-#     }
-# }
-
-
 def create_app():
     app = Flask(__name__)
     app.secret_key = os.urandom(24)
@@ -75,13 +56,6 @@ def create_app():
 
 if __name__ == "__main__":
     database = get_database()
-
-    # 최초 DB 연동 테스트시 주석 해제 후 python app.py 실행
-    # user_collection = database['User']
-    # callendar_collection = database['Callendar']
-
-    # user_collection.insert_one(test_user_doc)
-    # callendar_collection.insert_one(test_callendar_doc)
 
     app_for_test = create_app()
     app_for_test.run('127.0.0.1', port=5000, debug=True)
