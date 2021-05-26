@@ -1,8 +1,6 @@
-//import { useState } from 'react';
-
 import styled from 'styled-components';
-//import Button from '@material-ui/core/Button';
 import Box from '@material-ui/core/Box';
+import Profile from '../components/common/Profile';
 import Header from '../components/common/Header';
 import NavBar from '../components/common/NavBar';
 import WindowWrapper from '../components/common/WindowWrapper';
@@ -237,11 +235,6 @@ function Main() {
     </WindowWrapper>
   );
 }
-
-const MainLayout = styled('div')`
-  display: flex;
-  flex-direction: column;
-`;
 
 const Body = styled('div')`
   display: flex;
