@@ -9,12 +9,13 @@ import WindowWrapper from '../components/common/WindowWrapper';
 import AgreementModal from '../components/common/AgreementModal';
 
 import { useEffect, useState } from 'react';
+import { useLocation } from 'react-router';
 import axios from 'axios';
 
 //import Calendar from './Calendar';
 
-function Hello({ username }) {
-  return <StyledHello>{username}님 안녕하세요!</StyledHello>;
+function Hello({ userName }) {
+  return <StyledHello>{userName}님 안녕하세요!</StyledHello>;
 }
 
 const StyledHello = styled('div')`
@@ -25,10 +26,10 @@ const StyledHello = styled('div')`
   line-height: 40px;
 `;
 
-function Profile({ username }) {
+function Profile({ userName }) {
   return (
     <ProfileBox>
-      <ProfileContent>{username}</ProfileContent>
+      <ProfileContent>{userName}</ProfileContent>
       {/*// 이미지 ..아마 path로 받을듯?
 			// 이름
 			// 별명?
@@ -139,14 +140,17 @@ const StyledCalender = styled(Box)`
 `;
 
 function Main() {
-  // api server에서 username을 받아와야함
-  const [userName, setUserName] = useState();
-  const [userProfileImage, setUserProfileImage] = useState();
+  const location = useLocation();
+  // api server에서 userName을 받아와야함
+  const [userName, setUserName] = useState('');
+  const [userProfileImage, setUserProfileImage] = useState('');
   const [userAgreement, setUserAgreement] = useState();
-  const [userKakaoId, setUserKakaoId] = useState();
-  const [modalOpen, setModalOpen] = useState(true);
+  const [agreement, setAgreement] = useState();
+  const [userKakaoId, setUserKakaoId] = useState('');
+  const [modalOpen, setModalOpen] = useState();
   const modalTitle = '위치 정보 제공 동의';
-  const modalComment = `Mirror-Look은 날씨 기반 추천 서비스예요. 저희가 ${userName} 님의 위치 정보를 열람해도 될까요?`;
+  const modalComment = `Mirror-Look은 날씨 기반 추천 서비스예요. 저희가 위치 정보를 열람해도 될까요?`;
+
   useEffect(() => {
     const token = `Bearer ${window.sessionStorage.getItem('token')}`;
     axios
@@ -156,25 +160,63 @@ function Main() {
         }
       })
       .then(function (response) {
-        console.log('사용자 정보 받아왔다!');
-        setUserName(response.data.user_info.user_name);
-        setUserProfileImage(response.data.user_info.profile_img);
-        setUserKakaoId(response.data.user_info.kakao_id_number);
+        setUserName(response.data.userInfo.user_name);
+        setUserKakaoId(response.data.userInfo.kakao_id_number);
+        setUserProfileImage(response.data.userInfo.profile_img);
+        setAgreement(response.data.userInfo.agreement);
+        console.log('사용자 정보 받았다!');
       })
       .catch(function (err) {
         console.log(err);
       });
   }, []);
 
+  if (!agreement) {
+    setModalOpen(true);
+    const token = `Bearer ${window.sessionStorage.getItem('token')}`;
+    const data = { agreement: userAgreement };
+    axios
+      .put('http://localhost:5000/userinfo', data, {
+        headers: {
+          Authorization: token
+        }
+      })
+      .then(function (response) {
+        console.log('위치동의여부 넣었다!');
+      })
+      .catch(function (err) {
+        console.log(err);
+      });
+  } else if (!!agreement) {
+    setModalOpen(false);
+  }
+
+  if (!!userAgreement) {
+    const token = `Bearer ${window.sessionStorage.getItem('token')}`;
+    const data = { agreement: userAgreement };
+    axios
+      .put('http://localhost:5000/userinfo', data, {
+        headers: {
+          Authorization: token
+        }
+      })
+      .then(function (response) {
+        console.log('위치동의여부 넣었다!');
+      })
+      .catch(function (err) {
+        console.log(err);
+      });
+  }
+
   return (
     <WindowWrapper>
       <NavBar />
       <MainLayout>
-        <Header username={userName} />
+        <Header userName={userName} />
         <Body>
           <UserInfo>
-            <Hello username={userName} />
-            <Profile username={userName} />
+            <Hello userName={userName} />
+            <Profile userName={userName} />
             <Weather />
           </UserInfo>
           <TodayOOTD></TodayOOTD>

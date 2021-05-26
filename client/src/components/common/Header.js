@@ -2,11 +2,11 @@ import styled from 'styled-components';
 import Logo from './Logo';
 import UserName from './UserName';
 
-function Header({ username }) {
+function Header({ userName }) {
   return (
     <StyledHeader>
       <Logo />
-      <UserName username={username} />
+      <UserName userName={userName} />
     </StyledHeader>
   );
 }
