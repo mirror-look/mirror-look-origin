@@ -5,7 +5,7 @@ from flask import Blueprint, jsonify, url_for, send_file
 from werkzeug.datastructures import FileStorage
 from app import get_database
 import uuid
-from mongoengine import Document, StringField, DictField, Q
+from mongoengine import Document, StringField, DictField, IntField, Q
 from marshmallow import Schema, fields
 
 # 상위 디렉토리 import를 위한 경로 설정
@@ -19,7 +19,7 @@ database = get_database()
 
 class CalendarDocument(Document):
     # mongoengine Document model 정의
-    user_id = StringField(required=True)
+    user_id = IntField(required=True)
     date = StringField(required=True)
     ootd_path = StringField(required=True)
     clothes_feature = DictField(required=True)
@@ -29,7 +29,7 @@ class CalendarDocument(Document):
 
 class CalendarSchema(Schema):
     # marshmallow Schema 정의
-    user_id = fields.Str()
+    user_id = fields.Int()
     date = fields.Str()
     ootd_path = fields.Str()
     clothes_feature = fields.Dict()
