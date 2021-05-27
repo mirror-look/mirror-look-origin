@@ -2,8 +2,7 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import styled from 'styled-components';
 import Box from '@material-ui/core/Box';
-import Header from '../components/common/Header';
-import NavBar from '../components/common/NavBar';
+import Profile from '../components/common/Profile';
 import WindowWrapper from '../components/common/WindowWrapper';
 import AgreementModal from '../components/common/AgreementModal';
 
@@ -133,23 +132,25 @@ function Main() {
         console.log(err);
       });
 
-  if (!!window.sessionStorage.getItem('userAgreement')) {
-    const token = `Bearer ${window.sessionStorage.getItem('token')}`;
-    const data = { agreement: window.sessionStorage.getItem('userAgreement') };
-    axios
-      .put('http://localhost:5000/userinfo', data, {
-        headers: {
-          Authorization: token
-        }
-      })
-      .then(function (response) {
-        console.log('위치동의여부 넣었다!');
-      })
-      .catch(function (err) {
-        console.log(err);
-      });
-  }
-
+    if (!!window.sessionStorage.getItem('userAgreement')) {
+      const token = `Bearer ${window.sessionStorage.getItem('token')}`;
+      const data = {
+        agreement: window.sessionStorage.getItem('userAgreement')
+      };
+      axios
+        .put('http://localhost:5000/userinfo', data, {
+          headers: {
+            Authorization: token
+          }
+        })
+        .then(function (response) {
+          console.log('위치동의여부 넣었다!');
+        })
+        .catch(function (err) {
+          console.log(err);
+        });
+    }
+  }, []);
   return (
     <WindowWrapper>
       <Body>
