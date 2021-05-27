@@ -7,6 +7,7 @@ from app import get_database
 import uuid
 from mongoengine import Document, StringField, DictField, IntField, Q
 from marshmallow import Schema, fields
+from .models import CalendarDocument, CalendarSchema
 
 # 상위 디렉토리 import를 위한 경로 설정
 current_dir = os.path.dirname(os.path.abspath(__file__))
@@ -15,24 +16,6 @@ sys.path.append(parent_dir)
 
 # DB 및 Document 정의
 database = get_database()
-
-
-class CalendarDocument(Document):
-    # mongoengine Document model 정의
-    user_id = IntField(required=True)
-    date = StringField(required=True)
-    ootd_path = StringField(required=True)
-    clothes_feature = DictField(required=True)
-    # DB Collection 이름 지정
-    meta = {"collection": 'Calendar'}
-
-
-class CalendarSchema(Schema):
-    # marshmallow Schema 정의
-    user_id = fields.Int()
-    date = fields.Str()
-    ootd_path = fields.Str()
-    clothes_feature = fields.Dict()
 
 
 # 블루프린트/API 객체 생성
