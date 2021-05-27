@@ -1,4 +1,4 @@
-from mongoengine import Document, StringField, DictField, IntField
+from mongoengine import Document, StringField, DictField, IntField, BooleanField
 from marshmallow import Schema, fields
 
 
@@ -19,3 +19,20 @@ class CalendarSchema(Schema):
     date = fields.Str()
     ootd_path = fields.Str()
     clothes_feature = fields.Dict()
+
+class UserDocument(Document):
+    # mongoengine Document model 정의
+    kakao_id_number = IntField(required=True)
+    user_name = StringField(required=True)
+    profile_img = StringField(required=True)
+    agreement = BooleanField()
+
+    # DB Collection 이름 지정
+    meta = {"collection": 'User'}
+
+class UserSchema(Schema):
+    # marshmallow Schema 정의
+    kakao_id_number = fields.Integer()
+    user_name = fields.String()
+    profile_img = fields.String()
+    agreement = fields.Boolean()

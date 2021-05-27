@@ -2,8 +2,7 @@ from flask import Blueprint, json, request, redirect, render_template, jsonify, 
 from flask.helpers import url_for
 import requests
 from flask_jwt_extended import *
-from mongoengine import Document, StringField, IntField, BooleanField
-from marshmallow import Schema, fields
+from .models import UserDocument
 
 import os
 import sys
@@ -16,23 +15,6 @@ from .json_encoder_for_pymongo import MongoEngineJSONEncoder
 
 # DB 및 Document 정의
 database = get_database()
-
-class UserDocument(Document):
-    # mongoengine Document model 정의
-    kakao_id_number = IntField(required=True)
-    user_name = StringField(required=True)
-    profile_img = StringField(required=True)
-    agreement = BooleanField()
-
-    # DB Collection 이름 지정
-    meta = {"collection": 'User'}
-
-class UserSchema(Schema):
-    # marshmallow Schema 정의
-    kakao_id_number = fields.Integer()
-    user_name = fields.String()
-    profile_img = fields.String()
-    agreement = fields.Boolean()
 
 from config import CLIENT_ID
 
