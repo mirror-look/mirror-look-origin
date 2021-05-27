@@ -132,7 +132,6 @@ function Main() {
       .catch(function (err) {
         console.log(err);
       });
-  }, []);
 
   if (!!window.sessionStorage.getItem('userAgreement')) {
     const token = `Bearer ${window.sessionStorage.getItem('token')}`;
