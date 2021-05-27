@@ -25,7 +25,7 @@ class UserDocument(Document):
     kakao_id_number = IntField(required=True)
     user_name = StringField(required=True)
     profile_img = StringField(required=True)
-    agreement = BooleanField()
+    agreement = StringField()
 
     # DB Collection 이름 지정
     meta = {"collection": 'User'}
@@ -35,4 +35,4 @@ class UserSchema(Schema):
     kakao_id_number = fields.Integer()
     user_name = fields.String()
     profile_img = fields.String()
-    agreement = fields.Boolean()
+    agreement = fields.String()
