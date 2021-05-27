@@ -2,6 +2,7 @@ import axios from 'axios';
 import styled from 'styled-components';
 import IconButton from '@material-ui/core/IconButton';
 import Toolbar from '@material-ui/core/Toolbar';
+import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCodepen } from '@fortawesome/free-brands-svg-icons';
 import { faLandmark } from '@fortawesome/free-solid-svg-icons';
@@ -124,13 +125,27 @@ function NavBar() {
     <Nav>
       <div></div>
       <LogoWrap>
-        <LogoIcon />
+        <Link to="/">
+          <LogoIcon />
+        </Link>
       </LogoWrap>
-      <HomeIcon />
-      <User />
-      <Calendar />
-      <Setting />
-      <PowerOff />
+      <Link to="/">
+        <HomeIcon />
+      </Link>
+      <Link to="friends-list">
+        <User />
+      </Link>
+      <Link to="/calendar">
+        <Calendar />
+      </Link>
+      <Link to="/">
+        {/* mypage? */}
+        <Setting />
+      </Link>
+      <Link to="/">
+        {/* 로그아웃 */}
+        <PowerOff />
+      </Link>
     </Nav>
   );
 }
