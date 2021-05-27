@@ -1,11 +1,14 @@
 import styled from 'styled-components';
 import Button from '@material-ui/core/Button';
 import Box from '@material-ui/core/Box';
+import Webcam from 'react-webcam';
 
 function Camera() {
   return (
     <StyledBox>
-      <Window>Drag and drop!!</Window>
+      <Window>
+        <Webcam />
+      </Window>
       <StyledButton>
         <SearchFile>파일 찾기</SearchFile>
         <TakePhoto>촬영 하기</TakePhoto>
