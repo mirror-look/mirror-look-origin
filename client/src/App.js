@@ -41,8 +41,8 @@ function App() {
                 component={OAuthRedirectHandler}
               />
               <Route exact path="/" component={Main} />
-              <Route path="/friendslist" component={FriendsList} />
-              <Route path="/friendPage" component={FriendPage} />
+              <Route path="/friends-list" component={FriendsList} />
+              <Route path="/friend-page" component={FriendPage} />
             </MainLayout>
           </WindowWrapper>
         )}
