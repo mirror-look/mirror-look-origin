@@ -2,6 +2,8 @@ from flask import Blueprint, json, request, redirect, render_template, jsonify, 
 from flask.helpers import url_for
 import requests
 from flask_jwt_extended import *
+from mongoengine import Document, StringField, IntField, BooleanField
+from marshmallow import Schema, fields
 
 import os
 import sys
@@ -12,9 +14,25 @@ import pymongo
 from bson import json_util
 from .json_encoder_for_pymongo import MongoEngineJSONEncoder
 
-# DB 및 Collection 연결
+# DB 및 Document 정의
 database = get_database()
-user_collection = database['User']
+
+class UserDocument(Document):
+    # mongoengine Document model 정의
+    kakao_id_number = IntField(required=True)
+    user_name = StringField(required=True)
+    profile_img = StringField(required=True)
+    agreement = BooleanField()
+
+    # DB Collection 이름 지정
+    meta = {"collection": 'User'}
+
+class UserSchema(Schema):
+    # marshmallow Schema 정의
+    kakao_id_number = fields.Integer()
+    user_name = fields.String()
+    profile_img = fields.String()
+    agreement = fields.Boolean()
 
 from config import CLIENT_ID
 
@@ -22,7 +40,6 @@ kakaoOauth = Blueprint("kakaoOauth", __name__, url_prefix = "/kakaoOauth")
 
 @kakaoOauth.route("/callback") # 프론트에서 redirect 됨
 def callback():
-    print("실행")
     try:
         code = request.args.get("code")  # callback 뒤에 붙어오는 request token
         client_id = CLIENT_ID
@@ -39,9 +56,6 @@ def callback():
         access_token = token_json.get("access_token") # 카카오 소셜로그인을 통해 유저에 대한 정보를 받을 권한이 있는 토큰
         # access token 받아오는 통신
 
-        # 로그아웃에 쓰기 위해 세션에 저장
-        # session['access_token'] = access_token
-
         # access token 기반으로 유저 정보 요청하는 통신
         profile_request = requests.get(
                 "https://kapi.kakao.com/v2/user/me", headers={"Authorization" : f"Bearer {access_token}"},
@@ -50,29 +64,25 @@ def callback():
         kakao_id_number = data.get("id")
         user_name = data.get("kakao_account").get("profile").get("nickname")
         profile_img = data.get("kakao_account").get("profile").get("profile_image_url")
-        user_info = {
-            'user_name': user_name,
-            'kakao_id_number': kakao_id_number,
-            'profile_img': profile_img
-        }
+        user_info = UserDocument(
+            user_name = user_name,
+            kakao_id_number = kakao_id_number,
+            profile_img = profile_img
+        )
+        # 토큰 생성
         token = create_access_token(identity = kakao_id_number)
-        # DB에 유저 정보가 있는지 확인
-        query = {'kakao_id_number': kakao_id_number}
-        user_info_from_db = list(user_collection.find(query))
 
+        # DB에 유저 정보가 있는지 확인
         # 유저가 로그인한 이력이 있는 경우, 닉네임 변경시 갱신
-        if user_info_from_db:
-            user_collection.update_one(
-                {'kakao_id_number': kakao_id_number},
-                {'$set': {'user_name': user_name}}
+        if UserDocument.objects.get(kakao_id_number = kakao_id_number):
+            UserDocument.objects(kakao_id_number = kakao_id_number).modify(
+                user_name = user_name
             )
-            user_info_from_db = list(user_collection.find(query))
             return jsonify(status = 200, token = token, user = True)
 
         # 유저가 로그인한 이력이 없는 경우 DB에 유저 정보 저장
         else:
-            user_collection.insert_one(user_info)
-            user_info_from_db = list(user_collection.find(query))
+            user_info.save()
             return jsonify(status = 200, token = token, user = False) #처음 로그인
 
     except KeyError:
@@ -88,16 +98,6 @@ def logout():
     redirect_uri = "http://localhost:3000/login"
     kakao_oauthurl = f"https://kauth.kakao.com/oauth/logout?client_id={client_id}&logout_redirect_uri={redirect_uri}"
     return redirect(kakao_oauthurl)
-
-    # 카카오계정 로그인 상태는 로그아웃 API를 호출해도 유지, 로그아웃 후에는 서비스 초기 화면으로 리다이렉트 해야됨
-    # access_token = session.get('access_token', None)
-    # logout_request = requests.post(
-    #     "https://kapi.kakao.com/v1/user/logout", headers={"Authorization" : f"Bearer {access_token}"},
-    # )
-    # data = logout_request.json()
-    # session.pop('access_token', None)
-
-    # return jsonify(status = 200, data=data)
 
 @kakaoOauth.route("/protected")
 @jwt_required()

@@ -1,6 +1,8 @@
 from flask.helpers import url_for
-from flask_restx import Api, Resource
+from flask_restx import Api, Resource, fields
 from flask import Blueprint, jsonify, request
+from mongoengine import Document, StringField, IntField, BooleanField
+from marshmallow import Schema, fields
 
 from flask_jwt_extended import get_jwt_identity
 from flask_jwt_extended import jwt_required
@@ -13,7 +15,22 @@ from .json_encoder_for_pymongo import MongoEngineJSONEncoder
 
 # DB 및 Collection 연결
 database = get_database()
-user_collection = database['User']
+class UserDocument(Document):
+    # mongoengine Document model 정의
+    kakao_id_number = IntField(required=True)
+    user_name = StringField(required=True)
+    profile_img = StringField(required=True)
+    agreement = BooleanField()
+
+    # DB Collection 이름 지정
+    meta = {"collection": 'User'}
+
+class UserSchema(Schema):
+    # marshmallow Schema 정의
+    kakao_id_number = fields.Integer()
+    user_name = fields.String()
+    profile_img = fields.String()
+    agreement = fields.Boolean()
 
 # 블루프린트/API 객체 생성 및 인코더 연결
 userinfo = Blueprint("userinfo", __name__)
@@ -31,30 +48,38 @@ class Userinfo(Resource):
     @jwt_required()
     def get(self):
         kakao_id = get_jwt_identity()
-        query = {'kakao_id_number': kakao_id}
-        user_info_from_db = list(user_collection.find(query))
-        print(user_info_from_db)
-        user_info = {
-            'user_name' : user_info_from_db[0]['user_name'],
-            'kakao_id_number' : user_info_from_db[0]['kakao_id_number'],
-            'profile_img' : user_info_from_db[0]['profile_img'],
-            'agreement' : user_info_from_db[0]['agreement']
-        }
+        user = UserDocument.objects.get(kakao_id_number = kakao_id)
+
+        if user.agreement :
+            user_info = {
+                'user_name' : user.user_name,
+                'user_id' : user.kakao_id_number,
+                'profile_img' : user.profile_img,
+                'agreement' : user.agreement
+            }
+        else:
+            user_info = {
+                'user_name' : user.user_name,
+                'user_id' : user.kakao_id_number,
+                'profile_img' : user.profile_img
+            }
 
         return jsonify(
             status = 200,
             user_info = user_info
         )
 
+        # return UserSchema.dump(user)
+
     # Update
     @jwt_required()
     def put(self):
         kakao_id = get_jwt_identity()
         params = request.get_json()
-        user_collection.update_one(
-                {'kakao_id_number': kakao_id},
-                {'$set': {'agreement': params['agreement']}}
-            )
+
+        UserDocument.objects(kakao_id_number = kakao_id).modify(
+            agreement = params['agreement']
+        )
 
         return jsonify(status = 200)
 
