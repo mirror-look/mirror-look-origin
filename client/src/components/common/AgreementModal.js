@@ -26,7 +26,7 @@ function AgreementModal({
           color="primary"
           onClick={() => {
             setUserAgreement(true);
-            window.sessionStorage.setItem('userAgreement', 'Y');
+            window.sessionStorage.setItem('userAgreement', true);
             console.log('동의한대!');
             handleClose();
           }}
@@ -39,7 +39,7 @@ function AgreementModal({
           color="primary"
           onClick={() => {
             setUserAgreement(false);
-            window.sessionStorage.setItem('userAgreement', 'N');
+            window.sessionStorage.setItem('userAgreement', false);
             console.log('동의안한대!');
             handleClose();
           }}
