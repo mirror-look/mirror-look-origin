@@ -132,7 +132,7 @@ function NavBar() {
       <Link to="/">
         <HomeIcon />
       </Link>
-      <Link to="friend-list">
+      <Link to="friends-list">
         <User />
       </Link>
       <Link to="/calendar">
