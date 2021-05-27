@@ -42,8 +42,10 @@ function FashionCalendar() {
         const { data } = await axios.get(`${URL}/calendar`, {
           params: {
             user_id: userId,
-            month: value.getMonth()
-            // 이전 달과 다음 달의 데이터도 필요함.
+            month:
+              value.getMonth() < 10
+                ? '0' + (value.getMonth() + 1)
+                : value.getMonth() + 1
           }
         });
         setDates(data.ootd_enrolled_dates);
@@ -60,6 +62,8 @@ function FashionCalendar() {
     };
     getDate();
   }, [value]);
+
+  console.log('0' + (value.getMonth() + 1));
 
   return (
     <FlexDiv>

@@ -132,44 +132,44 @@ function Main() {
       .catch(function (err) {
         console.log(err);
       });
+
+    //if (!agreement) {
+    //  setModalOpen(true);
+    //  const token = `Bearer ${window.sessionStorage.getItem('token')}`;
+    //  const data = { agreement: userAgreement };
+    //  axios
+    //    .put('http://localhost:5000/userinfo', data, {
+    //      headers: {
+    //        Authorization: token
+    //      }
+    //    })
+    //    .then(function (response) {
+    //      console.log('위치동의여부 넣었다!');
+    //    })
+    //    .catch(function (err) {
+    //      console.log(err);
+    //    });
+    //} else if (!!agreement) {
+    //  setModalOpen(false);
+    //}
+
+    //if (!!userAgreement) {
+    //  const token = `Bearer ${window.sessionStorage.getItem('token')}`;
+    //  const data = { agreement: userAgreement };
+    //  axios
+    //    .put('http://localhost:5000/userinfo', data, {
+    //      headers: {
+    //        Authorization: token
+    //      }
+    //    })
+    //    .then(function (response) {
+    //      console.log('위치동의여부 넣었다!');
+    //    })
+    //    .catch(function (err) {
+    //      console.log(err);
+    //    });
+    //}
   }, []);
-
-  //if (!agreement) {
-  //  setModalOpen(true);
-  //  const token = `Bearer ${window.sessionStorage.getItem('token')}`;
-  //  const data = { agreement: userAgreement };
-  //  axios
-  //    .put('http://localhost:5000/userinfo', data, {
-  //      headers: {
-  //        Authorization: token
-  //      }
-  //    })
-  //    .then(function (response) {
-  //      console.log('위치동의여부 넣었다!');
-  //    })
-  //    .catch(function (err) {
-  //      console.log(err);
-  //    });
-  //} else if (!!agreement) {
-  //  setModalOpen(false);
-  //}
-
-  //if (!!userAgreement) {
-  //  const token = `Bearer ${window.sessionStorage.getItem('token')}`;
-  //  const data = { agreement: userAgreement };
-  //  axios
-  //    .put('http://localhost:5000/userinfo', data, {
-  //      headers: {
-  //        Authorization: token
-  //      }
-  //    })
-  //    .then(function (response) {
-  //      console.log('위치동의여부 넣었다!');
-  //    })
-  //    .catch(function (err) {
-  //      console.log(err);
-  //    });
-  //}
 
   return (
     <WindowWrapper>
