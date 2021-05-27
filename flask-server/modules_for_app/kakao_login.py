@@ -29,10 +29,10 @@ class UserDocument(Document):
 
 class UserSchema(Schema):
     # marshmallow Schema 정의
-    kakao_id_number = fields.Int()
-    user_name = fields.Str()
-    profile_img = fields.Str()
-    agreement = fields.Bool()
+    kakao_id_number = fields.Integer()
+    user_name = fields.String()
+    profile_img = fields.String()
+    agreement = fields.Boolean()
 
 from config import CLIENT_ID
 
@@ -69,12 +69,12 @@ def callback():
             kakao_id_number = kakao_id_number,
             profile_img = profile_img
         )
+        # 토큰 생성
         token = create_access_token(identity = kakao_id_number)
-        # DB에 유저 정보가 있는지 확인
-        user = UserDocument.objects.get(kakao_id_number = kakao_id_number)
 
+        # DB에 유저 정보가 있는지 확인
         # 유저가 로그인한 이력이 있는 경우, 닉네임 변경시 갱신
-        if user:
+        if UserDocument.objects.get(kakao_id_number = kakao_id_number):
             UserDocument.objects(kakao_id_number = kakao_id_number).modify(
                 user_name = user_name
             )
