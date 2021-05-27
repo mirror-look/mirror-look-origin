@@ -1,3 +1,4 @@
+import axios from 'axios';
 import styled from 'styled-components';
 import IconButton from '@material-ui/core/IconButton';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -8,6 +9,7 @@ import { faCog } from '@fortawesome/free-solid-svg-icons';
 import { faUser } from '@fortawesome/free-solid-svg-icons';
 import { faPowerOff } from '@fortawesome/free-solid-svg-icons';
 import { faCalendarAlt } from '@fortawesome/free-solid-svg-icons';
+import { ClientID } from '../../Config';
 
 function LogoIcon() {
   return (
@@ -58,9 +60,23 @@ const UserChild = styled(FontAwesomeIcon)`
 `;
 
 function PowerOff() {
+  function handleClick(e) {
+    e.preventDefault();
+    axios
+      .get(
+        `https://kauth.kakao.com/oauth/logout?client_id=${ClientID}&logout_redirect_uri=http://localhost:3000/login`
+      )
+      .then(function (response) {
+        console.log('로그아웃 했다!');
+        window.sessionStorage.clear();
+      })
+      .catch(function (err) {
+        console.log(err);
+      });
+  }
   return (
     <IconWrapper>
-      <IconButton>
+      <IconButton onClick={handleClick}>
         <PowerOffChlid icon={faPowerOff} />
       </IconButton>
     </IconWrapper>

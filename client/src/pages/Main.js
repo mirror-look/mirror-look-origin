@@ -1,14 +1,11 @@
+import { useEffect, useState } from 'react';
+import axios from 'axios';
 import styled from 'styled-components';
 import Box from '@material-ui/core/Box';
-import Profile from '../components/common/Profile';
+import Header from '../components/common/Header';
+import NavBar from '../components/common/NavBar';
 import WindowWrapper from '../components/common/WindowWrapper';
 import AgreementModal from '../components/common/AgreementModal';
-
-import { useEffect, useState } from 'react';
-import { useLocation } from 'react-router';
-import axios from 'axios';
-
-//import Calendar from './Calendar';
 
 function Hello({ userName }) {
   return <StyledHello>{userName}님 안녕하세요!</StyledHello>;
@@ -103,8 +100,6 @@ const StyledCalender = styled(Box)`
 `;
 
 function Main() {
-  const location = useLocation();
-  // api server에서 userName을 받아와야함
   const [userName, setUserName] = useState('');
   const [userProfileImage, setUserProfileImage] = useState('');
   const [userAgreement, setUserAgreement] = useState();
@@ -123,53 +118,37 @@ function Main() {
         }
       })
       .then(function (response) {
-        setUserName(response.data.userInfo.user_name);
-        setUserKakaoId(response.data.userInfo.kakao_id_number);
-        setUserProfileImage(response.data.userInfo.profile_img);
-        setAgreement(response.data.userInfo.agreement);
+        console.log(response);
+        setUserName(response.data.user_info.user_name);
+        setUserKakaoId(response.data.user_info.kakao_id_number);
+        setUserProfileImage(response.data.user_info.profile_img);
+        setAgreement(response.data.user_info.agreement);
         console.log('사용자 정보 받았다!');
+        if (!response.data.user_info.agreement) {
+          console.log('동의여부가 false 여서 Modal 띄운다!');
+          setModalOpen(true);
+        }
       })
       .catch(function (err) {
         console.log(err);
       });
 
-    //if (!agreement) {
-    //  setModalOpen(true);
-    //  const token = `Bearer ${window.sessionStorage.getItem('token')}`;
-    //  const data = { agreement: userAgreement };
-    //  axios
-    //    .put('http://localhost:5000/userinfo', data, {
-    //      headers: {
-    //        Authorization: token
-    //      }
-    //    })
-    //    .then(function (response) {
-    //      console.log('위치동의여부 넣었다!');
-    //    })
-    //    .catch(function (err) {
-    //      console.log(err);
-    //    });
-    //} else if (!!agreement) {
-    //  setModalOpen(false);
-    //}
-
-    //if (!!userAgreement) {
-    //  const token = `Bearer ${window.sessionStorage.getItem('token')}`;
-    //  const data = { agreement: userAgreement };
-    //  axios
-    //    .put('http://localhost:5000/userinfo', data, {
-    //      headers: {
-    //        Authorization: token
-    //      }
-    //    })
-    //    .then(function (response) {
-    //      console.log('위치동의여부 넣었다!');
-    //    })
-    //    .catch(function (err) {
-    //      console.log(err);
-    //    });
-    //}
-  }, []);
+  if (!!window.sessionStorage.getItem('userAgreement')) {
+    const token = `Bearer ${window.sessionStorage.getItem('token')}`;
+    const data = { agreement: window.sessionStorage.getItem('userAgreement') };
+    axios
+      .put('http://localhost:5000/userinfo', data, {
+        headers: {
+          Authorization: token
+        }
+      })
+      .then(function (response) {
+        console.log('위치동의여부 넣었다!');
+      })
+      .catch(function (err) {
+        console.log(err);
+      });
+  }
 
   return (
     <WindowWrapper>
@@ -185,7 +164,7 @@ function Main() {
       {modalOpen === true ? (
         <AgreementModal
           setModalOpen={setModalOpen}
-          modalOpen={modalOpen}
+          modalOpen={true}
           setUserAgreement={setUserAgreement}
           modalTitle={modalTitle}
           modalComment={modalComment}
