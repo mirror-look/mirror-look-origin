@@ -17,7 +17,6 @@ import FriendsList from './pages/FriendsList.js';
 import FriendPage from './pages/FriendPage.js';
 
 function App() {
-  const username = '하성민';
   let { pathname } = useLocation();
   console.log('pathname == ', pathname);
   return (
@@ -31,7 +30,7 @@ function App() {
           <WindowWrapper>
             <NavBar />
             <MainLayout>
-              <Header username={username} />
+              <Header />
               <Route path="/dashboard" component={Dashboard} />
               <Route path="/camera" component={Camera} />
               <Route path="/calendar" component={FashionCalendar} />
