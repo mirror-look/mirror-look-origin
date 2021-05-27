@@ -132,25 +132,27 @@ function Main() {
       })
       .catch(function (err) {
         console.log(err);
-      });
-  }, []);
+      }, []);
 
-  if (!!window.sessionStorage.getItem('userAgreement')) {
-    const token = `Bearer ${window.sessionStorage.getItem('token')}`;
-    const data = { agreement: window.sessionStorage.getItem('userAgreement') };
-    axios
-      .put('http://localhost:5000/userinfo', data, {
-        headers: {
-          Authorization: token
-        }
-      })
-      .then(function (response) {
-        console.log('위치동의여부 넣었다!');
-      })
-      .catch(function (err) {
-        console.log(err);
-      });
-  }
+    if (!!window.sessionStorage.getItem('userAgreement')) {
+      const token = `Bearer ${window.sessionStorage.getItem('token')}`;
+      const data = {
+        agreement: window.sessionStorage.getItem('userAgreement')
+      };
+      axios
+        .put('http://localhost:5000/userinfo', data, {
+          headers: {
+            Authorization: token
+          }
+        })
+        .then(function (response) {
+          console.log('위치동의여부 넣었다!');
+        })
+        .catch(function (err) {
+          console.log(err);
+        });
+    }
+  });
 
   return (
     <WindowWrapper>
