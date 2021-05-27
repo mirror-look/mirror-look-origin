@@ -97,8 +97,12 @@ class Calendar(Resource):
 
         # user_id, month가 전달되는 경우 : 유저가 OOTD를 등록한 날짜 리스트 반환
         else:
+            next_month = '0' + str(int(args['month'])+1)
+            prev_month = '0' + str(int(args['month'])-1)
             calendar_document = CalendarDocument.objects(
-                Q(user_id=args['user_id']) & Q(date__contains=args['month']))
+                (Q(user_id=args['user_id']) & Q(date__contains=args['month'])) | (Q(user_id=args['user_id']) & Q(
+                    date__contains=next_month)) | (Q(user_id=args['user_id']) & Q(date__contains=prev_month))
+            )
             ootd_enrolled_dates = list()
             for document in calendar_document:
                 ootd_enrolled_dates.append(document.date)
