@@ -8,6 +8,7 @@ import uuid
 from mongoengine import Document, StringField, DictField, IntField, Q
 from marshmallow import Schema, fields
 from .models import CalendarDocument, CalendarSchema
+from .handle import *
 
 # 상위 디렉토리 import를 위한 경로 설정
 current_dir = os.path.dirname(os.path.abspath(__file__))
@@ -17,25 +18,9 @@ sys.path.append(parent_dir)
 # DB 및 Document 정의
 database = get_database()
 
-
 # 블루프린트/API 객체 생성
 calendar = Blueprint('calendar', __name__)
 api = Api(calendar)
-
-# 도큐먼트 형식(참고)
-'''
-test_callendar_doc = {
-    'user_id': '60a22ad2a453e4e5ba8d203f',
-    'date': '2021-04-01',
-    'ootd_path': 'img_path/in/blob/storage',
-    'clothes_feature': {
-        'color': 'red',
-        'fabric': 'cotton',
-        'sleeve': 'long',
-        'etc': '...etc'
-    }
-}
-'''
 
 # request 요청 변수 parser
 parser_calendar = reqparse.RequestParser()
@@ -53,11 +38,6 @@ parser_calendar.add_argument('sleeve')
 parser_calendar.add_argument('month')
 
 
-'''
-blob storage에 저장될 이미지 파일에 대한 처리는 추후 배포용 VM 수령 후 진행
-'''
-
-
 class Calendar(Resource):
     # 캘린더 CRUD
     # Create
@@ -65,20 +45,12 @@ class Calendar(Resource):
         args = parser_calendar.parse_args()
 
         # 테스트용, 이후 Blob Storage Upload 부분 추가 예정
-        local_file_name = str(uuid.uuid4()) + '.png'
-        local_file_path = os.path.join('ootd_storage', local_file_name)
-        args['ootd_img'].save(local_file_path)
+        local_file_name, local_file_path = make_file_path()
+        save_ootd_img(args['ootd_img'], local_file_path)
 
-        calendar_document = CalendarDocument(
-            user_id=args['user_id'],
-            date=args['date'],
-            ootd_path=local_file_name,
-            clothes_feature={
-                'fabric': args['fabric'],
-                'color': args['color'],
-                'sleeve': args['sleeve']
-            }
-        )
+        calendar_document = create_calendar_document(
+            args['user_id'], args['date'], local_file_name, args['fabric'], args['color'], args['sleeve'], local_file_name)
+
         calendar_document.save()
         calendar_schema = CalendarSchema()
 
@@ -89,23 +61,15 @@ class Calendar(Resource):
         args = parser_calendar.parse_args()
         # user_id, date가 함께 params로 요청되는 경우 : OOTD 이미지 반환
         if args['date']:
-            local_file_name = CalendarDocument.objects.get(
-                Q(date=args['date']) & Q(user_id=args['user_id'])).ootd_path
-            local_file_path = os.path.join('ootd_storage', local_file_name)
+            local_file_path = get_file_path(args['date'], args['user_id'])
 
             return send_file(local_file_path)
 
         # user_id, month가 전달되는 경우 : 유저가 OOTD를 등록한 날짜 리스트 반환
         else:
-            next_month = '0' + str(int(args['month'])+1)
-            prev_month = '0' + str(int(args['month'])-1)
-            calendar_document = CalendarDocument.objects(
-                (Q(user_id=args['user_id']) & Q(date__contains=args['month'])) | (Q(user_id=args['user_id']) & Q(
-                    date__contains=next_month)) | (Q(user_id=args['user_id']) & Q(date__contains=prev_month))
-            )
-            ootd_enrolled_dates = list()
-            for document in calendar_document:
-                ootd_enrolled_dates.append(document.date)
+            ootd_enrolled_dates = create_date_array(
+                args['user_id'], args['month'])
+
             return jsonify(
                 status=200,
                 ootd_enrolled_dates=ootd_enrolled_dates
@@ -114,22 +78,14 @@ class Calendar(Resource):
     def put(self):
         # Update
         args = parser_calendar.parse_args()
+        delete_ootd_img(args['user_id'], args['date'])
 
-        old_local_file_name = CalendarDocument.objects.get(
-            Q(user_id=args['user_id']) & Q(date=args['date'])).ootd_path
-        old_local_file_path = os.path.join('ootd_storage', old_local_file_name)
-        os.remove(old_local_file_path)
-
-        new_local_file_name = str(uuid.uuid4()) + '.png'
-        new_local_file_path = os.path.join('ootd_storage', new_local_file_name)
-        args['ootd_img'].save(new_local_file_path)
-
-        CalendarDocument.objects(Q(user_id=args['user_id']) & Q(
-            date=args['date'])).update_one(set__ootd_path=new_local_file_name)
+        local_file_name, local_file_path = make_file_path()
+        save_ootd_img(args['ootd_img'], local_file_path)
         calendar_schema = CalendarSchema()
+        calendar_document = update_calendar_document(
+            args['user_id'], args['date'], local_file_name)
 
-        calendar_document = CalendarDocument.objects.get(
-            Q(user_id=args['user_id']) & Q(date=args['date']))
         return calendar_schema.dump(calendar_document)
 
 
