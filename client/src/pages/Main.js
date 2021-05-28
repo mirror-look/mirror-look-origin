@@ -3,6 +3,8 @@ import axios from 'axios';
 import styled from 'styled-components';
 import Box from '@material-ui/core/Box';
 import Profile from '../components/common/Profile';
+import NavBar from '../components/common/NavBar';
+import Header from '../components/common/Header';
 import WindowWrapper from '../components/common/WindowWrapper';
 import AgreementModal from '../components/common/AgreementModal';
 

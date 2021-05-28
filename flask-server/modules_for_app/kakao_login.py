@@ -2,8 +2,7 @@ from flask import Blueprint, json, request, redirect, render_template, jsonify, 
 from flask.helpers import url_for
 import requests
 from flask_jwt_extended import *
-from mongoengine import Document, StringField, IntField, BooleanField
-from marshmallow import Schema, fields
+from .models import UserDocument
 
 import os
 import sys
@@ -16,23 +15,6 @@ from .json_encoder_for_pymongo import MongoEngineJSONEncoder
 
 # DB 및 Document 정의
 database = get_database()
-
-class UserDocument(Document):
-    # mongoengine Document model 정의
-    kakao_id_number = IntField(required=True)
-    user_name = StringField(required=True)
-    profile_img = StringField(required=True)
-    agreement = BooleanField()
-
-    # DB Collection 이름 지정
-    meta = {"collection": 'User'}
-
-class UserSchema(Schema):
-    # marshmallow Schema 정의
-    kakao_id_number = fields.Integer()
-    user_name = fields.String()
-    profile_img = fields.String()
-    agreement = fields.Boolean()
 
 from config import CLIENT_ID
 
@@ -64,26 +46,31 @@ def callback():
         kakao_id_number = data.get("id")
         user_name = data.get("kakao_account").get("profile").get("nickname")
         profile_img = data.get("kakao_account").get("profile").get("profile_image_url")
-        user_info = UserDocument(
-            user_name = user_name,
-            kakao_id_number = kakao_id_number,
-            profile_img = profile_img
-        )
+        print("user",user_name)
+
         # 토큰 생성
         token = create_access_token(identity = kakao_id_number)
 
         # DB에 유저 정보가 있는지 확인
+        # user = UserDocument.objects.get(kakao_id_number = kakao_id_number)
+
         # 유저가 로그인한 이력이 있는 경우, 닉네임 변경시 갱신
-        if UserDocument.objects.get(kakao_id_number = kakao_id_number):
+        if UserDocument.objects(kakao_id_number = kakao_id_number):
             UserDocument.objects(kakao_id_number = kakao_id_number).modify(
                 user_name = user_name
             )
-            return jsonify(status = 200, token = token, user = True)
+            return jsonify(status = 200, token = token, user = "true")
 
         # 유저가 로그인한 이력이 없는 경우 DB에 유저 정보 저장
         else:
+            user_info = UserDocument(
+                user_name = user_name,
+                kakao_id_number = kakao_id_number,
+                profile_img = profile_img,
+                agreement = "false"
+            )
             user_info.save()
-            return jsonify(status = 200, token = token, user = False) #처음 로그인
+            return jsonify(status = 200, token = token, user = "false") #처음 로그인
 
     except KeyError:
         return make_response({"message" : "INVALID_TOKEN"}, 400)
