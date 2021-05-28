@@ -35,7 +35,7 @@ def object_detection(image_path, labelsPath, weightsPath, configPath):
     height, width, channels = frame.shape
 
     # Detecting objects
-    blob = cv2.dnn.blobFromImage(frame, 0.00392, (416, 416), (0, 0, 0), True, crop=False)
+    blob = cv2.dnn.blobFromImage(frame, 1/255, (416, 416), (0, 0, 0), True, crop=False)
 
     yolo_net.setInput(blob)
     outs = yolo_net.forward(output_layers)
@@ -45,7 +45,8 @@ def object_detection(image_path, labelsPath, weightsPath, configPath):
     class_ids = []
     confidences = []
     boxes = []
-    crop_labels = {}
+    crop_labels = []
+    crop_img_paths = []
     for out in outs:
         for detection in out:
             # print(detection)
@@ -73,19 +74,22 @@ def object_detection(image_path, labelsPath, weightsPath, configPath):
                 print(crop_label)
                 print(confidence)
 
-                # object detection된 이미지 중 label이 중복된 값이 있다면 confidence가 높은 이미지 채택
-                crop_labels[crop_label] = confidence
-
                 crop_img = frame[yy:yy + hh, xx:xx + hh]
-                cv2.imwrite('/home/azure/passion/AI/YOLOv3/image/' +  crop_label + "_" + str(count) + "_" + str(confidence) + ".jpg", crop_img)
+                crop_img_path = '/home/azure/passion/AI/YOLOv3/object_detected_image/' +  crop_label + "_" + str(count) + "_" + str(confidence) + ".jpg"
 
-    return crop_labels
+                crop_labels.append(crop_label)
+                crop_img_paths.append(crop_img_path)
 
-image_path = '/home/azure/passion/AI/CategoryandAttributePredictionBenchmark/static/shirtsshorts.jpg'
+                cv2.imwrite(crop_img_path, crop_img)
+
+    return crop_labels, crop_img_paths
+
+image_path = '/home/azure/passion/AI/YOLOv3/static/blouse3.jpg'
 labelsPath = '/home/azure/passion/AI/YOLOv3/deepfashion2yolov3model/df2.names'
 weightsPath = '/home/azure/passion/AI/YOLOv3/deepfashion2yolov3model/yolov3-df2_15000.weights'
 configPath = '/home/azure/passion/AI/YOLOv3/deepfashion2yolov3model/yolov3-df2.cfg'
 
-object_detection_result = object_detection(image_path, labelsPath, weightsPath, configPath)
+labels, paths = object_detection(image_path, labelsPath, weightsPath, configPath)
 
-print(object_detection_result)
+print(labels)
+print(paths)
