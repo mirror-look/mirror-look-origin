@@ -1,10 +1,9 @@
 import React from 'react';
-import { useState } from 'react';
+import axios from 'axios';
 import styled from 'styled-components';
 import Modal from '@material-ui/core/Modal';
 import Button from '@material-ui/core/Button';
 import Paper from '@material-ui/core/Paper';
-import axios from 'axios';
 
 function AgreementModal({
   setModalOpen,
@@ -26,7 +25,9 @@ function AgreementModal({
           variant="contained"
           color="primary"
           onClick={() => {
-            setUserAgreement('Y');
+            setUserAgreement(true);
+            window.sessionStorage.setItem('userAgreement', true);
+            console.log('동의한대!');
             handleClose();
           }}
         >
@@ -37,7 +38,9 @@ function AgreementModal({
           variant="contained"
           color="primary"
           onClick={() => {
-            setUserAgreement('N');
+            setUserAgreement(false);
+            window.sessionStorage.setItem('userAgreement', false);
+            console.log('동의안한대!');
             handleClose();
           }}
         >

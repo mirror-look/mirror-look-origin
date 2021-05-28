@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import Calendar from 'react-calendar';
-import NavBar from '../components/common/NavBar';
 import styled from 'styled-components';
-import Header from '../components/common/Header';
 import 'react-calendar/dist/Calendar.css';
 import './FashionCalendar.css';
 import axios from 'axios';
@@ -25,12 +23,11 @@ function FashionCalendar() {
   const [value, setValue] = useState(new Date());
   const [dates, setDates] = useState([]);
   const history = useHistory();
-  const username = '김윤주';
   const userId = 1;
 
   //데이터가 없는 날짜는 비활성화 시킨다.
-  const noData = ({ activeStartDate, date, view }) => {
-    return !dates.some((d) => d === getFormatDate(date));
+  const isData = ({ date, view }) => {
+    return view === 'month' && !dates.some((d) => d === getFormatDate(date));
   };
 
   // 날짜를 클릭했을 때, 페이지 전환 후 해당 날짜에 해당하는 데이터를 서버에 요청. 쿼리스트링 방식.
@@ -39,50 +36,79 @@ function FashionCalendar() {
     history.push(`/dashboard?user_id=${userId}&date=${getFormatDate(date)}`);
   };
 
-  const getDate = async () => {
-    try {
-      const { data } = await axios.get(`${URL}/calendar/${userId}`);
-      setDates(data.ootd_enrolled_dates);
-    } catch (e) {
-      console.error(e);
-      setDates(['2021-05-01', '2021-05-25', '2021-05-17', '2021-04-11']);
-    }
-  };
-
   useEffect(() => {
+    const getDate = async () => {
+      try {
+        const { data } = await axios.get(`${URL}/calendar`, {
+          params: {
+            user_id: userId,
+            month:
+              value.getMonth() < 10
+                ? '0' + (value.getMonth() + 1)
+                : value.getMonth() + 1
+          }
+        });
+        setDates(data.ootd_enrolled_dates);
+      } catch (e) {
+        console.error(e);
+        setDates([
+          '2021-04-03',
+          '2021-05-01',
+          '2021-05-25',
+          '2021-05-17',
+          '2021-04-11'
+        ]);
+      }
+    };
     getDate();
-  }, []);
+  }, [value]);
+
+  console.log('0' + (value.getMonth() + 1));
 
   return (
-    <WindowWrapper>
-      <NavBar />
-      <FlexDiv>
-        <Header username={username} />
-        <Calendar
-          onChange={setValue}
-          onClickDay={onClickDay}
-          nextLabel={'▶'}
-          next2Label={'▷'}
-          prevLabel={'◀'}
-          prev2Label={'◁'}
-          value={value}
-          tileDisabled={noData}
-          tileClassName={tileClassName}
-        />
-      </FlexDiv>
-    </WindowWrapper>
+    <FlexDiv>
+      <Calendar
+        //onChange={setValue}
+        onClickDay={onClickDay}
+        nextLabel={<NextLabel />}
+        next2Label={<Next2Label />}
+        prevLabel={<PrevLabel />}
+        prev2Label={<Prev2Label />}
+        value={value}
+        tileDisabled={isData}
+        tileClassName={tileClassName}
+        onActiveStartDateChange={({ activeStartDate }) => {
+          setValue(activeStartDate);
+          console.log(activeStartDate);
+        }}
+      />
+    </FlexDiv>
   );
 }
-
-const WindowWrapper = styled('div')`
-  display: flex;
-  height: 100vh;
-`;
 
 const FlexDiv = styled('div')`
   display: flex;
   width: 100%;
   flex-direction: column;
 `;
+
+const StyledLabel = {
+  color: '#8f00ff'
+};
+
+function NextLabel() {
+  return <div style={StyledLabel}>▶</div>;
+}
+
+function Next2Label() {
+  return <div style={StyledLabel}>▷</div>;
+}
+
+function PrevLabel() {
+  return <div style={StyledLabel}>◀</div>;
+}
+function Prev2Label() {
+  return <div style={StyledLabel}>◁</div>;
+}
 
 export default FashionCalendar;

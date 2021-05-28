@@ -1,10 +1,9 @@
 .react-calendar {
   height: 95%;
   width: 95%;
-  margin: 25px 0px 25px 25px;
-  padding: 10px;
   filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
   border-radius: 10px;
+  padding-top: 25px;
   border: 1px solid #f4f5fa;
 }
 
@@ -15,7 +14,7 @@
 
 /* 날짜 */
 .react-calendar button {
-  padding: 20px 0px;
+  padding: 35px 0px;
   border: 0;
   font-size: 20px;
   outline: none;

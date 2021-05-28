@@ -175,8 +175,6 @@ WALinuxAgent==2.2.45
 wcwidth==0.2.5
 webencodings==0.5.1
 Werkzeug==1.0.1
-widgetsnbextension==3.5.1
-wrapt==1.12.1
-xkit==0.0.0
-zipp==3.4.1
-zope.interface==4.3.2
+
+Flask-JWT-Extended==4.2.1
+marshmallow==3.12.1

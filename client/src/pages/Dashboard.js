@@ -1,31 +1,27 @@
-import React, { useState, useEffect } from 'react';
 import queryString from 'query-string';
 import { useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import Box from '@material-ui/core/Box';
-import Header from '../components/common/Header';
-import NavBar from '../components/common/NavBar';
-import WindowWrapper from '../components/common/WindowWrapper';
+
+const styledPhoto = {
+  width: '364px',
+  height: '740px',
+  borderRadius: '5%',
+  overflow: 'hidden',
+  objectFit: 'cover'
+};
 
 function Photo({ imgSrc, imgAlt }) {
-  return (
-    <img
-      src={imgSrc}
-      alt={imgAlt}
-      width="364px"
-      height="740px"
-      border="1px solid black"
-      border-radius="30%"
-      overflow="hidden"
-      object-fit="cover"
-    />
-  );
+  return <img src={imgSrc} alt={imgAlt} style={styledPhoto} />;
 }
 
-function Info({ username }) {
+function Info({ date, username }) {
   return (
     <div>
-      <h3>2021년 n월 n일 {username}님은 이런 옷을 입었네요!</h3>
+      <h3>
+        {date.slice(0, 4)}년 {date.slice(5, 7)}월 {date.slice(8)}일 {username}
+        님은 이런 옷을 입었네요!
+      </h3>
     </div>
   );
 }
@@ -35,32 +31,39 @@ function Dashboard() {
 
   let { search } = useLocation();
   console.log(search);
+  if (search === '') {
+    return (
+      <StyledBox>
+        <div> [CAUTION] 올바르지 않은 주소입니다. 뒤로가기를 눌러주세요 </div>
+      </StyledBox>
+    );
+  }
   const { userId, date } = queryString.parse(search);
   console.log(userId, date);
   const imgSrc = `calendar?user_id=${userId}&date=${date}`;
   const imgAlt = 'clothes img';
 
   return (
-    <WindowWrapper>
-      <NavBar />
-      <MainLayout>
-        <Header username={username} />
-        <ShowDetail>
-          <PhotoBox>
-            <Photo src={imgSrc} alt={imgAlt} />
-          </PhotoBox>
-          <Story>
-            <Info username={username}></Info>
-          </Story>
-        </ShowDetail>
-      </MainLayout>
-    </WindowWrapper>
+    <ShowDetail>
+      <PhotoBox>
+        <Photo src={imgSrc} alt={imgAlt} />
+      </PhotoBox>
+      <Story>
+        <Info date={date} username={username}></Info>
+      </Story>
+    </ShowDetail>
   );
 }
 
-const MainLayout = styled('div')`
+const StyledBox = styled('div')`
   display: flex;
   flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: #8f00ff;
+  font-size: 25px;
+  font-weight: bold;
 `;
 
 const ShowDetail = styled('div')`

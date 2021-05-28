@@ -1,20 +1,13 @@
-//import { useState } from 'react';
-
+import { useEffect, useState } from 'react';
+import axios from 'axios';
 import styled from 'styled-components';
-//import Button from '@material-ui/core/Button';
 import Box from '@material-ui/core/Box';
-import Header from '../components/common/Header';
-import NavBar from '../components/common/NavBar';
+import Profile from '../components/common/Profile';
 import WindowWrapper from '../components/common/WindowWrapper';
 import AgreementModal from '../components/common/AgreementModal';
 
-import { useEffect, useState } from 'react';
-import axios from 'axios';
-
-//import Calendar from './Calendar';
-
-function Hello({ username }) {
-  return <StyledHello>{username}님 안녕하세요!</StyledHello>;
+function Hello({ userName }) {
+  return <StyledHello>{userName}님 안녕하세요!</StyledHello>;
 }
 
 const StyledHello = styled('div')`
@@ -25,40 +18,31 @@ const StyledHello = styled('div')`
   line-height: 40px;
 `;
 
-function Profile({ username }) {
-  return (
-    <ProfileBox>
-      <ProfileContent>{username}</ProfileContent>
-      {/*// 이미지 ..아마 path로 받을듯?
-			// 이름
-			// 별명?
-			// 이상한 숫자??
-			// 나의 코디*/}
-    </ProfileBox>
-  );
-}
-
-const ProfileContent = styled(Box)`
-  margin: 30px;
-`;
-
-const ProfileBox = styled(Box)`
-  width: 364px;
-  height: 380px;
-  left: 131px;
-  top: 216px;
-
-  background: #ffffff;
-  filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
-  border-radius: 30px;
-  margin: 30px;
-
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-`;
-
 function Weather() {
+  useEffect(() => {
+    if (!!navigator.geolocation) {
+      console.log('위치 받아왔다!');
+      let lat = null;
+      let lon = null;
+      navigator.geolocation.getCurrentPosition(function (position) {
+        lat = position.coords.latitude;
+        lon = position.coords.longitude;
+      });
+
+      const data = { latitude: lat, longitude: lon };
+      axios
+        .post('http://localhost:5000/weather', data)
+        .then(function (response) {
+          console.log('날씨 받아왔다!');
+          console.log(response.data);
+        })
+        .catch(function (err) {
+          console.log(err);
+        });
+    } else {
+      console.log('위치 못받아왔다!');
+    }
+  }, [navigator.geolocation]);
   return (
     <WeatherBox>
       <WeatherText>오늘의 날씨</WeatherText>
@@ -139,14 +123,15 @@ const StyledCalender = styled(Box)`
 `;
 
 function Main() {
-  // api server에서 username을 받아와야함
-  const [userName, setUserName] = useState();
-  const [userProfileImage, setUserProfileImage] = useState();
+  const [userName, setUserName] = useState('');
+  const [userProfileImage, setUserProfileImage] = useState('');
   const [userAgreement, setUserAgreement] = useState();
-  const [userKakaoId, setUserKakaoId] = useState();
-  const [modalOpen, setModalOpen] = useState(true);
+  const [agreement, setAgreement] = useState();
+  const [userKakaoId, setUserKakaoId] = useState('');
+  const [modalOpen, setModalOpen] = useState();
   const modalTitle = '위치 정보 제공 동의';
-  const modalComment = `Mirror-Look은 날씨 기반 추천 서비스예요. 저희가 ${userName} 님의 위치 정보를 열람해도 될까요?`;
+  const modalComment = `Mirror-Look은 날씨 기반 추천 서비스예요. 저희가 위치 정보를 열람해도 될까요?`;
+
   useEffect(() => {
     const token = `Bearer ${window.sessionStorage.getItem('token')}`;
     axios
@@ -156,35 +141,56 @@ function Main() {
         }
       })
       .then(function (response) {
-        console.log('사용자 정보 받아왔다!');
+        console.log(response);
         setUserName(response.data.user_info.user_name);
-        setUserProfileImage(response.data.user_info.profile_img);
         setUserKakaoId(response.data.user_info.kakao_id_number);
+        setUserProfileImage(response.data.user_info.profile_img);
+        setAgreement(response.data.user_info.agreement);
+        console.log('사용자 정보 받았다!');
+        if (!response.data.user_info.agreement) {
+          console.log('동의여부가 false 여서 Modal 띄운다!');
+          setModalOpen(true);
+        }
       })
       .catch(function (err) {
         console.log(err);
-      });
-  }, []);
+      }, []);
+
+    if (!!window.sessionStorage.getItem('userAgreement')) {
+      const token = `Bearer ${window.sessionStorage.getItem('token')}`;
+      const data = {
+        agreement: window.sessionStorage.getItem('userAgreement')
+      };
+      axios
+        .put('http://localhost:5000/userinfo', data, {
+          headers: {
+            Authorization: token
+          }
+        })
+        .then(function (response) {
+          console.log('위치동의여부 넣었다!');
+        })
+        .catch(function (err) {
+          console.log(err);
+        });
+    }
+  });
 
   return (
     <WindowWrapper>
-      <NavBar />
-      <MainLayout>
-        <Header username={userName} />
-        <Body>
-          <UserInfo>
-            <Hello username={userName} />
-            <Profile username={userName} />
-            <Weather />
-          </UserInfo>
-          <TodayOOTD></TodayOOTD>
-          <Calendar></Calendar>
-        </Body>
-      </MainLayout>
+      <Body>
+        <UserInfo>
+          <Hello userName={userName} />
+          <Profile userName={userName} />
+          <Weather />
+        </UserInfo>
+        <TodayOOTD></TodayOOTD>
+        <Calendar></Calendar>
+      </Body>
       {modalOpen === true ? (
         <AgreementModal
           setModalOpen={setModalOpen}
-          modalOpen={modalOpen}
+          modalOpen={true}
           setUserAgreement={setUserAgreement}
           modalTitle={modalTitle}
           modalComment={modalComment}
@@ -195,11 +201,6 @@ function Main() {
     </WindowWrapper>
   );
 }
-
-const MainLayout = styled('div')`
-  display: flex;
-  flex-direction: column;
-`;
 
 const Body = styled('div')`
   display: flex;
