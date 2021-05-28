@@ -2,7 +2,12 @@ import os
 from flask import Blueprint, jsonify, request, redirect, url_for
 from werkzeug.utils import secure_filename
 from prediction import get_prediction
+from object_detection import object_detection
 from config import UPLOAD_FOLDER
+
+labelsPath = '/home/azure/passion/AI/YOLOv3/deepfashion2yolov3model/df2.names'
+weightsPath = '/home/azure/passion/AI/YOLOv3/deepfashion2yolov3model/yolov3-df2_15000.weights'
+configPath = '/home/azure/passion/AI/YOLOv3/deepfashion2yolov3model/yolov3-df2.cfg'
 
 # Blueprint
 classification = Blueprint("classification", __name__, url_prefix='/classification')
@@ -13,26 +18,37 @@ def upload_file():
         upload_file = request.files['file']
         image_path = UPLOAD_FOLDER + "/" + secure_filename(upload_file.filename)
         upload_file.save(image_path)
-        predictions = get_prediction(image_path)
+        labels, paths = object_detection(image_path, labelsPath, weightsPath, configPath)
+        print(labels)
+        print(paths)
+        result = []
+        for path in paths:
+            predictions = get_prediction(path)
+            print(predictions)
+
+        # predictions = get_prediction(image_path)
         # print(predictions)
 
-        result = []
+        # result = []
 
-        for rank in predictions:
-            class_name, _  = rank
-            result.append(class_name)
+        # for rank in predictions:
+        #     class_name, _  = rank
+        #     result.append(class_name)
 
         # result = {
         #     'predictions': predictions,
         #     'image_path': image_path
         # }
 
-        print(result[:3])
+        # print(result[:3])
 
         return jsonify(
-            status=200,
-            result=result[:3]
+            status=200
         )
+
+    return jsonify(
+        status=200
+    )
 
 
 
