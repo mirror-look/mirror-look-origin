@@ -19,6 +19,30 @@ const StyledHello = styled('div')`
 `;
 
 function Weather() {
+  useEffect(() => {
+    if (!!navigator.geolocation) {
+      console.log('위치 받아왔다!');
+      let lat = null;
+      let lon = null;
+      navigator.geolocation.getCurrentPosition(function (position) {
+        lat = position.coords.latitude;
+        lon = position.coords.longitude;
+      });
+
+      const data = { latitude: lat, longitude: lon };
+      axios
+        .post('http://localhost:5000/weather', data)
+        .then(function (response) {
+          console.log('날씨 받아왔다!');
+          console.log(response.data);
+        })
+        .catch(function (err) {
+          console.log(err);
+        });
+    } else {
+      console.log('위치 못받아왔다!');
+    }
+  }, [navigator.geolocation]);
   return (
     <WeatherBox>
       <WeatherText>오늘의 날씨</WeatherText>
