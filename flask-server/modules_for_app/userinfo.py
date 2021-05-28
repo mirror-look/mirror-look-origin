@@ -33,19 +33,12 @@ class Userinfo(Resource):
         kakao_id = get_jwt_identity()
         user = UserDocument.objects.get(kakao_id_number = kakao_id)
 
-        if user.agreement :
-            user_info = {
-                'user_name' : user.user_name,
-                'user_id' : user.kakao_id_number,
-                'profile_img' : user.profile_img,
-                'agreement' : user.agreement
-            }
-        else:
-            user_info = {
-                'user_name' : user.user_name,
-                'user_id' : user.kakao_id_number,
-                'profile_img' : user.profile_img
-            }
+        user_info = {
+            'user_name' : user.user_name,
+            'user_id' : user.kakao_id_number,
+            'profile_img' : user.profile_img,
+            'agreement' : user.agreement
+        }
 
         return jsonify(
             status = 200,
