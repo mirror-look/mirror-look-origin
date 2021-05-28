@@ -21,34 +21,33 @@ const StyledHello = styled('div')`
 `;
 
 function Weather() {
-  useEffect(() => {
-    if (!!navigator.geolocation) {
+  const [weather, setWeather] = useState();
+  if ('geolocation' in navigator) {
+    navigator.geolocation.getCurrentPosition((position) => {
       console.log('위치 받아왔다!');
-      let lat = null;
-      let lon = null;
-      navigator.geolocation.getCurrentPosition(function (position) {
-        lat = position.coords.latitude;
-        lon = position.coords.longitude;
-      });
-
-      const data = { latitude: lat, longitude: lon };
+      const data = {
+        latitude: position.coords.latitude,
+        longitude: position.coords.longitude
+      };
+      console.log(data);
       axios
-        .post('http://localhost:5000/weather', data)
+        .post('http://localhost:57399/weather', data)
         .then(function (response) {
-          console.log('날씨 받아왔다!');
-          console.log(response.data);
+          console.log('날씨 정보 받아왔다!');
+          setWeather(response.data.current_weather);
         })
         .catch(function (err) {
+          console.log('날씨 정보 못받아왔다!');
           console.log(err);
         });
-    } else {
-      console.log('위치 못받아왔다!');
-    }
-  }, [navigator.geolocation]);
+    });
+  } else {
+    console.log('위치 못받아왔다!');
+  }
   return (
     <WeatherBox>
       <WeatherText>오늘의 날씨</WeatherText>
-      <RealWeather>(날씨)</RealWeather>
+      <RealWeather>{weather}</RealWeather>
     </WeatherBox>
   );
 }
