@@ -46,17 +46,20 @@ def callback():
         kakao_id_number = data.get("id")
         user_name = data.get("kakao_account").get("profile").get("nickname")
         profile_img = data.get("kakao_account").get("profile").get("profile_image_url")
+        print("user",user_name)
 
         # 토큰 생성
         token = create_access_token(identity = kakao_id_number)
 
         # DB에 유저 정보가 있는지 확인
+        # user = UserDocument.objects.get(kakao_id_number = kakao_id_number)
+
         # 유저가 로그인한 이력이 있는 경우, 닉네임 변경시 갱신
-        if UserDocument.objects.get(kakao_id_number = kakao_id_number):
+        if UserDocument.objects(kakao_id_number = kakao_id_number):
             UserDocument.objects(kakao_id_number = kakao_id_number).modify(
                 user_name = user_name
             )
-            return jsonify(status = 200, token = token, user = True)
+            return jsonify(status = 200, token = token, user = "true")
 
         # 유저가 로그인한 이력이 없는 경우 DB에 유저 정보 저장
         else:
@@ -64,10 +67,10 @@ def callback():
                 user_name = user_name,
                 kakao_id_number = kakao_id_number,
                 profile_img = profile_img,
-                agreement = False
+                agreement = "false"
             )
             user_info.save()
-            return jsonify(status = 200, token = token, user = False) #처음 로그인
+            return jsonify(status = 200, token = token, user = "false") #처음 로그인
 
     except KeyError:
         return make_response({"message" : "INVALID_TOKEN"}, 400)
