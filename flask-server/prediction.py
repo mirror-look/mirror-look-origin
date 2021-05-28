@@ -13,7 +13,7 @@ def get_prediction(image_path):
     img = img / 255.
     input_data = tf.expand_dims(img, axis=0)
 
-    interpreter = tf.lite.Interpreter(model_path='/home/azure/passion/flask-server/models/my_checkpoint5serving.tflite')
+    interpreter = tf.lite.Interpreter(model_path='/home/azure/passion/AI/CategoryandAttributePredictionBenchmark/dataset/output/my_checkpoint5serving.tflite')
     interpreter.allocate_tensors()
 
     input_details = interpreter.get_input_details()
