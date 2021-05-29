@@ -1,18 +1,94 @@
+import { useCallback, useRef, useState } from 'react';
+import axios from 'axios';
 import styled from 'styled-components';
 import Button from '@material-ui/core/Button';
 import Box from '@material-ui/core/Box';
 import Webcam from 'react-webcam';
+import DragDrop from '../components/camera/DragDrop';
+
+const videoConstraints = {
+  facingMode: 'user'
+};
 
 function Camera() {
+  const [cam, setCam] = useState();
+  const [dragDrop, setDragDrop] = useState();
+  const webcamRef = useRef(null);
+  const capture = useCallback(() => {
+    let imageSrc = webcamRef.current.getScreenshot();
+    let imageBase64 = imageSrc.split(',')[1];
+    axios
+      .post('http://localhost:5000/classification/upload', {
+        image_base64: imageBase64
+      })
+      .then(function (response) {
+        console.log('촬영된 Base64 이미지 보냈다!');
+        console.log(response.data);
+      })
+      .catch(function (err) {
+        console.log(err);
+      });
+  }, [webcamRef]);
+
+  function handleConfirm() {
+    console.log('이미지 확인 클릭했다!');
+    if (cam === true) {
+      console.log('촬영된 이미지 보낼 준비!');
+      capture();
+    } else if (
+      (dragDrop === true) &
+      !!window.sessionStorage.getItem('uploadedImage')
+    ) {
+      console.log('업로드된 이미지 보낼 준비!');
+      let imageBase64 = window.sessionStorage.getItem('uploadedImage');
+      axios
+        .post('http://localhost:5000/classification/upload', {
+          image_base64: imageBase64
+        })
+        .then(function (response) {
+          console.log('업로드된 Base64 이미지 보냈다!');
+          console.log(response.data);
+        })
+        .catch(function (err) {
+          console.log(err);
+        });
+    }
+  }
   return (
     <StyledBox>
       <Window>
-        <Webcam />
+        {cam === true ? (
+          <Webcam
+            audio={false}
+            ref={webcamRef}
+            screenshotFormat="image/*"
+            videoConstraints={videoConstraints}
+          />
+        ) : (
+          ''
+        )}
+        {dragDrop === true ? <DragDrop /> : ''}
       </Window>
       <StyledButton>
-        <SearchFile>파일 찾기</SearchFile>
-        <TakePhoto>촬영 하기</TakePhoto>
-        <Confirm>확인</Confirm>
+        <SearchFile
+          onClick={() => {
+            console.log('파일업로드 클릭했다!');
+            setCam(false);
+            setDragDrop(true);
+          }}
+        >
+          파일업로드
+        </SearchFile>
+        <TakePhoto
+          onClick={() => {
+            console.log('촬영하기 클릭했다!');
+            setCam(true);
+            setDragDrop(false);
+          }}
+        >
+          촬영하기
+        </TakePhoto>
+        <Confirm onClick={handleConfirm}>확인</Confirm>
       </StyledButton>
     </StyledBox>
   );
