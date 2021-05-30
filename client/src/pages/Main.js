@@ -31,7 +31,7 @@ function Weather() {
       };
       console.log(data);
       axios
-        .post('http://localhost:57399/weather', data)
+        .post('http://localhost:5000/weather', data)
         .then(function (response) {
           console.log('날씨 정보 받아왔다!');
           setWeather(response.data.current_weather);
