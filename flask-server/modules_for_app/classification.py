@@ -1,5 +1,6 @@
 import os
 from flask import Blueprint, jsonify, request, redirect, url_for
+# from flask_jwt_extened import jwt_required
 from werkzeug.utils import secure_filename
 from prediction import get_prediction
 from object_detection import object_detection
@@ -13,18 +14,21 @@ configPath = '/home/azure/passion/AI/YOLOv3/deepfashion2yolov3model/yolov3-df2.c
 classification = Blueprint("classification", __name__, url_prefix='/classification')
 
 @classification.route('/upload', methods=['GET', 'POST'])
+# @jwt_required()
 def upload_file():
     if request.method == 'POST':
         upload_file = request.files['file']
         image_path = UPLOAD_FOLDER + "/" + secure_filename(upload_file.filename)
         upload_file.save(image_path)
         labels, paths = object_detection(image_path, labelsPath, weightsPath, configPath)
-        print(labels)
-        print(paths)
+        # print(labels)
+        # print(paths)
         result = []
-        for path in paths:
+        for idx, path in enumerate(paths):
             predictions = get_prediction(path)
-            print(predictions)
+            temp = {labels[idx]: predictions}
+            # print(temp)
+            result.append(temp)
 
         # predictions = get_prediction(image_path)
         # print(predictions)
@@ -40,10 +44,11 @@ def upload_file():
         #     'image_path': image_path
         # }
 
-        # print(result[:3])
+        print(result)
 
         return jsonify(
-            status=200
+            status=200,
+            result=result
         )
 
     return jsonify(

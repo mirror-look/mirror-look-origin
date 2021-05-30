@@ -13,7 +13,7 @@ def get_prediction(image_path):
     img = img / 255.
     input_data = tf.expand_dims(img, axis=0)
 
-    interpreter = tf.lite.Interpreter(model_path='/home/azure/passion/AI/CategoryandAttributePredictionBenchmark/dataset/output/my_checkpoint5serving.tflite')
+    interpreter = tf.lite.Interpreter(model_path='/home/azure/passion/AI/Demo/output/demo_model_serving.tflite')
     interpreter.allocate_tensors()
 
     input_details = interpreter.get_input_details()
@@ -32,14 +32,12 @@ def get_prediction(image_path):
     output_data = interpreter.get_tensor(output_details[0]['index'])
     # print("output_data: ", output_data)
 
-    class_indices = {'Blazer': 0, 'Blouse': 1, 'Cardigan': 2, 'Coat': 3,
-                    'Cutoffs': 4, 'Dress': 5, 'Hoodie': 6, 'Jacket': 7,
-                    'Jeans': 8, 'Joggers': 9, 'Jumpsuit': 10, 'Leggings': 11,
-                    'Nightdress': 12, 'Parka': 13, 'Poncho': 14, 'Romper': 15,
-                    'Shirtdress': 16, 'Shirts': 17, 'Shorts': 18, 'Skirt': 19,
-                    'Sundress': 20, 'Sweater': 21, 'Tank': 22, 'Tee': 23,
-                    'Top': 24, 'Trunks': 25
-                    }
+    class_indices = {'Blazer': 0, 'Blouse': 1, 'Cardigan': 2,
+    'Coat': 3, 'Cutoffs': 4, 'Dress': 5, 'Hoodie': 6,
+    'Jacket': 7, 'Jeans': 8, 'Joggers': 9, 'Jumpsuit': 10,
+    'Leggings': 11, 'Parka': 12, 'Romper': 13, 'Shirts': 14,
+    'Shorts': 15, 'Skirt': 16, 'Sweater': 17, 'Tank': 18,
+    'Tee': 19, 'Top': 20, 'Trunks': 21}
 
     new_class_indices = {}
 
@@ -55,7 +53,16 @@ def get_prediction(image_path):
 
     results = sorted(results.items(), key=lambda x: x[1], reverse=True)
 
-    return results
+    tmp = results[:3]
+
+    top_3_results = []
+
+    for i in tmp:
+        label, pred = i
+        t = (label, str(pred))
+        top_3_results.append(t)
+
+    return top_3_results
 
 # # class indices of test dataset:
 # # {'Blazer': 0, 'Blouse': 1, 'Cardigan': 2, 'Coat': 3,
@@ -66,6 +73,6 @@ def get_prediction(image_path):
 # # 'Sundress': 20, 'Sweater': 21, 'Tank': 22, 'Tee': 23,
 # # 'Top': 24, 'Trunks': 25}
 
-# image_path = '/home/azure/passion/flask-server/ootd_storage/442.jpg'
-# results = get_prediction(image_path)
-# print(results)
+image_path = '/home/azure/passion/flask-server/ootd_storage/42142123.jpg'
+results = get_prediction(image_path)
+print(results)

@@ -7,6 +7,7 @@ Calendar API
 Search API
 Weather API
 UserInfo API
+Classification API
 ```
 
 ## Calendar API
@@ -359,6 +360,54 @@ axios.put("/userinfo", data, { // data는 json 형식으로 ex) {"agreement":tru
 
 ```js
 {
+    "status": 200
+}
+```
+
+## Classification API
+
+### POST
+
+#### (1). REQUEST
+
+#### (2). RESPONSE
+
+```js
+{
+    "result": [
+        {
+            "long_sleeve_top": [
+                [
+                    "Blouse",
+                    "0.64969826"
+                ],
+                [
+                    "Tank",
+                    "0.09718021"
+                ],
+                [
+                    "Tee",
+                    "0.0923314"
+                ]
+            ]
+        },
+        {
+            "trousers": [
+                [
+                    "Jeans",
+                    "0.9024926"
+                ],
+                [
+                    "Shirts",
+                    "0.046128057"
+                ],
+                [
+                    "Shorts",
+                    "0.01998286"
+                ]
+            ]
+        }
+    ],
     "status": 200
 }
 ```
