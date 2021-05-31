@@ -31,7 +31,7 @@ function Weather() {
       };
       console.log(data);
       axios
-        .post('http://localhost:57399/weather', data)
+        .post('http://localhost:5000/weather', data)
         .then(function (response) {
           console.log('날씨 정보 받아왔다!');
           setWeather(response.data.current_weather);
@@ -148,7 +148,7 @@ function Main() {
         setUserProfileImage(response.data.user_info.profile_img);
         setAgreement(response.data.user_info.agreement);
         console.log('사용자 정보 받았다!');
-        if (!response.data.user_info.agreement) {
+        if (response.data.user_info.agreement === 'false') {
           console.log('동의여부가 false 여서 Modal 띄운다!');
           setModalOpen(true);
         }
