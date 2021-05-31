@@ -33,13 +33,13 @@ function FashionCalendar() {
   // 날짜를 클릭했을 때, 페이지 전환 후 해당 날짜에 해당하는 데이터를 서버에 요청. 쿼리스트링 방식.
   const onClickDay = (date, event) => {
     console.log(getFormatDate(date));
-    history.push(`/dashboard?user_id=${userId}&date=${getFormatDate(date)}`);
+    history.push(`/dashboard?userId=${userId}&date=${getFormatDate(date)}`);
   };
 
   useEffect(() => {
     const getDate = async () => {
       try {
-        const { data } = await axios.get(`${URL}/calendar`, {
+        const { data } = await axios.get(`/calendar`, {
           params: {
             user_id: userId,
             month:
@@ -48,6 +48,7 @@ function FashionCalendar() {
                 : value.getMonth() + 1
           }
         });
+        console.log('data == ', data);
         setDates(data.ootd_enrolled_dates);
       } catch (e) {
         console.error(e);
