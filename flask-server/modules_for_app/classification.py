@@ -21,30 +21,24 @@ def upload_file():
         image_path = UPLOAD_FOLDER + "/" + secure_filename(upload_file.filename)
         upload_file.save(image_path)
         labels, paths = object_detection(image_path, labelsPath, weightsPath, configPath)
-        # print(labels)
-        # print(paths)
-        result = []
+        # print(labels) ['long_sleeve_top', 'skirt']
+        # print(paths) ['/home/azure/passion/flask-server/object_detected_image/long_sleeve_top_1_0.7096048.jpg', '/home/azure/passion/flask-server/object_detected_image/skirt_2_0.8293095.jpg']
+        top_3_result = []
+        # top_5_result = []
         for idx, path in enumerate(paths):
-            predictions = get_prediction(path)
-            temp = {labels[idx]: predictions}
+            top_3_prediction, top_5_prediction = get_prediction(path)
+            temp_3 = {labels[idx]: top_3_prediction}
+            # temp_5 = {labels[idx]: top_5_prediction}
             # print(temp)
-            result.append(temp)
+            top_3_result.append(temp_3)
+            # top_5_result.append(temp_5)
 
-        # predictions = get_prediction(image_path)
-        # print(predictions)
+        result = {
+                'original_image_path' : image_path,
+                'top_3_result' : top_3_result
+            }
 
-        # result = []
-
-        # for rank in predictions:
-        #     class_name, _  = rank
-        #     result.append(class_name)
-
-        # result = {
-        #     'predictions': predictions,
-        #     'image_path': image_path
-        # }
-
-        print(result)
+        print(top_3_result)
 
         return jsonify(
             status=200,

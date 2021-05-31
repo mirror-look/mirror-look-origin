@@ -37,7 +37,7 @@ def get_prediction(image_path):
     'Jacket': 7, 'Jeans': 8, 'Joggers': 9, 'Jumpsuit': 10,
     'Leggings': 11, 'Parka': 12, 'Romper': 13, 'Shirts': 14,
     'Shorts': 15, 'Skirt': 16, 'Sweater': 17, 'Tank': 18,
-    'Tee': 19, 'Top': 20, 'Trunks': 21}
+    'Top-Tee': 19, 'Tee-Top': 20, 'Trunks': 21}
 
     new_class_indices = {}
 
@@ -53,16 +53,23 @@ def get_prediction(image_path):
 
     results = sorted(results.items(), key=lambda x: x[1], reverse=True)
 
-    tmp = results[:3]
+    tmp = results[:5]
 
     top_3_results = []
 
-    for i in tmp:
+    for i in tmp[:3]:
         label, pred = i
         t = (label, str(pred))
         top_3_results.append(t)
 
-    return top_3_results
+    top_5_results = []
+
+    for i in tmp:
+        label, pred = i
+        t = (label, str(pred))
+        top_5_results.append(t)
+
+    return top_3_results, top_5_results
 
 # # class indices of test dataset:
 # # {'Blazer': 0, 'Blouse': 1, 'Cardigan': 2, 'Coat': 3,
