@@ -57,7 +57,8 @@ def callback():
         # 유저가 로그인한 이력이 있는 경우, 닉네임 변경시 갱신
         if UserDocument.objects(kakao_id_number = kakao_id_number):
             UserDocument.objects(kakao_id_number = kakao_id_number).modify(
-                user_name = user_name
+                user_name = user_name,
+                profile_img = profile_img,
             )
             return jsonify(status = 200, token = token, user = "true")
 

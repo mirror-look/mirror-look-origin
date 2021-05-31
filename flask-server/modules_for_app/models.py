@@ -24,7 +24,7 @@ class UserDocument(Document):
     # mongoengine Document model 정의
     kakao_id_number = IntField(required=True)
     user_name = StringField(required=True)
-    profile_img = StringField(required=True)
+    profile_img = StringField()
     agreement = StringField()
 
     # DB Collection 이름 지정
