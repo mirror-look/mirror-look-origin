@@ -3,15 +3,17 @@ from PIL import ImageFont, ImageDraw, Image
 import numpy as np
 import time
 import os
+from config import DETECTED_IMAGE_FOLDER
 from tensorflow.keras.models import load_model
 
 # config.py에 추가해서 경로 숨기기
-# UPLOAD_FOLDER
+# DETECTED_IMAGE_FOLDER
+# modal_path
 # labelsPath
 # weightsPath
 # configPath
 
-def object_detection(image_path, labelsPath, weightsPath, configPath):
+def object_detection(image_path, labelsPath, weightsPath, configPath, DETECTED_IMAGE_FOLDER):
 
     # YOLO 라벨(Clothes)
     YOLO_LABELS = open(labelsPath).read().strip().split("\n")
@@ -75,7 +77,7 @@ def object_detection(image_path, labelsPath, weightsPath, configPath):
                 print(confidence)
 
                 crop_img = frame[yy:yy + hh, xx:xx + hh]
-                crop_img_path = '/home/azure/passion/flask-server/object_detected_image/' +  crop_label + "_" + str(count) + "_" + str(confidence) + ".jpg"
+                crop_img_path = DETECTED_IMAGE_FOLDER + '/' + crop_label + "_" + str(count) + "_" + str(confidence) + ".jpg"
 
                 try:
                     cv2.imwrite(crop_img_path, crop_img)

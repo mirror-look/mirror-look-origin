@@ -1,6 +1,6 @@
 import tensorflow as tf
 
-def get_prediction(image_path):
+def get_prediction(image_path, model_path):
 
     img = tf.keras.preprocessing.image.load_img(
         image_path,
@@ -13,7 +13,7 @@ def get_prediction(image_path):
     img = img / 255.
     input_data = tf.expand_dims(img, axis=0)
 
-    interpreter = tf.lite.Interpreter(model_path='/home/azure/passion/AI/Demo/output/resnet50_model_serving2.tflite')
+    interpreter = tf.lite.Interpreter(model_path=model_path)
     interpreter.allocate_tensors()
 
     input_details = interpreter.get_input_details()
@@ -81,5 +81,6 @@ def get_prediction(image_path):
 # # 'Top': 24, 'Trunks': 25}
 
 # image_path = '/home/azure/passion/flask-server/ootd_storage/42142123.jpg'
-# results = get_prediction(image_path)
+# model_path = '/home/azure/passion/AI/Demo/output/resnet50_model_serving2.tflite'
+# results = get_prediction(image_path, model_path)
 # print(results)
