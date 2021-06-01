@@ -26,7 +26,6 @@ from PIL import ImageDraw
 import matplotlib.pyplot as plt
 import matplotlib.patches as mpatches
 import skimage.data
-import selectivesearch
 
 import logging
 import colored_traceback
@@ -38,12 +37,12 @@ logging.basicConfig(level=logging.DEBUG, format=FORMAT)
 seed = 7
 np.random.seed(seed)
 
-dataset_path = '/home/azure/passion/AI/Category and Attribute Prediction Benchmark/dataset'
+dataset_path = '/data/Deepfashion/prepare_dataset'
 dataset_train_path = os.path.join(dataset_path, 'train')
 dataset_val_path = os.path.join(dataset_path, 'validation')
 dataset_test_path = os.path.join(dataset_path, 'test')
 
-fashion_dataset_path = '/home/azure/passion/AI/Category and Attribute Prediction Benchmark'
+fashion_dataset_path = '/data/Deepfashion'
 dataset_train_info = os.path.join(dataset_train_path, 'train_info.txt')
 dataset_val_info = os.path.join(dataset_val_path, 'val_info.txt')
 
