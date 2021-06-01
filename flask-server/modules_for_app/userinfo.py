@@ -1,5 +1,5 @@
 from flask.helpers import url_for
-from flask_restx import Api, Resource, fields
+from flask_restx import Api, Resource, fields, Namespace
 from flask import Blueprint, jsonify, request
 from .models import UserDocument, UserSchema
 
@@ -16,16 +16,18 @@ from .json_encoder_for_pymongo import MongoEngineJSONEncoder
 database = get_database()
 
 # 블루프린트/API 객체 생성 및 인코더 연결
+
 userinfo = Blueprint("userinfo", __name__)
-userinfo.json_encoder = MongoEngineJSONEncoder
+userinfo_api = Namespace('userinfo_api', path='/userinfo', title = '유저 정보 api', description='유저 정보 조회, 수정')
 api = Api(userinfo)
+
 
 """
 Userinfo APIs - 유저 정보 RU (headers Authorization Bearer token 필요)
 Read API : 유저 정보를 열람
 Update API : 유저 정보(위치동의)를 수정
 """
-
+@userinfo_api.route('/')
 class Userinfo(Resource):
     # Read
     @jwt_required()
