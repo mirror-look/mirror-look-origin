@@ -19,11 +19,10 @@ function getFormatDate(date) {
 
 const tileClassName = ({ date }) => (date.getDay() === 0 ? 'sunday' : '');
 
-function FashionCalendar() {
+function FashionCalendar({ userId }) {
   const [value, setValue] = useState(new Date());
   const [dates, setDates] = useState([]);
   const history = useHistory();
-  const userId = 1;
 
   //데이터가 없는 날짜는 비활성화 시킨다.
   const isData = ({ date, view }) => {
@@ -37,9 +36,11 @@ function FashionCalendar() {
   };
 
   useEffect(() => {
+    const token = `Bearer ${window.sessionStorage.getItem('token')}`;
     const getDate = async () => {
       try {
-        const { data } = await axios.get(`/calendar`, {
+        const { data } = await axios.get(`${URL}/calendar`, {
+          headers: { Authorization: token },
           params: {
             user_id: userId,
             month:
@@ -49,6 +50,7 @@ function FashionCalendar() {
           }
         });
         console.log('data == ', data);
+        console.log('userID -- ', userId);
         setDates(data.ootd_enrolled_dates);
       } catch (e) {
         console.error(e);
@@ -62,7 +64,7 @@ function FashionCalendar() {
       }
     };
     getDate();
-  }, [value]);
+  }, [userId, value]);
 
   console.log('0' + (value.getMonth() + 1));
 
