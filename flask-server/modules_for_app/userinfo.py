@@ -27,9 +27,22 @@ Userinfo APIs - 유저 정보 RU (headers Authorization Bearer token 필요)
 Read API : 유저 정보를 열람
 Update API : 유저 정보(위치동의)를 수정
 """
+
+user_model = userinfo_api.model('Model',{
+    'user_id' : fields.Integer(),
+    'user_name' : fields.String(),
+    'profile_img' : fields.String(),
+    'agreement' : fields.String(),
+
+})
+header = userinfo_api.parser()
+header.add_argument('token', location='headers')
+
 @userinfo_api.route('/')
 class Userinfo(Resource):
     # Read
+    @userinfo_api.expect(header)
+    @userinfo_api.response(200, 'Success', user_model)
     @jwt_required()
     def get(self):
         kakao_id = get_jwt_identity()
@@ -50,6 +63,7 @@ class Userinfo(Resource):
         # return UserSchema.dump(user)
 
     # Update
+    @userinfo_api.doc(params={'agreement':'true'})
     @jwt_required()
     def put(self):
         kakao_id = get_jwt_identity()
