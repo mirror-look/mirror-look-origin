@@ -26,6 +26,7 @@ function AgreementModal({
           color="primary"
           onClick={() => {
             // setUserAgreement(true);
+            //함수 따로 파고 나가서 axios 날리기
             window.sessionStorage.setItem('userAgreement', 'true');
             console.log('동의한대!');
             handleClose();

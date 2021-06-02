@@ -1,4 +1,5 @@
 import queryString from 'query-string';
+import { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import Box from '@material-ui/core/Box';
@@ -11,10 +12,6 @@ const styledPhoto = {
   objectFit: 'cover'
 };
 
-function Photo({ imgSrc, imgAlt }) {
-  return <img src={imgSrc} alt={imgAlt} style={styledPhoto} />;
-}
-
 function Info({ date, username }) {
   return (
     <div>
@@ -26,11 +23,24 @@ function Info({ date, username }) {
   );
 }
 
+function Photo({ src, alt }) {
+  return <img src={src} alt={alt} style={styledPhoto} />;
+}
+
 function Dashboard() {
   const username = '김윤주';
+  const imgAlt = 'clothes img';
+  const { search } = useLocation();
+  const { userId, date } = queryString.parse(search);
+  const [imgSrc, setImgSrc] = useState(
+    `calendar?user_id=${userId}&date=${date}`
+  );
 
-  let { search } = useLocation();
-  console.log(search);
+  useEffect(() => {
+    console.log(`user_id ${userId}, date ${date}`);
+    setImgSrc(`calendar?user_id=${userId}&date=${date}`);
+  }, []);
+
   if (search === '') {
     return (
       <StyledBox>
@@ -38,10 +48,6 @@ function Dashboard() {
       </StyledBox>
     );
   }
-  const { userId, date } = queryString.parse(search);
-  console.log(userId, date);
-  const imgSrc = `calendar?user_id=${userId}&date=${date}`;
-  const imgAlt = 'clothes img';
 
   return (
     <ShowDetail>
