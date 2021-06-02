@@ -63,17 +63,19 @@ const UserChild = styled(FontAwesomeIcon)`
 function PowerOff() {
   function handleClick(e) {
     e.preventDefault();
-    axios
-      .get(
-        `https://kauth.kakao.com/oauth/logout?client_id=${ClientID}&logout_redirect_uri=http://localhost:3000/login`
-      )
-      .then(function (response) {
-        console.log('로그아웃 했다!');
-        window.sessionStorage.clear();
-      })
-      .catch(function (err) {
-        console.log(err);
-      });
+    window.sessionStorage.clear();
+    window.location.href = `https://kauth.kakao.com/oauth/logout?client_id=${ClientID}&logout_redirect_uri=http://localhost:3000/login`;
+    //axios
+    //  .get(
+    //    `https://kauth.kakao.com/oauth/logout?client_id=${ClientID}&logout_redirect_uri=http://localhost:3000/login`
+    //  )
+    //  .then(function (response) {
+    //    console.log('로그아웃 했다!');
+    //    window.sessionStorage.clear();
+    //  })
+    //  .catch(function (err) {
+    //    console.log(err);
+    //  });
   }
   return (
     <IconWrapper>
@@ -138,14 +140,8 @@ function NavBar() {
       <Link to="/calendar">
         <Calendar />
       </Link>
-      <Link to="/">
-        {/* mypage? */}
-        <Setting />
-      </Link>
-      <Link to="/">
-        {/* 로그아웃 */}
-        <PowerOff />
-      </Link>
+      <Setting />
+      <PowerOff />
     </Nav>
   );
 }
