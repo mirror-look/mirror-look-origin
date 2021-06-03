@@ -6,6 +6,7 @@ import Box from '@material-ui/core/Box';
 import Webcam from 'react-webcam';
 import DragDrop from '../components/camera/DragDrop';
 import Countdown from '../components/camera/Countdown';
+import Tutorial from '../components/camera/Tutorial';
 
 const videoConstraints = {
   facingMode: 'user'
@@ -63,6 +64,7 @@ function Camera() {
   return (
     <StyledBox>
       <Window>
+        {!cam && !dragDrop ? <Tutorial /> : ''}
         {cam === true ? (
           <Webcam
             audio={false}
