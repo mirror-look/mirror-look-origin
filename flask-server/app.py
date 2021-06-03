@@ -18,6 +18,7 @@ def get_database():
 
 def create_app():
     app = Flask(__name__)
+    api = Api(app, title='mirror-look', doc='/doc')
     app.secret_key = os.urandom(24)
     app.config['JSON_AS_ASCII'] = False
 
@@ -33,8 +34,9 @@ def create_app():
 
     CORS(app)
 
-    from modules_for_app.calendar import calendar
+    from modules_for_app.calendar import calendar, calendar_api
     app.register_blueprint(calendar)
+    api.add_namespace(calendar_api)
 
     from modules_for_app.kakao_login import kakaoOauth
     app.register_blueprint(kakaoOauth)
@@ -45,8 +47,9 @@ def create_app():
     from modules_for_app.weather import weather
     app.register_blueprint(weather)
 
-    from modules_for_app.userinfo import userinfo
+    from modules_for_app.userinfo import userinfo, userinfo_api
     app.register_blueprint(userinfo)
+    api.add_namespace(userinfo_api)
 
     from modules_for_app.classification import classification
     app.register_blueprint(classification)
