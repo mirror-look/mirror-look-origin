@@ -2,10 +2,10 @@ from collections import defaultdict
 
 clothes_by_category = {
     'top': [
-        'sling'
+        'sling',
         'vest',
         'short_sleeve_top',
-        'long_sleeve_top',
+        'long_sleeve_top'
     ],
 
     'outwear': [
@@ -15,9 +15,9 @@ clothes_by_category = {
 
 
     'bottom': [
-        'skirt'
+        'skirt',
         'shorts',
-        'trousers',
+        'trousers'
     ],
 
     'dress': [
@@ -156,8 +156,8 @@ def say_hot_or_cold(user_clothes_on_fit, temperature, categories):
 
 
 if __name__ == '__main__':
-    temperature_for_test = 25
-    user_clothes_on_fit_for_test = ['long_sleeve_top', 'trousers']
+    temperature_for_test = 10
+    user_clothes_on_fit_for_test = ['short_sleeve_top', "shorts"]
 
     user_clothes_on_fit_by_category = user_clothes_by_category(
         user_clothes_on_fit_for_test)
