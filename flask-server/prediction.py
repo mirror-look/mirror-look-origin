@@ -1,6 +1,6 @@
 import tensorflow as tf
 
-def get_prediction(image_path):
+def get_prediction(image_path, model_path):
 
     img = tf.keras.preprocessing.image.load_img(
         image_path,
@@ -13,7 +13,7 @@ def get_prediction(image_path):
     img = img / 255.
     input_data = tf.expand_dims(img, axis=0)
 
-    interpreter = tf.lite.Interpreter(model_path='/home/azure/passion/AI/Demo/output/demo_model_serving.tflite')
+    interpreter = tf.lite.Interpreter(model_path=model_path)
     interpreter.allocate_tensors()
 
     input_details = interpreter.get_input_details()
@@ -37,7 +37,7 @@ def get_prediction(image_path):
     'Jacket': 7, 'Jeans': 8, 'Joggers': 9, 'Jumpsuit': 10,
     'Leggings': 11, 'Parka': 12, 'Romper': 13, 'Shirts': 14,
     'Shorts': 15, 'Skirt': 16, 'Sweater': 17, 'Tank': 18,
-    'Tee': 19, 'Top': 20, 'Trunks': 21}
+    'Top-Tee': 19, 'Tee-Top': 20, 'Trunks': 21}
 
     new_class_indices = {}
 
@@ -53,16 +53,23 @@ def get_prediction(image_path):
 
     results = sorted(results.items(), key=lambda x: x[1], reverse=True)
 
-    tmp = results[:3]
+    tmp = results[:5]
 
     top_3_results = []
 
-    for i in tmp:
+    for i in tmp[:3]:
         label, pred = i
         t = (label, str(pred))
         top_3_results.append(t)
 
-    return top_3_results
+    top_5_results = []
+
+    for i in tmp:
+        label, pred = i
+        t = (label, str(pred))
+        top_5_results.append(t)
+
+    return top_3_results, top_5_results
 
 # # class indices of test dataset:
 # # {'Blazer': 0, 'Blouse': 1, 'Cardigan': 2, 'Coat': 3,
@@ -74,5 +81,6 @@ def get_prediction(image_path):
 # # 'Top': 24, 'Trunks': 25}
 
 # image_path = '/home/azure/passion/flask-server/ootd_storage/42142123.jpg'
-# results = get_prediction(image_path)
+# model_path = '/home/azure/passion/AI/Demo/output/resnet50_model_serving2.tflite'
+# results = get_prediction(image_path, model_path)
 # print(results)

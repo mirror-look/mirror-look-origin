@@ -3,15 +3,17 @@ from PIL import ImageFont, ImageDraw, Image
 import numpy as np
 import time
 import os
+from config import DETECTED_IMAGE_FOLDER
 from tensorflow.keras.models import load_model
 
 # config.py에 추가해서 경로 숨기기
-# UPLOAD_FOLDER
+# DETECTED_IMAGE_FOLDER
+# modal_path
 # labelsPath
 # weightsPath
 # configPath
 
-def object_detection(image_path, labelsPath, weightsPath, configPath):
+def object_detection(image_path, labelsPath, weightsPath, configPath, DETECTED_IMAGE_FOLDER):
 
     # YOLO 라벨(Clothes)
     YOLO_LABELS = open(labelsPath).read().strip().split("\n")
@@ -35,7 +37,7 @@ def object_detection(image_path, labelsPath, weightsPath, configPath):
     height, width, channels = frame.shape
 
     # Detecting objects
-    blob = cv2.dnn.blobFromImage(frame, 1/255, (416, 416), (0, 0, 0), True, crop=False)
+    blob = cv2.dnn.blobFromImage(frame, 1/255, (224, 224), (0, 0, 0), True, crop=False)
 
     yolo_net.setInput(blob)
     outs = yolo_net.forward(output_layers)
@@ -53,7 +55,7 @@ def object_detection(image_path, labelsPath, weightsPath, configPath):
             scores = detection[5:]
             class_id = np.argmax(scores)
             confidence = scores[class_id]
-            if confidence > 0.5:
+            if confidence > 0.2:
                 count += 1
                 # Object detected
                 center_x = int(detection[0] * width)
@@ -75,12 +77,15 @@ def object_detection(image_path, labelsPath, weightsPath, configPath):
                 print(confidence)
 
                 crop_img = frame[yy:yy + hh, xx:xx + hh]
-                crop_img_path = '/home/azure/passion/flask-server/object_detected_image/' +  crop_label + "_" + str(count) + "_" + str(confidence) + ".jpg"
+                crop_img_path = DETECTED_IMAGE_FOLDER + '/' + crop_label + "_" + str(count) + "_" + str(confidence) + ".jpg"
 
-                crop_labels.append(crop_label)
-                crop_img_paths.append(crop_img_path)
+                try:
+                    cv2.imwrite(crop_img_path, crop_img)
+                    crop_labels.append(crop_label)
+                    crop_img_paths.append(crop_img_path)
+                except cv2.error as e:
+                    print("There is no cropped image")
 
-                cv2.imwrite(crop_img_path, crop_img)
 
     return crop_labels, crop_img_paths
 
