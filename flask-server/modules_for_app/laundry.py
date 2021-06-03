@@ -30,7 +30,7 @@ clothes_by_category = {
 
 clothes_by_temperature = {
     'top': {
-        'long_sleeve_top': [17, 22],  # 25
+        'long_sleeve_top': [17, 22],
         'short_sleeve_top': [22, 27],
         'vest': [27, 99],
         'sling': [27, 99],
@@ -53,11 +53,52 @@ clothes_by_temperature = {
         'vest_dress': [27, 99],
         'sling_dress': [27, 99]
     }
-
 }
 
 clothes_for_recommend = {
+    'top': {
+        5: ["두꺼운 니트", "히트택"],
+        9: ["두꺼운 니트"],
+        11: ["니트", "후드티"],
+        12: ["셔츠", '니트', "후드티"],
+        17: ["얇은 니트", "얇은 후드티", "맨투맨"],
+        20: ["긴팔티", "얇은 후드티"],
+        23: ["반팔티", "얇은 셔츠"],
+        27: ["반팔티", "나시티", "민소매"],
+    },
 
+    'outwear': {
+        5: ["야상", "패딩"],
+        9: ["코트"],
+        11: ["트렌치 코트", "간절기 야상"],
+        12: ["자켓", "가디건", "간절기 야상"],
+        17: ["가디건"],
+        20: ["얇은 가디건"],
+        23: ["여름용 가디건"],
+        27: ["여름용 가디건"],
+    },
+
+    'bottom': {
+        5: ["두꺼운 바지", "히트택"],
+        9: ["청바지"],
+        11: ["청바지"],
+        12: ["살색 스타킹", "청바지"],
+        17: ["청바지", "면바지", "슬렉스"],
+        20: ["면바지", "슬랙스", "스키니"],
+        23: ["반바지", "면바지"],
+        27: ["반바지"],
+    },
+
+    'dress': {
+        5: ["겨울용 원피스", "히트택"],
+        9: ["두꺼운 원피스"],
+        11: ["두꺼운 원피스"],
+        12: ["원피스"],
+        17: ["원피스"],
+        20: ["얇은 원피스"],
+        23: ["반팔 원피스"],
+        27: ["민소매 원피스"],
+    }
 }
 
 
@@ -79,21 +120,25 @@ def clothes_for_weather(categories, temperature):
                 clothes_suitable_for_weather.append(clothes)
     return clothes_suitable_for_weather
 
-# def say_hot_or_cold:(user_clothes_on_fit, temperature, categories):
-#     clothes_that_look_cold, clothes_that_look_hot = list(), list()
 
-#     for user_cloth in user_clothes_on_fit:
+def recommend_clothes(temperature, categories):
+    recommended_clothes_by_category = defaultdict()
 
-    return
+    for category in categories:
+        for temperature_range in clothes_for_recommend[category]:
+            if temperature > temperature_range:
+                continue
+            else:
+                recommended_clothes_by_category[category] = clothes_for_recommend[category][temperature_range]
+                break
 
-
-def recommend_clothes(temperature, user_clothes_on_fit):
+    return recommended_clothes_by_category
 
     return
 
 
 if __name__ == '__main__':
-    temperature_for_test = 25
+    temperature_for_test = 0
     user_clothes_on_fit_for_test = ['long_sleeve_top', 'trousers']
 
     user_clothes_on_fit_by_category = user_clothes_by_category(
@@ -102,6 +147,7 @@ if __name__ == '__main__':
     clothes_suitable_for_weather = clothes_for_weather(
         user_clothes_on_fit_by_category, temperature_for_test)
 
-    #
+    recommended_clothes = recommend_clothes(
+        temperature_for_test, user_clothes_on_fit_by_category)
 
-    print(clothes_suitable_for_weather)
+    print(dict(recommended_clothes))
