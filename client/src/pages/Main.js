@@ -1,4 +1,6 @@
 import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
+
 import axios from 'axios';
 import styled from 'styled-components';
 import Box from '@material-ui/core/Box';
@@ -78,7 +80,11 @@ const RealWeather = styled(Box)`
 `;
 
 function TodayOOTD() {
-  return <TodayOOTDBox>오늘의 OOTD</TodayOOTDBox>;
+  return (
+    <TodayOOTDBox>
+      <Link to="/camera">오늘의 OOTD</Link>
+    </TodayOOTDBox>
+  );
 }
 
 const TodayOOTDBox = styled(Box)`
@@ -96,10 +102,18 @@ const TodayOOTDBox = styled(Box)`
   margin: 30px;
   padding: 30px;
   text-align: center;
+  a {
+    text-decoration: none;
+    color: #8f00ff;
+  }
 `;
 
 function Calendar() {
-  return <StyledCalender>OOTD 캘린더</StyledCalender>;
+  return (
+    <StyledCalender>
+      <Link to="/calendar">OOTD 캘린더</Link>
+    </StyledCalender>
+  );
 }
 
 const StyledCalender = styled(Box)`
@@ -118,6 +132,10 @@ const StyledCalender = styled(Box)`
   font-weight: bold;
   font-size: 20px;
   line-height: 24px;
+  a {
+    text-decoration: none;
+    color: #8f00ff;
+  }
   /* identical to box height, or 120% */
 `;
 
@@ -188,8 +206,8 @@ function Main({
           <Profile userName={userName} />
           <Weather />
         </UserInfo>
-        <TodayOOTD></TodayOOTD>
-        <Calendar></Calendar>
+        <TodayOOTD />
+        <Calendar />
       </Body>
       {modalOpen === true ? (
         <AgreementModal
