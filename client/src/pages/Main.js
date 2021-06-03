@@ -3,8 +3,6 @@ import axios from 'axios';
 import styled from 'styled-components';
 import Box from '@material-ui/core/Box';
 import Profile from '../components/common/Profile';
-import NavBar from '../components/common/NavBar';
-import Header from '../components/common/Header';
 import WindowWrapper from '../components/common/WindowWrapper';
 import AgreementModal from '../components/common/AgreementModal';
 
@@ -155,7 +153,7 @@ function Main() {
       })
       .catch(function (err) {
         console.log(err);
-      }, []);
+      });
 
     if (!!window.sessionStorage.getItem('userAgreement')) {
       const token = `Bearer ${window.sessionStorage.getItem('token')}`;
@@ -175,7 +173,7 @@ function Main() {
           console.log(err);
         });
     }
-  });
+  }, []);
 
   return (
     <WindowWrapper>

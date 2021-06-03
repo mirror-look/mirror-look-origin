@@ -5,12 +5,14 @@ import Button from '@material-ui/core/Button';
 import Box from '@material-ui/core/Box';
 import Webcam from 'react-webcam';
 import DragDrop from '../components/camera/DragDrop';
+import Countdown from '../components/camera/Countdown';
 
 const videoConstraints = {
   facingMode: 'user'
 };
 
 function Camera() {
+  const [countdown, setCountdown] = useState();
   const [cam, setCam] = useState();
   const [dragDrop, setDragDrop] = useState();
   const webcamRef = useRef(null);
@@ -33,6 +35,11 @@ function Camera() {
   function handleConfirm() {
     console.log('이미지 확인 클릭했다!');
     if (cam === true) {
+      setCountdown(true);
+      setTimeout(function () {
+        setCountdown(false);
+      }, 5000);
+
       console.log('촬영된 이미지 보낼 준비!');
       capture();
     } else if (
@@ -64,6 +71,13 @@ function Camera() {
             screenshotFormat="image/*"
             videoConstraints={videoConstraints}
           />
+        ) : (
+          ''
+        )}
+        {countdown === true ? (
+          <CountdownBox>
+            <Countdown />
+          </CountdownBox>
         ) : (
           ''
         )}
@@ -101,11 +115,9 @@ const StyledBox = styled('div')`
 `;
 
 const Window = styled(Box)`
-  height: 50px;
   border-radius: 30px;
   width: 1230px;
   height: 682px;
-
   background: #f4f5fa;
   box-shadow: 0px 20px 100px #0057ff;
   border-radius: 30px;
@@ -194,6 +206,10 @@ const Confirm = styled(Button)`
   text-align: center;
 
   color: #f4f5fa;
+`;
+
+const CountdownBox = styled(Box)`
+  position: absolute;
 `;
 
 export default Camera;
