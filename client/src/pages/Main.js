@@ -121,12 +121,17 @@ const StyledCalender = styled(Box)`
   /* identical to box height, or 120% */
 `;
 
-function Main() {
+function Main({
+  setAgreement,
+  setUserAgreement,
+  setUserKakaoId,
+  setUserProfileImage
+}) {
   const [userName, setUserName] = useState('');
-  const [userProfileImage, setUserProfileImage] = useState('');
-  const [userAgreement, setUserAgreement] = useState();
-  const [agreement, setAgreement] = useState();
-  const [userKakaoId, setUserKakaoId] = useState('');
+  //const [userProfileImage, setUserProfileImage] = useState('');
+  //const [userAgreement, setUserAgreement] = useState();
+  //const [agreement, setAgreement] = useState();
+  //const [userKakaoId, setUserKakaoId] = useState('');
   const [modalOpen, setModalOpen] = useState();
   const modalTitle = '위치 정보 제공 동의';
   const modalComment = `Mirror-Look은 날씨 기반 추천 서비스예요. 저희가 위치 정보를 열람해도 될까요?`;
@@ -142,8 +147,8 @@ function Main() {
       .then(function (response) {
         console.log(response);
         setUserName(response.data.user_info.user_name);
-        setUserKakaoId(response.data.user_info.kakao_id_number);
         setUserProfileImage(response.data.user_info.profile_img);
+        setUserKakaoId(response.data.user_info.user_id);
         setAgreement(response.data.user_info.agreement);
         console.log('사용자 정보 받았다!');
         if (response.data.user_info.agreement === 'false') {
