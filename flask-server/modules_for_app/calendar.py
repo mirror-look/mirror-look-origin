@@ -38,10 +38,20 @@ parser_calendar.add_argument('sleeve')
 # 캘린더 화면 OOTD 등록 표시용
 parser_calendar.add_argument('month')
 
+calendar_model = calendar_api.model('Model',{
+    'user_id' : fields.String(),
+    'date' : fields.String(),
+    'ootd_path' : fields.String(),
+    'clothes_feature' : fields.Dict()
+
+})
+
 @calendar_api.route('/')
 class Calendar(Resource):
     # 캘린더 CRUD
     # Create
+    @calendar_api.expect(parser_calendar)
+    @calendar_api.response(200, 'Success', calendar_model)
     def post(self):
         args = parser_calendar.parse_args()
 
@@ -76,6 +86,8 @@ class Calendar(Resource):
                 ootd_enrolled_dates=ootd_enrolled_dates
             )
 
+    @calendar_api.expect(parser_calendar)
+    @calendar_api.response(200, 'Success', calendar_model)
     def put(self):
         # Update
         args = parser_calendar.parse_args()
