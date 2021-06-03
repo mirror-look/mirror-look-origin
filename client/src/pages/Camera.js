@@ -5,12 +5,15 @@ import Button from '@material-ui/core/Button';
 import Box from '@material-ui/core/Box';
 import Webcam from 'react-webcam';
 import DragDrop from '../components/camera/DragDrop';
+import Countdown from '../components/camera/Countdown';
+import Tutorial from '../components/camera/Tutorial';
 
 const videoConstraints = {
   facingMode: 'user'
 };
 
 function Camera() {
+  const [countdown, setCountdown] = useState();
   const [cam, setCam] = useState();
   const [dragDrop, setDragDrop] = useState();
   const webcamRef = useRef(null);
@@ -33,8 +36,12 @@ function Camera() {
   function handleConfirm() {
     console.log('이미지 확인 클릭했다!');
     if (cam === true) {
-      console.log('촬영된 이미지 보낼 준비!');
-      capture();
+      setCountdown(true);
+      setTimeout(function () {
+        setCountdown(false);
+        console.log('촬영된 이미지 보낼 준비!');
+        capture();
+      }, 5000);
     } else if (
       (dragDrop === true) &
       !!window.sessionStorage.getItem('uploadedImage')
@@ -57,13 +64,25 @@ function Camera() {
   return (
     <StyledBox>
       <Window>
+        {!cam && !dragDrop ? <Tutorial /> : ''}
         {cam === true ? (
           <Webcam
+            style={{
+              height: '100%',
+              width: '100%'
+            }}
             audio={false}
             ref={webcamRef}
             screenshotFormat="image/*"
             videoConstraints={videoConstraints}
           />
+        ) : (
+          ''
+        )}
+        {countdown === true ? (
+          <CountdownBox>
+            <Countdown />
+          </CountdownBox>
         ) : (
           ''
         )}
@@ -101,11 +120,9 @@ const StyledBox = styled('div')`
 `;
 
 const Window = styled(Box)`
-  height: 50px;
   border-radius: 30px;
   width: 1230px;
   height: 682px;
-
   background: #f4f5fa;
   box-shadow: 0px 20px 100px #0057ff;
   border-radius: 30px;
@@ -194,6 +211,10 @@ const Confirm = styled(Button)`
   text-align: center;
 
   color: #f4f5fa;
+`;
+
+const CountdownBox = styled(Box)`
+  position: absolute;
 `;
 
 export default Camera;
