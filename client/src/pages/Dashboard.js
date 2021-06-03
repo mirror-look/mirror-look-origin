@@ -4,6 +4,8 @@ import { useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import Box from '@material-ui/core/Box';
 
+const URL = `http://localhost:5000`;
+
 const styledPhoto = {
   width: '364px',
   height: '740px',
@@ -38,7 +40,8 @@ function Dashboard() {
 
   useEffect(() => {
     console.log(`user_id ${userId}, date ${date}`);
-    setImgSrc(`calendar?user_id=${userId}&date=${date}`);
+    console.log(imgSrc);
+    setImgSrc(`${URL}/calendar?user_id=${userId}&date=${date}`);
   }, []);
 
   if (search === '') {
