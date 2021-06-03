@@ -38,10 +38,9 @@ function Camera() {
       setCountdown(true);
       setTimeout(function () {
         setCountdown(false);
+        console.log('촬영된 이미지 보낼 준비!');
+        capture();
       }, 5000);
-
-      console.log('촬영된 이미지 보낼 준비!');
-      capture();
     } else if (
       (dragDrop === true) &
       !!window.sessionStorage.getItem('uploadedImage')
