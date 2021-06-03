@@ -67,6 +67,10 @@ function Camera() {
         {!cam && !dragDrop ? <Tutorial /> : ''}
         {cam === true ? (
           <Webcam
+            style={{
+              height: '100%',
+              width: '100%'
+            }}
             audio={false}
             ref={webcamRef}
             screenshotFormat="image/*"
