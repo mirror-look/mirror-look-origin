@@ -8,8 +8,8 @@ instance/*
 .env
 flask-server/config.py
 flask-server/data
-flask-server/object_detected_image
 flask-server/ootd_storage
+flask-server/object_detected_image
 
 ### Flask.Python Stack ###
 # Byte-compiled / optimized / DLL files
