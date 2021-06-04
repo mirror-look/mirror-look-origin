@@ -10,28 +10,28 @@ const StyledFriendImage = {
   margin: '10px'
 };
 
-function Profile({ username }) {
+function Profile(props) {
+  console.log(props);
   return (
     <ProfileBox>
       <img
-        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQo2JQNgUBTWG8HjybCv26CSckhyQyol_O0tA&usqp=CAU"
-        alt={username}
+        src={props.profileImg}
+        alt={props.username}
         style={StyledFriendImage}
       />
       <ProfileContent>
-        <h3>{username}</h3>
-        <p className="nickname">꼬부기</p>
+        <h3>{props.username}</h3>
         <PostCount count={23}></PostCount>
         <p>나의 게시물</p>
       </ProfileContent>
-      {/*// 이미지 ..아마 path로 받을듯?
-			  // 이름
-			  // 별명?
-			  // 이상한 숫자??
-			  // 나의 코디*/}
     </ProfileBox>
   );
 }
+
+Profile.defaultProps = {
+  profileImg:
+    'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQo2JQNgUBTWG8HjybCv26CSckhyQyol_O0tA&usqp=CAU'
+};
 
 function PostCount({ count }) {
   return <StyledUserName>{count}</StyledUserName>;

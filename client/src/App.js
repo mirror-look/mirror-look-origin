@@ -20,7 +20,6 @@ import FriendPage from './pages/FriendPage.js';
 function App() {
   let { pathname } = useLocation();
   console.log('pathname == ', pathname);
-  const [userProfileImage, setUserProfileImage] = useState('');
   const [userAgreement, setUserAgreement] = useState();
   const [agreement, setAgreement] = useState();
   const [userKakaoId, setUserKakaoId] = useState('');
@@ -54,7 +53,6 @@ function App() {
                 render={() => (
                   <Main
                     setUserAgreement={setUserAgreement}
-                    setUserProfileImage={setUserProfileImage}
                     setUserKakaoId={setUserKakaoId}
                     setAgreement={setAgreement}
                   />
