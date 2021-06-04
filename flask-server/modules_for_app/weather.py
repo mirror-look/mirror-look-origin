@@ -44,6 +44,8 @@ def get_weather_info():
     current_weather = data['current']['weather'][0]['description']
     hourly_weathers_of_the_day_raw = data['hourly']
     hourly_weathers_of_the_day = defaultdict(str)
+    current_temperatures = int(data['current']['temp'] - 273.15)
+    current_weather_icon = data['current']['weather'][0]['icon']
 
     for hourly_weather in hourly_weathers_of_the_day_raw:
         time = localtime(hourly_weather['dt'])
@@ -55,5 +57,7 @@ def get_weather_info():
 
     return jsonify(
         current_weather=current_weather,
-        hourly_weather=hourly_weathers_of_the_day
+        hourly_weather=hourly_weathers_of_the_day,
+        current_temperatures=current_temperatures,
+        current_weather_icon=current_weather_icon
     )
