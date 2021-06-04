@@ -24,20 +24,27 @@ def object_detection(image_path, labelsPath, weightsPath, configPath, DETECTED_I
     # YOLO 출력층 설정
     layer_names = yolo_net.getLayerNames()
     output_layers = [layer_names[i[0] - 1] for i in yolo_net.getUnconnectedOutLayers()]
-    colors = np.random.uniform(0, 255, size=(len(YOLO_LABELS), 3))
+    print('output_layer name: ', output_layers)
+
+    # colors = np.random.uniform(0, 255, size=(len(YOLO_LABELS), 3))
 
     # 영상 할당
     file_path = image_path
     cap = cv2.VideoCapture(file_path)
 
     # 화면 폰트
-    font = cv2.FONT_HERSHEY_SIMPLEX
+    # font = cv2.FONT_HERSHEY_SIMPLEX
 
     _, frame = cap.read()
     height, width, channels = frame.shape
 
     # Detecting objects
     blob = cv2.dnn.blobFromImage(frame, 1/255, (224, 224), (0, 0, 0), True, crop=False)
+
+    print('type: ', type(blob))
+    print('shape: ', blob.shape)
+    print('size: ', blob.size)
+
 
     yolo_net.setInput(blob)
     outs = yolo_net.forward(output_layers)
@@ -73,8 +80,8 @@ def object_detection(image_path, labelsPath, weightsPath, configPath, DETECTED_I
 
                 # object detection된 이미지의 object detection label
                 crop_label = YOLO_LABELS[class_id]
-                print(crop_label)
-                print(confidence)
+                # print(crop_label)
+                # print(confidence)
 
                 crop_img = frame[yy:yy + hh, xx:xx + hh]
                 crop_img_path = DETECTED_IMAGE_FOLDER + '/' + crop_label + "_" + str(count) + "_" + str(confidence) + ".jpg"
@@ -89,12 +96,13 @@ def object_detection(image_path, labelsPath, weightsPath, configPath, DETECTED_I
 
     return crop_labels, crop_img_paths
 
-# image_path = '/home/azure/passion/AI/YOLOv3/static/blouse3.jpg'
-# labelsPath = '/home/azure/passion/AI/YOLOv3/deepfashion2yolov3model/df2.names'
-# weightsPath = '/home/azure/passion/AI/YOLOv3/deepfashion2yolov3model/yolov3-df2_15000.weights'
-# configPath = '/home/azure/passion/AI/YOLOv3/deepfashion2yolov3model/yolov3-df2.cfg'
+image_path = '/home/azure/passion/AI/YOLOv3/static/blouse3.jpg'
+labelsPath = '/home/azure/passion/AI/YOLOv3/deepfashion2yolov3model/df2.names'
+weightsPath = '/home/azure/passion/AI/YOLOv3/deepfashion2yolov3model/yolov3-df2_15000.weights'
+configPath = '/home/azure/passion/AI/YOLOv3/deepfashion2yolov3model/yolov3-df2.cfg'
+DETECTED_IMAGE_FOLDER = '/home/azure/passion/flask-server/object_detected_image'
 
-# labels, paths = object_detection(image_path, labelsPath, weightsPath, configPath)
+labels, paths = object_detection(image_path, labelsPath, weightsPath, configPath, DETECTED_IMAGE_FOLDER)
 
 # print(labels)
 # print(paths)
