@@ -8,6 +8,8 @@ import Profile from '../components/common/Profile';
 import WindowWrapper from '../components/common/WindowWrapper';
 import AgreementModal from '../components/common/AgreementModal';
 
+const URL = `http://localhost:5000`;
+
 function Hello({ userName }) {
   return <StyledHello>{userName}님 안녕하세요!</StyledHello>;
 }
@@ -31,7 +33,7 @@ function Weather() {
       };
       console.log(data);
       axios
-        .post('http://localhost:5000/weather', data)
+        .post(`${URL}/weather`, data)
         .then(function (response) {
           console.log('날씨 정보 받아왔다!');
           setWeather(response.data.current_weather);
@@ -135,14 +137,9 @@ const StyledCalender = styled(Box)`
   /* identical to box height, or 120% */
 `;
 
-function Main({
-  setAgreement,
-  setUserAgreement,
-  setUserKakaoId,
-  setUserProfileImage
-}) {
-  const [userName, setUserName] = useState('');
-  //const [userProfileImage, setUserProfileImage] = useState('');
+function Main({ setAgreement, setUserAgreement, setUserKakaoId }) {
+  const [userName, setUserName] = useState('꼬부기');
+  const [userProfileImage, setUserProfileImage] = useState();
   //const [userAgreement, setUserAgreement] = useState();
   //const [agreement, setAgreement] = useState();
   //const [userKakaoId, setUserKakaoId] = useState('');
@@ -153,7 +150,7 @@ function Main({
   useEffect(() => {
     const token = `Bearer ${window.sessionStorage.getItem('token')}`;
     axios
-      .get('http://localhost:5000/userinfo', {
+      .get(`${URL}/userinfo`, {
         headers: {
           Authorization: token
         }
@@ -180,7 +177,7 @@ function Main({
         agreement: window.sessionStorage.getItem('userAgreement')
       };
       axios
-        .put('http://localhost:5000/userinfo', data, {
+        .put(`${URL}/userinfo`, data, {
           headers: {
             Authorization: token
           }
@@ -199,7 +196,7 @@ function Main({
       <Body>
         <UserInfo>
           <Hello userName={userName} />
-          <Profile userName={userName} />
+          <Profile username={userName} profileImg={userProfileImage} />
           <Weather />
         </UserInfo>
         <TodayOOTD />
