@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCodepen } from '@fortawesome/free-brands-svg-icons';
 import { faLandmark } from '@fortawesome/free-solid-svg-icons';
-import { faCog } from '@fortawesome/free-solid-svg-icons';
+import { faCamera } from '@fortawesome/free-solid-svg-icons';
 import { faUser } from '@fortawesome/free-solid-svg-icons';
 import { faPowerOff } from '@fortawesome/free-solid-svg-icons';
 import { faCalendarAlt } from '@fortawesome/free-solid-svg-icons';
@@ -90,17 +90,19 @@ const PowerOffChlid = styled(FontAwesomeIcon)`
   color: #8595a8;
 `;
 
-function Setting() {
+function Camera() {
   return (
     <IconWrapper>
-      <IconButton>
-        <SettingChild icon={faCog} />
-      </IconButton>
+      <Link to="/camera">
+        <IconButton>
+          <CameraChild icon={faCamera} />
+        </IconButton>
+      </Link>
     </IconWrapper>
   );
 }
 
-const SettingChild = styled(FontAwesomeIcon)`
+const CameraChild = styled(FontAwesomeIcon)`
   color: #8595a8;
 `;
 
@@ -140,7 +142,7 @@ function NavBar() {
       <Link to="/calendar">
         <Calendar />
       </Link>
-      <Setting />
+      <Camera />
       <PowerOff />
     </Nav>
   );
