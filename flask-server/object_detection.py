@@ -23,10 +23,10 @@ def object_detection(image_path, labelsPath, weightsPath, configPath, DETECTED_I
 
     # YOLO 출력층 설정
     layer_names = yolo_net.getLayerNames()
-    print(layer_names)
-    print(len(layer_names))
+    # print(layer_names)
+    # print(len(layer_names))
     output_layers = [layer_names[i[0] - 1] for i in yolo_net.getUnconnectedOutLayers()]
-    print('output_layer name: ', output_layers)
+    # print('output_layer name: ', output_layers)
 
     # colors = np.random.uniform(0, 255, size=(len(YOLO_LABELS), 3))
 
@@ -42,14 +42,14 @@ def object_detection(image_path, labelsPath, weightsPath, configPath, DETECTED_I
 
     # _, frame = cap.read()
     height, width, channels = cap.shape
-    print(cap.shape)
+    # print(cap.shape)
 
     # Detecting objects
     blob = cv2.dnn.blobFromImage(cap, 1/255, (224, 224), (0, 0, 0), True, crop=False)
 
-    print('type: ', type(blob))
-    print('shape: ', blob.shape)
-    print('size: ', blob.size)
+    # print('type: ', type(blob))
+    # print('shape: ', blob.shape)
+    # print('size: ', blob.size)
 
 
     yolo_net.setInput(blob)
@@ -94,11 +94,14 @@ def object_detection(image_path, labelsPath, weightsPath, configPath, DETECTED_I
 
                 try:
                     cv2.imwrite(crop_img_path, crop_img)
-                    crop_labels.append(crop_label)
-                    crop_img_paths.append(crop_img_path)
+                    if crop_label not in crop_labels:
+                        crop_labels.append(crop_label)
+                        crop_img_paths.append(crop_img_path)
                 except cv2.error as e:
                     print("There is no cropped image")
 
+    print(crop_labels)
+    print(crop_img_paths)
 
     return crop_labels, crop_img_paths
 
