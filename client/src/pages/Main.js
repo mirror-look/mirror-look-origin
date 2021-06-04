@@ -81,9 +81,9 @@ const RealWeather = styled(Box)`
 
 function TodayOOTD() {
   return (
-    <TodayOOTDBox>
-      <Link to="/camera">오늘의 OOTD</Link>
-    </TodayOOTDBox>
+    <Link to="/camera">
+      <TodayOOTDBox>오늘의 OOTD</TodayOOTDBox>
+    </Link>
   );
 }
 
@@ -102,17 +102,13 @@ const TodayOOTDBox = styled(Box)`
   margin: 30px;
   padding: 30px;
   text-align: center;
-  a {
-    text-decoration: none;
-    color: #8f00ff;
-  }
 `;
 
 function Calendar() {
   return (
-    <StyledCalender>
-      <Link to="/calendar">OOTD 캘린더</Link>
-    </StyledCalender>
+    <Link to="/calendar">
+      <StyledCalender>OOTD 캘린더</StyledCalender>
+    </Link>
   );
 }
 
