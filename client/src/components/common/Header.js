@@ -6,7 +6,7 @@ import Logo from './Logo';
 import UserName from './UserName';
 
 function Header() {
-  const [userName, setUserName] = useState();
+  const [userName, setUserName] = useState('꼬부기');
   useEffect(() => {
     const token = `Bearer ${window.sessionStorage.getItem('token')}`;
     axios
