@@ -32,12 +32,7 @@ def get_prediction(image_path, model_path):
     output_data = interpreter.get_tensor(output_details[0]['index'])
     # print("output_data: ", output_data)
 
-    class_indices = {'Blazer': 0, 'Blouse': 1, 'Cardigan': 2,
-    'Coat': 3, 'Cutoffs': 4, 'Dress': 5, 'Hoodie': 6,
-    'Jacket': 7, 'Jeans': 8, 'Joggers': 9, 'Jumpsuit': 10,
-    'Leggings': 11, 'Parka': 12, 'Romper': 13, 'Shirts': 14,
-    'Shorts': 15, 'Skirt': 16, 'Sweater': 17, 'Tank': 18,
-    'Top-Tee': 19, 'Tee-Top': 20, 'Trunks': 21}
+    class_indices = {'Blazer': 0, 'Blouse-Shirts': 1, 'Cardigan': 2, 'Coat': 3, 'Cottonpants': 4, 'Cutoffs': 5, 'Dress': 6, 'Hoodie': 7, 'Jacket': 8, 'Jeans': 9, 'Joggers': 10, 'Jumpsuit-Romper': 11, 'Leggings': 12, 'Parka': 13, 'Shorts': 14, 'Skirt': 15, 'Sweater': 16, 'Sweatpants': 17, 'Tee': 18}
 
     new_class_indices = {}
 
@@ -70,15 +65,6 @@ def get_prediction(image_path, model_path):
         top_5_results.append(t)
 
     return top_3_results, top_5_results
-
-# # class indices of test dataset:
-# # {'Blazer': 0, 'Blouse': 1, 'Cardigan': 2, 'Coat': 3,
-# # 'Cutoffs': 4, 'Dress': 5, 'Hoodie': 6, 'Jacket': 7,
-# # 'Jeans': 8, 'Joggers': 9, 'Jumpsuit': 10, 'Leggings': 11,
-# # 'Nightdress': 12, 'Parka': 13, 'Poncho': 14, 'Romper': 15,
-# # 'Shirtdress': 16, 'Shirts': 17, 'Shorts': 18, 'Skirt': 19,
-# # 'Sundress': 20, 'Sweater': 21, 'Tank': 22, 'Tee': 23,
-# # 'Top': 24, 'Trunks': 25}
 
 # image_path = '/home/azure/passion/flask-server/ootd_storage/42142123.jpg'
 # model_path = '/home/azure/passion/AI/Demo/output/resnet50_model_serving2.tflite'

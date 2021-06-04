@@ -137,6 +137,8 @@ Eval/
 Img/
 DeepFashion/
 static/
+# model
+final1.h5
 
 # Spyder project settings
 .spyderproject
