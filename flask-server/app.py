@@ -54,6 +54,9 @@ def create_app():
     from modules_for_app.classification import classification
     app.register_blueprint(classification)
 
+    from modules_for_app.recommend import recommend
+    app.register_blueprint(recommend)
+
     return app
 
 
