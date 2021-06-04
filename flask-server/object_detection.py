@@ -96,13 +96,13 @@ def object_detection(image_path, labelsPath, weightsPath, configPath, DETECTED_I
 
     return crop_labels, crop_img_paths
 
-image_path = '/home/azure/passion/AI/YOLOv3/static/blouse3.jpg'
-labelsPath = '/home/azure/passion/AI/YOLOv3/deepfashion2yolov3model/df2.names'
-weightsPath = '/home/azure/passion/AI/YOLOv3/deepfashion2yolov3model/yolov3-df2_15000.weights'
-configPath = '/home/azure/passion/AI/YOLOv3/deepfashion2yolov3model/yolov3-df2.cfg'
-DETECTED_IMAGE_FOLDER = '/home/azure/passion/flask-server/object_detected_image'
+# image_path = '/home/azure/passion/AI/YOLOv3/static/blouse3.jpg'
+# labelsPath = '/home/azure/passion/AI/YOLOv3/deepfashion2yolov3model/df2.names'
+# weightsPath = '/home/azure/passion/AI/YOLOv3/deepfashion2yolov3model/yolov3-df2_15000.weights'
+# configPath = '/home/azure/passion/AI/YOLOv3/deepfashion2yolov3model/yolov3-df2.cfg'
+# DETECTED_IMAGE_FOLDER = '/home/azure/passion/flask-server/object_detected_image'
 
-labels, paths = object_detection(image_path, labelsPath, weightsPath, configPath, DETECTED_IMAGE_FOLDER)
+# labels, paths = object_detection(image_path, labelsPath, weightsPath, configPath, DETECTED_IMAGE_FOLDER)
 
 # print(labels)
 # print(paths)
