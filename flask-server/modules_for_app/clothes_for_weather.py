@@ -116,7 +116,8 @@ def clothes_for_weather(categories, temperature):
     clothes_suitable_for_weather = list()
     for category in categories:
         for clothes in clothes_by_temperature[category]:
-            if temperature in range(clothes_by_temperature[category][clothes][0], clothes_by_temperature[category][clothes][1]):
+            temperature_range = clothes_by_temperature[category][clothes]
+            if temperature_range[0] <= temperature < temperature_range[1]:
                 clothes_suitable_for_weather.append(clothes)
     return clothes_suitable_for_weather
 
@@ -133,13 +134,6 @@ def recommend_clothes(temperature, categories):
                 break
 
     return recommended_clothes_by_category
-
-
-temperature_cloth = {
-    (-10, 16): {'long_sleeve_outwear', 'trousers', 'skirt'},
-    (17, 23): {'long_sleeve_top', 'short_sleeve_outwear', 'long_sleeve_dress'},
-    (24, 40): {'short_sleeve_top', 'vest', 'sling', 'shorts', 'short_sleeve_dress', 'vest_dress', 'sling_dress'}
-}
 
 
 def say_hot_or_cold(user_clothes_on_fit, temperature, categories):
