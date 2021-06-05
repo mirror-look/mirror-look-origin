@@ -33,6 +33,7 @@ user_model = userinfo_api.model('Model',{
     'user_name' : fields.String(),
     'profile_img' : fields.String(),
     'agreement' : fields.String(),
+    'gender' : fields.String(),
 
 })
 header = userinfo_api.parser()
@@ -52,7 +53,8 @@ class Userinfo(Resource):
             'user_name' : user.user_name,
             'user_id' : user.kakao_id_number,
             'profile_img' : user.profile_img,
-            'agreement' : user.agreement
+            'agreement' : user.agreement,
+            'gender' : user.gender
         }
 
         return jsonify(
