@@ -37,7 +37,6 @@ def callback():
             return make_response({"message": "INVALID_CODE"}, 400) # 에러 처리
         access_token = token_json.get("access_token") # 카카오 소셜로그인을 통해 유저에 대한 정보를 받을 권한이 있는 토큰
         # access token 받아오는 통신
-        session['access_token'] = access_token
 
         # access token 기반으로 유저 정보 요청하는 통신
         profile_request = requests.get(
@@ -48,7 +47,6 @@ def callback():
         user_name = data.get("kakao_account").get("profile").get("nickname")
         profile_img = data.get("kakao_account").get("profile").get("profile_image_url")
         gender = data.get("kakao_account").get("gender")
-        print("user",data)
 
         # 토큰 생성
         token = create_access_token(identity = kakao_id_number)
