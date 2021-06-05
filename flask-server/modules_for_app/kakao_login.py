@@ -37,6 +37,7 @@ def callback():
             return make_response({"message": "INVALID_CODE"}, 400) # 에러 처리
         access_token = token_json.get("access_token") # 카카오 소셜로그인을 통해 유저에 대한 정보를 받을 권한이 있는 토큰
         # access token 받아오는 통신
+        session['access_token'] = access_token
 
         # access token 기반으로 유저 정보 요청하는 통신
         profile_request = requests.get(
@@ -46,7 +47,8 @@ def callback():
         kakao_id_number = data.get("id")
         user_name = data.get("kakao_account").get("profile").get("nickname")
         profile_img = data.get("kakao_account").get("profile").get("profile_image_url")
-        print("user",user_name)
+        gender = data.get("kakao_account").get("gender")
+        print("user",data)
 
         # 토큰 생성
         token = create_access_token(identity = kakao_id_number)
@@ -68,7 +70,8 @@ def callback():
                 user_name = user_name,
                 kakao_id_number = kakao_id_number,
                 profile_img = profile_img,
-                agreement = "false"
+                agreement = "false",
+                gender = gender
             )
             user_info.save()
             return jsonify(status = 200, token = token, user = "false") #처음 로그인
@@ -78,14 +81,6 @@ def callback():
 
     except access_token.DoesNotExist:
         return make_response({"message" : "INVALID_TOKEN"}, 400)
-
-@kakaoOauth.route("/logout")
-def logout():
-    # 카카오계정과 함께 로그아웃하는 방법
-    client_id = CLIENT_ID
-    redirect_uri = "http://localhost:3000/login"
-    kakao_oauthurl = f"https://kauth.kakao.com/oauth/logout?client_id={client_id}&logout_redirect_uri={redirect_uri}"
-    return redirect(kakao_oauthurl)
 
 @kakaoOauth.route("/protected")
 @jwt_required()
