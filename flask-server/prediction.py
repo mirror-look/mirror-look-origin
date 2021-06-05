@@ -54,17 +54,19 @@ def get_prediction(image_path, model_path):
 
     for i in tmp[:3]:
         label, pred = i
-        t = (label, str(pred))
+        t = label
         top_3_results.append(t)
 
-    top_5_results = []
+    # top_5_results = []
 
-    for i in tmp:
-        label, pred = i
-        t = (label, str(pred))
-        top_5_results.append(t)
+    # for i in tmp:
+    #     label, pred = i
+    #     t = label
+    #     top_5_results.append(t)
 
-    return top_3_results, top_5_results
+    print(top_3_results)
+
+    return top_3_results
 
 # image_path = '/home/azure/passion/flask-server/ootd_storage/42142123.jpg'
 # model_path = '/home/azure/passion/AI/Demo/output/resnet50_model_serving2.tflite'

@@ -26,8 +26,9 @@ def upload_file():
         top_3_result = []
         # top_5_result = []
         for idx, path in enumerate(paths):
-            top_3_prediction, top_5_prediction = get_prediction(path, model_path)
-            temp_3 = {labels[idx]: top_3_prediction}
+            top_3_prediction = get_prediction(path, model_path) # ['Blouse-Shirts', 'Tee', 'Jacket']
+            # temp_3 = {labels[idx]: top_3_prediction}
+            temp_3 = [labels[idx], top_3_prediction[0], top_3_prediction[1], top_3_prediction[2]]
             # temp_5 = {labels[idx]: top_5_prediction}
             # print(temp)
             top_3_result.append(temp_3)
@@ -38,7 +39,7 @@ def upload_file():
                 'top_3_result' : top_3_result
             }
 
-        print(top_3_result)
+        print(result)
 
         return jsonify(
             status=200,
@@ -48,7 +49,6 @@ def upload_file():
     return jsonify(
         status=200
     )
-
 
 
 
