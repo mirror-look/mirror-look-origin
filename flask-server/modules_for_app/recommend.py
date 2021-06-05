@@ -7,6 +7,7 @@ import uuid
 from mongoengine import Document, StringField, DictField, IntField, Q
 from marshmallow import Schema, fields
 from .clothes_for_weather import *
+from .clothes_for_laundry import *
 
 # 상위 디렉토리 import를 위한 경로 설정
 current_dir = os.path.dirname(os.path.abspath(__file__))
@@ -27,6 +28,8 @@ parser_recommend.add_argument('temperature_from_openweather_api', type=int)
 parser_recommend.add_argument(
     'selected_clothes_from_top_3_result', action='append')
 
+parser_recommend.add_argument(
+    'sub_category', action='append')
 
 recommend_model = recommend_api.model('Model', {
     'temperature_from_openweather_api': fields.Integer(),
@@ -56,5 +59,14 @@ class Recommend(Resource):
             recommended_clothes=recommended_clothes
         )
 
+    def get(self):
+        args = parser_recommend.parse_args()
+        sub_category = args['sub_category']
+
+        laundry_recommended = recommend_laundry(sub_category)
+
+        return jsonify(
+            laundry_recommended = laundry_recommended
+        )
 
 api.add_resource(Recommend, '/recommend')
