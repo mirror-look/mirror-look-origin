@@ -101,6 +101,11 @@ clothes_for_recommend = {
     }
 }
 
+# test
+laundry_recommend = {
+    "세탁방법 1" : {"옷 종류"},
+    "세탁방법 2" : {"옷 종류"}
+}
 
 def user_clothes_by_category(user_clothes_on_fit):
     user_clothes_on_fit_by_category = list()
