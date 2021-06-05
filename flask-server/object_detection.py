@@ -13,7 +13,10 @@ from tensorflow.keras.models import load_model
 # weightsPath
 # configPath
 
-def object_detection(image_path, labelsPath, weightsPath, configPath, DETECTED_IMAGE_FOLDER):
+def object_detection(image_path, labelsPath, weightsPath, configPath, DETECTED_IMAGE_FOLDER, user_gender):
+
+    user_gender = user_gender
+    print(user_gender)
 
     # YOLO 라벨(Clothes)
     YOLO_LABELS = open(labelsPath).read().strip().split("\n")
@@ -86,19 +89,29 @@ def object_detection(image_path, labelsPath, weightsPath, configPath, DETECTED_I
 
                 # object detection된 이미지의 object detection label
                 crop_label = YOLO_LABELS[class_id]
-                # print(crop_label)
+                print(crop_label)
                 # print(confidence)
 
                 crop_img = cap[yy:yy + hh, xx:xx + hh]
                 crop_img_path = DETECTED_IMAGE_FOLDER + '/' + crop_label + "_" + str(count) + "_" + str(confidence) + ".jpg"
 
-                try:
-                    cv2.imwrite(crop_img_path, crop_img)
-                    if crop_label not in crop_labels:
-                        crop_labels.append(crop_label)
-                        crop_img_paths.append(crop_img_path)
-                except cv2.error as e:
-                    print("There is no cropped image")
+                if user_gender == 'male':
+                    if crop_label == 'short_sleeve_top' or crop_label == 'trousers' or crop_label == 'long_sleeve_top' or crop_label == 'short_sleeve_outwear' or crop_label == 'long_sleeve_outwear' or crop_label == 'sling' or crop_label == 'shorts':
+                        try:
+                            cv2.imwrite(crop_img_path, crop_img)
+                            if crop_label not in crop_labels:
+                                crop_labels.append(crop_label)
+                                crop_img_paths.append(crop_img_path)
+                        except cv2.error as e:
+                            print("There is no cropped image")
+                elif user_gender == 'female':
+                    try:
+                        cv2.imwrite(crop_img_path, crop_img)
+                        if crop_label not in crop_labels:
+                            crop_labels.append(crop_label)
+                            crop_img_paths.append(crop_img_path)
+                    except cv2.error as e:
+                        print("There is no cropped image")
 
     print(crop_labels)
     print(crop_img_paths)
