@@ -49,11 +49,13 @@ class Recommend(Resource):
             user_clothes_on_fit_by_category, temperature)
         recommended_clothes = recommend_clothes(
             temperature, user_clothes_on_fit_by_category)
-
+        clothes_hot_or_cold = say_hot_or_cold(
+            user_clothes_on_fit, temperature, user_clothes_on_fit_by_category)
         return jsonify(
             user_clothes_by_category=user_clothes_on_fit_by_category,
             clothes_for_weather=clothes_suitable_for_weather,
-            recommended_clothes=recommended_clothes
+            recommended_clothes=recommended_clothes,
+            hot_or_cold=clothes_hot_or_cold
         )
 
 

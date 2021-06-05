@@ -32,9 +32,7 @@ parser_calendar.add_argument(
     'ootd_img', type=FileStorage, location='files')
 
 # clothes_feature
-parser_calendar.add_argument('fabric')
-parser_calendar.add_argument('color')
-parser_calendar.add_argument('sleeve')
+parser_calendar.add_argument('clothes_subcategory')
 
 # 캘린더 화면 OOTD 등록 표시용
 parser_calendar.add_argument('month')
@@ -62,7 +60,7 @@ class Calendar(Resource):
         save_ootd_img(args['ootd_img'], local_file_path)
 
         calendar_document = create_calendar_document(
-            args['user_id'], args['date'], local_file_name, args['fabric'], args['color'], args['sleeve'], local_file_name)
+            args['user_id'], args['date'], args['clothes_subcategory'], local_file_name)
 
         calendar_document.save()
         calendar_schema = CalendarSchema()

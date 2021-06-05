@@ -25,15 +25,13 @@ def save_ootd_img(ootd_img, local_file_path):
     return
 
 
-def create_calendar_document(user_id, date, ootd_path, fabric, color, sleeve, local_file_name):
+def create_calendar_document(user_id, date, clothes_subcategory, local_file_name):
     calendar_document = CalendarDocument(
         user_id=user_id,
         date=date,
         ootd_path=local_file_name,
         clothes_feature={
-            'fabric': fabric,
-            'color': color,
-            'sleeve': sleeve
+            'clothes_subcategory': clothes_subcategory
         }
     )
 
