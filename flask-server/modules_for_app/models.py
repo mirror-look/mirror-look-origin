@@ -26,6 +26,7 @@ class UserDocument(Document):
     user_name = StringField(required=True)
     profile_img = StringField()
     agreement = StringField()
+    gender = StringField()
 
     # DB Collection 이름 지정
     meta = {"collection": 'User'}
@@ -36,3 +37,4 @@ class UserSchema(Schema):
     user_name = fields.String()
     profile_img = fields.String()
     agreement = fields.String()
+    gender = fields.String()
