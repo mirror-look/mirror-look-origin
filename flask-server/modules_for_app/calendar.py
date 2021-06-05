@@ -20,7 +20,8 @@ database = get_database()
 
 # 블루프린트/API 객체 생성
 calendar = Blueprint('calendar', __name__)
-calendar_api = Namespace('calendar_api', path='/calendar', title = '캘린더 api', description='캘린더 생성, 조회, 수정')
+calendar_api = Namespace('calendar_api', path='/calendar',
+                         title='캘린더 api', description='캘린더 생성, 조회, 수정')
 api = Api(calendar)
 
 # request 요청 변수 parser
@@ -38,13 +39,14 @@ parser_calendar.add_argument('sleeve')
 # 캘린더 화면 OOTD 등록 표시용
 parser_calendar.add_argument('month')
 
-calendar_model = calendar_api.model('Model',{
-    'user_id' : fields.String(),
-    'date' : fields.String(),
-    'ootd_path' : fields.String(),
-    'clothes_feature' : fields.Dict()
+calendar_model = calendar_api.model('Model', {
+    'user_id': fields.Integer(),
+    'date': fields.String(),
+    'ootd_path': fields.String(),
+    'clothes_feature': fields.Dict()
 
 })
+
 
 @calendar_api.route('/')
 class Calendar(Resource):
