@@ -22,7 +22,6 @@ classification = Blueprint("classification", __name__, url_prefix='/classificati
 def upload_file():
     if request.method == 'POST':
         # kakao_id = get_jwt_identity()
-        kakao_id = 1757786245
         print('kakao id: ', kakao_id)
 
         user = UserDocument.objects.get(kakao_id_number=kakao_id)
