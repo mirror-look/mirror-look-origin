@@ -140,11 +140,11 @@ def say_hot_or_cold(user_clothes_on_fit, temperature, categories):
     result = dict()
     for cloth, category in zip(user_clothes_on_fit, categories):
         if clothes_by_temperature[category][cloth][0] > temperature:
-            result[(category, cloth)] = '지금 입기는 추워요'
+            result[category + '_' + cloth] = '지금 입기는 추워요'
         elif clothes_by_temperature[category][cloth][1] < temperature:
-            result[(category, cloth)] = '지금 입기는 더워요'
+            result[category + '_' + cloth] = '지금 입기는 더워요'
         else:
-            result[(category, cloth)] = '지금 날씨에 적당해요'
+            result[category + '_' + cloth] = '지금 날씨에 적당해요'
 
     return result
 
