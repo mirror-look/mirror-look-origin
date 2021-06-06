@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 import axios from 'axios';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { setBase64URL } from '../store/actions';
 import styled from 'styled-components';
 import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
@@ -80,6 +81,7 @@ function SelectedBox({ result, userSelectList, setUserSelectList }) {
 function SelectTop3() {
   let location = useLocation();
   let history = useHistory();
+  const dispatch = useDispatch();
   const geolocationInfo = useSelector((store) => store.geolocationReducer);
   const [userSelectList, setUserSelectList] = useState();
   const [temperature, setTemperature] = useState();
@@ -156,7 +158,15 @@ function SelectTop3() {
         />
       ) : (
         <center>
-          <Button variant="contained" color="secondary" size="large">
+          <Button
+            onClick={() => {
+              dispatch(setBase64URL(''));
+              history.push('/camera');
+            }}
+            variant="contained"
+            color="secondary"
+            size="large"
+          >
             다시 찍을래요
           </Button>
           &nbsp;
