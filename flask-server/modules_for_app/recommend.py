@@ -68,7 +68,7 @@ class Recommend(Resource):
         date = args['date']
 
         sub_category = CalendarDocument.objects.get(
-            Q(date=date) & Q(user_id=kakao_id)).sub_category
+            Q(date=date) & Q(user_id=kakao_id)).clothes_subcategory
 
         laundry_recommended = recommend_laundry(sub_category)
 
