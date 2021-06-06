@@ -1,8 +1,7 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 import axios from 'axios';
-import { useDispatch, useSelector } from 'react-redux';
-import { addList } from '../store/actions';
+import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
@@ -80,7 +79,9 @@ function SelectedBox({ result, userSelectList, setUserSelectList }) {
 function SelectTop3() {
   let location = useLocation();
   let history = useHistory();
+  const geolocationInfo = useSelector((store) => store.geolocationReducer);
   const [userSelectList, setUserSelectList] = useState();
+  const [temperature, setTemperature] = useState();
   const resultList = location.state.results;
   const results = resultList.map((result, index) => (
     <SelectedBox
@@ -90,6 +91,23 @@ function SelectTop3() {
       key={index}
     ></SelectedBox>
   ));
+
+  useEffect(() => {
+    if (!temperature) {
+      axios
+        .post('http://localhost:5000/weather', {
+          latitude: geolocationInfo[0],
+          longitude: geolocationInfo[1]
+        })
+        .then(function (response) {
+          console.log('기온 받아왔다!');
+          setTemperature(response.data.current_temperatures);
+        })
+        .catch(function (err) {
+          console.log(err);
+        });
+    }
+  });
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -103,7 +121,7 @@ function SelectTop3() {
     axios
       .post('http://localhost:5000/recommend', {
         selected_clothes_from_top_3_result: category,
-        temperature_from_openweather_api: 13.7
+        temperature_from_openweather_api: temperature
       })
       .then(function (response) {
         console.log('사용자가 선택한 카테고리 보내서 예측 결과 받아왔다!');

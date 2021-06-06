@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { setGeolocation } from '../store/actions';
 import axios from 'axios';
 import styled from 'styled-components';
 import Box from '@material-ui/core/Box';
@@ -31,6 +33,7 @@ function Calendar() {
 }
 
 function Main({ setAgreement, setUserKakaoId }) {
+  const dispatch = useDispatch();
   const [userName, setUserName] = useState('꼬부기');
   const [userProfileImage, setUserProfileImage] = useState();
   const [lat, setLat] = useState();
@@ -67,6 +70,12 @@ function Main({ setAgreement, setUserKakaoId }) {
   if ('geolocation' in navigator) {
     navigator.geolocation.getCurrentPosition((position) => {
       console.log('위치 받아왔다!');
+      dispatch(
+        setGeolocation([
+          String(position.coords.latitude),
+          String(position.coords.longitude)
+        ])
+      );
       setLat(position.coords.latitude);
       setLng(position.coords.longitude);
     });

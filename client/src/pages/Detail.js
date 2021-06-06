@@ -72,7 +72,6 @@ function Recommend({ userName, comment }) {
   return (
     <div>
       <h3>오늘 {userName}님은 이런 옷을 입었군요!</h3>
-      <p>오늘 서울 지역은 최고기온 24도, 최저기온 18도입니다.</p>
       <p>{advice1}</p>
       <p>{advice2}</p>
       <p>{advice3}</p>
