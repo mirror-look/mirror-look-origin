@@ -3,6 +3,7 @@ import { useState } from 'react';
 import Login from './pages/Login.js';
 import Dashboard from './pages/Dashboard.js';
 import Detail from './pages/Detail.js';
+import SelectTop3 from './pages/SelectTop3.js';
 import Camera from './pages/Camera.js';
 import FashionCalendar from './pages/FashionCalendar.js';
 import Main from './pages/Main.js';
@@ -43,6 +44,7 @@ function App() {
                 render={() => <FashionCalendar userId={userKakaoId} />}
               />
               <Route path="/detail" component={Detail} />
+              <Route path="/select" component={SelectTop3} />
               <Route
                 path="/oauth/callback/kakao"
                 component={OAuthRedirectHandler}
