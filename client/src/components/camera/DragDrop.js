@@ -1,8 +1,10 @@
 import React, { useCallback, useState, useEffect } from 'react';
-import ReactDOM from 'react-dom';
+import { useDispatch } from 'react-redux';
+import { setBase64URL } from '../../store/actions';
 import { useDropzone } from 'react-dropzone';
 
 function DragDrop() {
+  const dispatch = useDispatch();
   const [file, setFile] = useState(null);
   const onDrop = useCallback((acceptedFiles) => {
     let file = acceptedFiles[0];
@@ -23,7 +25,7 @@ function DragDrop() {
       reader.readAsDataURL(file);
       reader.onloadend = function () {
         let base64String = reader.result.split('base64,')[1];
-        window.sessionStorage.setItem('uploadedImage', base64String);
+        dispatch(setBase64URL(base64String));
         file && URL.revokeObjectURL(file.preview);
       };
     }
