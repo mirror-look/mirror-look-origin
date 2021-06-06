@@ -1,4 +1,5 @@
 import os
+import binascii
 import base64
 import random
 from flask import Blueprint, jsonify, request, redirect, url_for
@@ -31,7 +32,7 @@ def upload_file():
 
         image_base64 = request.get_json()['image_base64']
         # print(image_base64)
-        random_num = random.randint(1, 10000)
+        random_num = int(binascii.hexlify(os.urandom(3)), 16)
         image_path = UPLOAD_FOLDER + '/' + str(random_num) + '.jpg'
         decoded_image = base64.b64decode(image_base64)
         with open(image_path, 'wb') as f:

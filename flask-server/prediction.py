@@ -36,7 +36,7 @@ def get_prediction(image_path, model_path, user_gender):
     if user_gender == 'female':
         class_indices = {'Blazer': 0, 'Blouse-Shirts': 1, 'Cardigan': 2, 'Coat': 3, 'Cottonpants': 4, 'Cutoffs': 5, 'Dress': 6, 'Hoodie': 7, 'Jacket': 8, 'Jeans': 9, 'Joggers': 10, 'Jumpsuit-Romper': 11, 'Leggings': 12, 'Parka': 13, 'Shorts': 14, 'Skirt': 15, 'Sweater': 16, 'Sweatpants': 17, 'Tee': 18}
     else:
-        class_indices = {'Blazer': 0, 'Shirts': 1, 'Cardigan': 2, 'Coat': 3, 'Cottonpants': 4, 'Cutoffs': 5, 'Dress': 6, 'Hoodie': 7, 'Jacket': 8, 'Jeans': 9, 'Joggers': 10, 'Jumpsuit-Romper': 11, 'Leggings': 12, 'Parka': 13, 'Shorts': 14, 'Shortpants': 15, 'Sweater': 16, 'Sweatpants': 17, 'Tee': 18}
+        class_indices = {'Blazer': 0, 'Shirts': 1, 'Cardigan': 2, 'Coat': 3, 'Cottonpants': 4, 'Cutoffs': 5, 'Dress': 6, 'Hoodie': 7, 'Jacket': 8, 'Jeans': 9, 'Joggers': 10, 'Jumpsuit-Romper': 11, 'Leggings': 12, 'Parka': 13, 'Shorts': 14, 'Pants': 15, 'Sweater': 16, 'Sweatpants': 17, 'Tee': 18}
 
     new_class_indices = {}
 
@@ -68,7 +68,7 @@ def get_prediction(image_path, model_path, user_gender):
     #     t = label
     #     top_5_results.append(t)
 
-    print(top_3_results)
+    # print(top_3_results)
 
     return top_3_results
 

@@ -16,7 +16,7 @@ from tensorflow.keras.models import load_model
 def object_detection(image_path, labelsPath, weightsPath, configPath, DETECTED_IMAGE_FOLDER, user_gender):
 
     user_gender = user_gender
-    print(user_gender)
+    # print(user_gender)
 
     # YOLO 라벨(Clothes)
     YOLO_LABELS = open(labelsPath).read().strip().split("\n")
@@ -48,7 +48,7 @@ def object_detection(image_path, labelsPath, weightsPath, configPath, DETECTED_I
     # print(cap.shape)
 
     # Detecting objects
-    blob = cv2.dnn.blobFromImage(cap, 1/255, (224, 224), (0, 0, 0), True, crop=False)
+    blob = cv2.dnn.blobFromImage(cap, 1/255, (255, 255), (0, 0, 0), True, crop=False)
 
     # print('type: ', type(blob))
     # print('shape: ', blob.shape)
@@ -83,7 +83,7 @@ def object_detection(image_path, labelsPath, weightsPath, configPath, DETECTED_I
                 xx = int(center_x - ww / 2)
                 yy = int(center_y - hh / 2)
 
-                boxes.append([xx, yy, ww, hh])
+                # boxes.append([xx, yy, ww, hh])
                 confidences.append(float(confidence))
                 class_ids.append(class_id)
 
@@ -113,8 +113,8 @@ def object_detection(image_path, labelsPath, weightsPath, configPath, DETECTED_I
                     except cv2.error as e:
                         print("There is no cropped image")
 
-    print(crop_labels)
-    print(crop_img_paths)
+    # print(crop_labels)
+    # print(crop_img_paths)
 
     return crop_labels, crop_img_paths
 
