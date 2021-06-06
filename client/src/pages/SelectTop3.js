@@ -6,6 +6,7 @@ import styled from 'styled-components';
 import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
 import WindowWrapper from '../components/common/WindowWrapper';
+import ExceptionModal from '../components/camera/ExceptionModal';
 
 function SelectedBox({ result, userSelectList, setUserSelectList }) {
   const [disabled1, setDisabled1] = useState(false);
@@ -82,30 +83,38 @@ function SelectTop3() {
   const geolocationInfo = useSelector((store) => store.geolocationReducer);
   const [userSelectList, setUserSelectList] = useState();
   const [temperature, setTemperature] = useState();
+  const [modalOpen, setModalOpen] = useState();
   const resultList = location.state.results;
-  const results = resultList.map((result, index) => (
-    <SelectedBox
-      result={result}
-      userSelectList={userSelectList}
-      setUserSelectList={setUserSelectList}
-      key={index}
-    ></SelectedBox>
-  ));
+  const modalTitle = '입고 계신 옷을 찾지 못했어요 ㅠ';
+  const modalComment = `튜토리얼을 참고하여 다시 찍어주세요!`;
+  let results = '';
 
   useEffect(() => {
-    if (!temperature) {
-      axios
-        .post('http://localhost:5000/weather', {
-          latitude: geolocationInfo[0],
-          longitude: geolocationInfo[1]
-        })
-        .then(function (response) {
-          console.log('기온 받아왔다!');
-          setTemperature(response.data.current_temperatures);
-        })
-        .catch(function (err) {
-          console.log(err);
-        });
+    if (resultList.length !== 0) {
+      results = resultList.map((result, index) => (
+        <SelectedBox
+          result={result}
+          userSelectList={userSelectList}
+          setUserSelectList={setUserSelectList}
+          key={index}
+        ></SelectedBox>
+      ));
+      if (!temperature) {
+        axios
+          .post('http://localhost:5000/weather', {
+            latitude: geolocationInfo[0],
+            longitude: geolocationInfo[1]
+          })
+          .then(function (response) {
+            console.log('기온 받아왔다!');
+            setTemperature(response.data.current_temperatures);
+          })
+          .catch(function (err) {
+            console.log(err);
+          });
+      }
+    } else {
+      setModalOpen(true);
     }
   });
 
@@ -137,20 +146,30 @@ function SelectTop3() {
       <WindowWrapper>
         <Body>{results}</Body>
       </WindowWrapper>
-      <center>
-        <Button variant="contained" color="secondary" size="large">
-          다시 찍을래요
-        </Button>
-        &nbsp;
-        <Button
-          onClick={handleSubmit}
-          variant="contained"
-          color="primary"
-          size="large"
-        >
-          선택했어요
-        </Button>
-      </center>
+
+      {modalOpen === true ? (
+        <ExceptionModal
+          setModalOpen={setModalOpen}
+          modalOpen={true}
+          modalTitle={modalTitle}
+          modalComment={modalComment}
+        />
+      ) : (
+        <center>
+          <Button variant="contained" color="secondary" size="large">
+            다시 찍을래요
+          </Button>
+          &nbsp;
+          <Button
+            onClick={handleSubmit}
+            variant="contained"
+            color="primary"
+            size="large"
+          >
+            선택했어요
+          </Button>
+        </center>
+      )}
     </div>
   );
 }
