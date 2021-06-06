@@ -30,14 +30,11 @@ function Calendar() {
   );
 }
 
-function Main({ setAgreement, setUserAgreement, setUserKakaoId }) {
+function Main({ setAgreement, setUserKakaoId }) {
   const [userName, setUserName] = useState('꼬부기');
   const [userProfileImage, setUserProfileImage] = useState();
   const [lat, setLat] = useState();
   const [lng, setLng] = useState();
-  //const [userAgreement, setUserAgreement] = useState();
-  //const [agreement, setAgreement] = useState();
-  //const [userKakaoId, setUserKakaoId] = useState('');
   const [modalOpen, setModalOpen] = useState();
   const modalTitle = '위치 정보 제공 동의';
   const modalComment = `Mirror-Look은 날씨 기반 추천 서비스예요. 저희가 위치 정보를 열람해도 될까요?`;
@@ -65,25 +62,6 @@ function Main({ setAgreement, setUserAgreement, setUserKakaoId }) {
       .catch(function (err) {
         console.log(err);
       });
-
-    if (!!window.sessionStorage.getItem('userAgreement')) {
-      const token = `Bearer ${window.sessionStorage.getItem('token')}`;
-      const data = {
-        agreement: window.sessionStorage.getItem('userAgreement')
-      };
-      axios
-        .put(`${URL}/userinfo`, data, {
-          headers: {
-            Authorization: token
-          }
-        })
-        .then(function (response) {
-          console.log('위치동의여부 넣었다!');
-        })
-        .catch(function (err) {
-          console.log(err);
-        });
-    }
   }, []);
 
   if ('geolocation' in navigator) {
@@ -111,7 +89,6 @@ function Main({ setAgreement, setUserAgreement, setUserKakaoId }) {
         <AgreementModal
           setModalOpen={setModalOpen}
           modalOpen={true}
-          setUserAgreement={setUserAgreement}
           modalTitle={modalTitle}
           modalComment={modalComment}
         />

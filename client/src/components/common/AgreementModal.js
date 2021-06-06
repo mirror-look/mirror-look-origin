@@ -5,13 +5,7 @@ import Modal from '@material-ui/core/Modal';
 import Button from '@material-ui/core/Button';
 import Paper from '@material-ui/core/Paper';
 
-function AgreementModal({
-  setModalOpen,
-  modalOpen,
-  setUserAgreement,
-  modalTitle,
-  modalComment
-}) {
+function AgreementModal({ setModalOpen, modalOpen, modalTitle, modalComment }) {
   const handleClose = () => {
     setModalOpen(false);
   };
@@ -25,11 +19,24 @@ function AgreementModal({
           variant="contained"
           color="primary"
           onClick={() => {
-            // setUserAgreement(true);
-            //함수 따로 파고 나가서 axios 날리기
-            window.sessionStorage.setItem('userAgreement', 'true');
+            const token = `Bearer ${window.sessionStorage.getItem('token')}`;
+            const data = {
+              agreement: 'true'
+            };
+            axios
+              .put('http://localhost:5000/userinfo', data, {
+                headers: {
+                  Authorization: token
+                }
+              })
+              .then(function (response) {
+                console.log('위치동의여부 넣었다!');
+                handleClose();
+              })
+              .catch(function (err) {
+                console.log(err);
+              });
             console.log('동의한대!');
-            handleClose();
           }}
         >
           좋아요!
@@ -39,10 +46,24 @@ function AgreementModal({
           variant="contained"
           color="primary"
           onClick={() => {
-            // setUserAgreement(false);
-            window.sessionStorage.setItem('userAgreement', 'false');
+            const token = `Bearer ${window.sessionStorage.getItem('token')}`;
+            const data = {
+              agreement: 'false'
+            };
+            axios
+              .put('http://localhost:5000/userinfo', data, {
+                headers: {
+                  Authorization: token
+                }
+              })
+              .then(function (response) {
+                console.log('위치동의여부 넣었다!');
+                handleClose();
+              })
+              .catch(function (err) {
+                console.log(err);
+              });
             console.log('동의안한대!');
-            handleClose();
           }}
         >
           나중에요!
