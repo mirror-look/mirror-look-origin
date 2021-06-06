@@ -1,5 +1,6 @@
 import { useCallback, useRef, useState } from 'react';
 import { useHistory } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import axios from 'axios';
 import styled from 'styled-components';
 import Button from '@material-ui/core/Button';
@@ -14,6 +15,7 @@ const videoConstraints = {
 };
 
 function Camera() {
+  const uploadImageBase64 = useSelector((store) => store.imageBase64Reducer);
   const history = useHistory();
   const [countdown, setCountdown] = useState();
   const [cam, setCam] = useState();
@@ -50,12 +52,9 @@ function Camera() {
         console.log('촬영 준비!');
         capture();
       }, 5000);
-    } else if (
-      (dragDrop === true) &
-      !!window.sessionStorage.getItem('uploadedImage')
-    ) {
+    } else if ((dragDrop === true) & !!uploadImageBase64) {
       console.log('업로드된 이미지 보낼 준비!');
-      let imageBase64 = window.sessionStorage.getItem('uploadedImage');
+      const imageBase64 = uploadImageBase64;
       axios
         .post('http://localhost:5000/classification/upload', {
           image_base64: imageBase64
