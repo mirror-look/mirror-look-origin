@@ -24,7 +24,7 @@ function Camera() {
     console.log('촬영했다!');
     let imageBase64 = imageSrc.split(',')[1];
     axios
-      .post('http://localhost:63094/classification/upload', {
+      .post('http://localhost:5000/classification/upload', {
         image_base64: imageBase64
       })
       .then(function (response) {
@@ -57,7 +57,7 @@ function Camera() {
       console.log('업로드된 이미지 보낼 준비!');
       let imageBase64 = window.sessionStorage.getItem('uploadedImage');
       axios
-        .post('http://localhost:63094/classification/upload', {
+        .post('http://localhost:5000/classification/upload', {
           image_base64: imageBase64
         })
         .then(function (response) {
