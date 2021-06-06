@@ -65,9 +65,17 @@ function Camera() {
       console.log('업로드된 이미지 보낼 준비!');
       const imageBase64 = uploadImageBase64;
       axios
-        .post('http://localhost:5000/classification/upload', {
-          image_base64: imageBase64
-        })
+        .post(
+          'http://localhost:5000/classification/upload',
+          {
+            image_base64: imageBase64
+          },
+          {
+            headers: {
+              Authorization: token
+            }
+          }
+        )
         .then(function (response) {
           console.log('업로드된 Base64 이미지 보내서 예측 결과 가져왔다!');
           console.log('선택 페이지로 간다!');
