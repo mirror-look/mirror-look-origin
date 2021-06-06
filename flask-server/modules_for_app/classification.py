@@ -22,7 +22,7 @@ classification = Blueprint("classification", __name__, url_prefix='/classificati
 @jwt_required()
 def upload_file():
     if request.method == 'POST':
-        # kakao_id = get_jwt_identity()
+        kakao_id = get_jwt_identity()
 
         user = UserDocument.objects.get(kakao_id_number=kakao_id)
         user_gender = user.gender
