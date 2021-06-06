@@ -1,5 +1,7 @@
 import styled from 'styled-components';
 import Box from '@material-ui/core/Box';
+import { useLocation } from 'react-router-dom';
+import { useEffect } from 'react';
 
 function Photo() {
   return (
@@ -16,38 +18,82 @@ function Photo() {
   );
 }
 
-function Info({ username }) {
+function Recommend({ userName, comment }) {
+  let advice1 = '';
+  let advice2 = '';
+  let advice3 = '';
+  for (let key in comment.hot_or_cold) {
+    if (key.startsWith('top') === true) {
+      let advice = '';
+      let line = `상의는 ${comment.hot_or_cold[key]}! `;
+      for (let recTop in comment.recommended_clothes.top) {
+        line = line + `${comment.recommended_clothes.top[recTop]}`;
+        if (recTop < Object.keys(comment.recommended_clothes.top).length - 1) {
+          line = line + ', ';
+        }
+      }
+      line = line + '은(는) 어떠세요?';
+      advice = advice + line;
+      advice1 = <Box>{advice}</Box>;
+    }
+    if (key.startsWith('bottom') === true) {
+      let advice = '';
+      let line = `하의는 ${comment.hot_or_cold[key]}! `;
+      for (let recBottom in comment.recommended_clothes.bottom) {
+        line = line + `${comment.recommended_clothes.bottom[recBottom]}`;
+        if (
+          recBottom <
+          Object.keys(comment.recommended_clothes.bottom).length - 1
+        ) {
+          line = line + ', ';
+        }
+      }
+      line = line + '은(는) 어떠세요?';
+      advice = advice + line;
+      advice2 = <Box>{advice}</Box>;
+    }
+    if (key.startsWith('dress') === true) {
+      let advice = '';
+      let line = `원피스는 ${comment.hot_or_cold[key]}! `;
+      for (let recDress in comment.recommended_clothes.dress) {
+        line = line + `${comment.recommended_clothes.dress[recDress]}`;
+        if (
+          recDress <
+          Object.keys(comment.recommended_clothes.dress).length - 1
+        ) {
+          line = line + ', ';
+        }
+      }
+      line = line + '은(는) 어떠세요?';
+      advice = advice + line;
+      advice3 = <Box>{advice}</Box>;
+    }
+  }
   return (
     <div>
-      <h3>오늘 {username}님은 이런 옷을 입었군요!</h3>
+      <h3>오늘 {userName}님은 이런 옷을 입었군요!</h3>
       <p>오늘 서울 지역은 최고기온 24도, 최저기온 18도입니다.</p>
-      <p>
-        옷이 조금 더울 수 있을 것 같아요! 가벼운 반팔과 반바지를 입어보는 것은
-        어떨까요?
-      </p>
-    </div>
-  );
-}
-
-function Recommend({ username }) {
-  return (
-    <div>
-      <h3>{username}님, 이런 색상의 옷은 어떨까요?</h3>
-      <p>분석 결과 {username}님의 옷은 파란색과 좋은 조합이 될 것 같아요!</p>
+      <p>{advice1}</p>
+      <p>{advice2}</p>
+      <p>{advice3}</p>
     </div>
   );
 }
 
 function Detail() {
-  const username = '김윤주';
+  const userName = '김윤주';
+  let location = useLocation();
+
+  console.log('추천페이지로 넘어왔다!');
+  console.log(location.state);
+
   return (
     <ShowDetail>
       <PhotoBox>
         <Photo />
       </PhotoBox>
       <Story>
-        <Info username={username}></Info>
-        <Recommend username={username}></Recommend>
+        <Recommend userName={userName} comment={location.state}></Recommend>
       </Story>
     </ShowDetail>
   );
