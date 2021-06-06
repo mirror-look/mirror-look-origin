@@ -1,85 +1,18 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-
 import axios from 'axios';
 import styled from 'styled-components';
 import Box from '@material-ui/core/Box';
 import Profile from '../components/common/Profile';
 import WindowWrapper from '../components/common/WindowWrapper';
 import AgreementModal from '../components/common/AgreementModal';
+import Weather from '../components/main/Weather';
 
 const URL = `http://localhost:5000`;
 
 function Hello({ userName }) {
   return <StyledHello>{userName}님 안녕하세요!</StyledHello>;
 }
-
-const StyledHello = styled('div')`
-  font-family: Rubik;
-  font-style: normal;
-  font-weight: 500;
-  font-size: 30px;
-  line-height: 40px;
-`;
-
-function Weather() {
-  const [weather, setWeather] = useState();
-  if ('geolocation' in navigator) {
-    navigator.geolocation.getCurrentPosition((position) => {
-      console.log('위치 받아왔다!');
-      const data = {
-        latitude: position.coords.latitude,
-        longitude: position.coords.longitude
-      };
-      console.log(data);
-      axios
-        .post(`${URL}/weather`, data)
-        .then(function (response) {
-          console.log('날씨 정보 받아왔다!');
-          setWeather(response.data.current_weather);
-        })
-        .catch(function (err) {
-          console.log('날씨 정보 못받아왔다!');
-          console.log(err);
-        });
-    });
-  } else {
-    console.log('위치 못받아왔다!');
-  }
-  return (
-    <WeatherBox>
-      <WeatherText>오늘의 날씨</WeatherText>
-      <RealWeather>{weather}</RealWeather>
-    </WeatherBox>
-  );
-}
-
-const WeatherBox = styled(Box)`
-  width: 365px;
-  height: 315px;
-  border-radius: 30px;
-  background: linear-gradient(1.51deg, #ebf1ff 5.34%, #f2f5fe 72.41%);
-  box-shadow: 0px 4px 50px rgba(0, 0, 0, 0.25);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-`;
-
-const WeatherText = styled(Box)`
-  font-family: Rubik;
-  font-style: normal;
-  font-weight: bold;
-  font-size: 20px;
-  line-height: 24px;
-  text-align: center;
-  margin: 20px;
-`;
-
-const RealWeather = styled(Box)`
-  border: 3px dotted black;
-  border-radius: 150px;
-  padding: 100px;
-`;
 
 function TodayOOTD() {
   return (
@@ -89,23 +22,6 @@ function TodayOOTD() {
   );
 }
 
-const TodayOOTDBox = styled(Box)`
-  width: 395px;
-  height: 764px;
-  background: #ffffff;
-  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-  border-radius: 30px;
-
-  font-family: Rubik;
-  font-style: normal;
-  font-weight: bold;
-  font-size: 20px;
-  line-height: 24px;
-  margin: 30px;
-  padding: 30px;
-  text-align: center;
-`;
-
 function Calendar() {
   return (
     <Link to="/calendar">
@@ -114,32 +30,11 @@ function Calendar() {
   );
 }
 
-const StyledCalender = styled(Box)`
-  width: 417px;
-  height: 764px;
-
-  background: #ffffff;
-  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-  border-radius: 30px;
-  margin: 30px;
-  padding: 30px;
-  text-align: center;
-
-  font-family: Rubik;
-  font-style: normal;
-  font-weight: bold;
-  font-size: 20px;
-  line-height: 24px;
-  a {
-    text-decoration: none;
-    color: #8f00ff;
-  }
-  /* identical to box height, or 120% */
-`;
-
 function Main({ setAgreement, setUserAgreement, setUserKakaoId }) {
   const [userName, setUserName] = useState('꼬부기');
   const [userProfileImage, setUserProfileImage] = useState();
+  const [lat, setLat] = useState();
+  const [lng, setLng] = useState();
   //const [userAgreement, setUserAgreement] = useState();
   //const [agreement, setAgreement] = useState();
   //const [userKakaoId, setUserKakaoId] = useState('');
@@ -191,13 +86,23 @@ function Main({ setAgreement, setUserAgreement, setUserKakaoId }) {
     }
   }, []);
 
+  if ('geolocation' in navigator) {
+    navigator.geolocation.getCurrentPosition((position) => {
+      console.log('위치 받아왔다!');
+      setLat(position.coords.latitude);
+      setLng(position.coords.longitude);
+    });
+  } else {
+    console.log('위치 못받아왔다!');
+  }
+
   return (
     <WindowWrapper>
       <Body>
         <UserInfo>
           <Hello userName={userName} />
           <Profile username={userName} profileImg={userProfileImage} />
-          <Weather />
+          {!!lat && !!lng ? <Weather lat={lat} lng={lng} /> : ''}
         </UserInfo>
         <TodayOOTD />
         <Calendar />
@@ -231,4 +136,78 @@ const UserInfo = styled('div')`
   align-items: center;
 `;
 
+const StyledCalender = styled(Box)`
+  width: 417px;
+  height: 764px;
+
+  background: #ffffff;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 30px;
+  margin: 30px;
+  padding: 30px;
+  text-align: center;
+
+  font-family: Rubik;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 20px;
+  line-height: 24px;
+  a {
+    text-decoration: none;
+    color: #8f00ff;
+  }
+  /* identical to box height, or 120% */
+`;
+
+const StyledHello = styled('div')`
+  font-family: Rubik;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 30px;
+  line-height: 40px;
+`;
+
+const WeatherBox = styled(Box)`
+  width: 365px;
+  height: 315px;
+  border-radius: 30px;
+  background: linear-gradient(1.51deg, #ebf1ff 5.34%, #f2f5fe 72.41%);
+  box-shadow: 0px 4px 50px rgba(0, 0, 0, 0.25);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
+
+const WeatherText = styled(Box)`
+  font-family: Rubik;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 20px;
+  line-height: 24px;
+  text-align: center;
+  margin: 20px;
+`;
+
+const RealWeather = styled(Box)`
+  border: 3px dotted black;
+  border-radius: 150px;
+  padding: 100px;
+`;
+
+const TodayOOTDBox = styled(Box)`
+  width: 395px;
+  height: 764px;
+  background: #ffffff;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 30px;
+
+  font-family: Rubik;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 20px;
+  line-height: 24px;
+  margin: 30px;
+  padding: 30px;
+  text-align: center;
+`;
 export default Main;
