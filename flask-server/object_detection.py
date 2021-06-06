@@ -89,7 +89,7 @@ def object_detection(image_path, labelsPath, weightsPath, configPath, DETECTED_I
 
                 # object detection된 이미지의 object detection label
                 crop_label = YOLO_LABELS[class_id]
-                print(crop_label)
+                # print(crop_label)
                 # print(confidence)
 
                 crop_img = cap[yy:yy + hh, xx:xx + hh]
