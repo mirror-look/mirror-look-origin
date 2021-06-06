@@ -7,6 +7,11 @@ import uuid
 from mongoengine import Document, StringField, DictField, IntField, Q
 from marshmallow import Schema, fields
 from .clothes_for_weather import *
+from .clothes_for_laundry import *
+from .models import CalendarDocument
+
+from flask_jwt_extended import get_jwt_identity
+from flask_jwt_extended import jwt_required
 
 # 상위 디렉토리 import를 위한 경로 설정
 current_dir = os.path.dirname(os.path.abspath(__file__))
@@ -26,7 +31,7 @@ parser_recommend = reqparse.RequestParser()
 parser_recommend.add_argument('temperature_from_openweather_api', type=int)
 parser_recommend.add_argument(
     'selected_clothes_from_top_3_result', action='append')
-
+parser_recommend.add_argument('date')
 
 recommend_model = recommend_api.model('Model', {
     'temperature_from_openweather_api': fields.Integer(),
@@ -58,5 +63,19 @@ class Recommend(Resource):
             hot_or_cold=clothes_hot_or_cold
         )
 
+    @jwt_required()
+    def get(self):
+        kakao_id = get_jwt_identity()
+        args = parser_recommend.parse_args()
+        date = args['date']
+
+        sub_category = CalendarDocument.objects.get(
+            Q(date=date) & Q(user_id=kakao_id)).clothes_subcategory
+
+        laundry_recommended = recommend_laundry(sub_category)
+
+        return jsonify(
+            laundry_recommended = laundry_recommended
+        )
 
 api.add_resource(Recommend, '/recommend')
