@@ -1,5 +1,7 @@
 import os
 import sys
+from base64 import b64encode
+from json import dumps
 from flask_restx import reqparse, Api, Resource, Namespace
 from flask import Blueprint, jsonify, url_for, send_file
 from werkzeug.datastructures import FileStorage
@@ -79,7 +81,12 @@ class Calendar(Resource):
         if args['date']:
             local_file_path = get_file_path(args['date'], kakao_id)
 
-            return send_file(local_file_path)
+            with open(local_file_path, 'rb') as img_file:
+                base64_string = b64encode(img_file.read())
+
+            return jsonify(
+                image_base64_string=base64_string.decode("utf-8")
+            )
 
         # user_id, month가 전달되는 경우 : 유저가 OOTD를 등록한 날짜 리스트 반환
         else:
