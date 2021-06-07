@@ -1,6 +1,7 @@
 laundry_recommend = {
     'Blazer' : {'드라이클리닝'},
     'Blouse-Shirts' : {'드라이클리닝','찬물 손세탁', '세탁 망에 넣은 후 세탁기 별도의 셔츠 모드 사용'},
+    'Shirts' : {'드라이클리닝','찬물 손세탁', '세탁 망에 넣은 후 세탁기 별도의 셔츠 모드 사용'},
     'Cardigan' : {'미온수에 중성세제로 손 세탁', '뒤집고 세탁 망에 넣은 후 울 코스로 세탁기 사용'},
     'Coat' : {'드라이클리닝', '찬물에 샴푸와 식초 또는 중성세제를 이용해 손세탁'},
     'Cottonpants' : {'손 세탁', '세탁기로 울 세탁'},
@@ -27,7 +28,7 @@ def recommend_laundry(user_clothes_on_fit):
     return recommended
 
 if __name__ == '__main__':
-    user_clothes_on_fit_for_test = ['Blazer', 'Shorts']
+    user_clothes_on_fit_for_test = ['Sweater', 'Shorts']
 
     a = recommend_laundry(user_clothes_on_fit_for_test)
 
