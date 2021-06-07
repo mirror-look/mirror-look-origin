@@ -21,6 +21,7 @@ function Camera() {
   const [countdown, setCountdown] = useState();
   const [cam, setCam] = useState();
   const [dragDrop, setDragDrop] = useState();
+  const [buttonEnabled, setButtonEnabled] = useState(true);
   const webcamRef = useRef(null);
   const capture = useCallback(() => {
     let imageSrc = webcamRef.current.getScreenshot();
@@ -90,6 +91,7 @@ function Camera() {
         });
     }
   }
+
   return (
     <StyledBox>
       <Window>
@@ -115,7 +117,11 @@ function Camera() {
         ) : (
           ''
         )}
-        {dragDrop === true ? <DragDrop /> : ''}
+        {dragDrop === true ? (
+          <DragDrop setButtonEnabled={setButtonEnabled} />
+        ) : (
+          ''
+        )}
       </Window>
       <StyledButton>
         <SearchFile
@@ -132,11 +138,14 @@ function Camera() {
             console.log('촬영하기 클릭했다!');
             setCam(true);
             setDragDrop(false);
+            setButtonEnabled(false);
           }}
         >
           촬영하기
         </TakePhoto>
-        <Confirm onClick={handleConfirm}>확인</Confirm>
+        <Confirm disabled={buttonEnabled} onClick={handleConfirm}>
+          확인
+        </Confirm>
       </StyledButton>
     </StyledBox>
   );

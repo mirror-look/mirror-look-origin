@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react';
 import ReactWeather, { useOpenWeather } from 'react-open-weather';
+import { WeatherID } from '../../Config';
 
 function Weather({ lat, lng }) {
   const customStyles = {
@@ -23,7 +23,7 @@ function Weather({ lat, lng }) {
   };
 
   const { data, isLoading, errorMessage } = useOpenWeather({
-    key: '83728bc30509bca1ea0aaba3ca6c54c0',
+    key: WeatherID,
     lat: String(lat),
     lon: String(lng),
     lang: 'en',
