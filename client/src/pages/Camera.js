@@ -44,7 +44,7 @@ function Camera() {
         console.log('선택 페이지로 간다!');
         history.push({
           pathname: '/select',
-          state: { results: response.data.result }
+          state: { results: response.data.result.top_3_result }
         });
       })
       .catch(function (err) {
