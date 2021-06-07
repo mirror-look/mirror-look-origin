@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCodepen } from '@fortawesome/free-brands-svg-icons';
 import { faLandmark } from '@fortawesome/free-solid-svg-icons';
-import { faCog } from '@fortawesome/free-solid-svg-icons';
+import { faCamera } from '@fortawesome/free-solid-svg-icons';
 import { faUser } from '@fortawesome/free-solid-svg-icons';
 import { faPowerOff } from '@fortawesome/free-solid-svg-icons';
 import { faCalendarAlt } from '@fortawesome/free-solid-svg-icons';
@@ -63,17 +63,19 @@ const UserChild = styled(FontAwesomeIcon)`
 function PowerOff() {
   function handleClick(e) {
     e.preventDefault();
-    axios
-      .get(
-        `https://kauth.kakao.com/oauth/logout?client_id=${ClientID}&logout_redirect_uri=http://localhost:3000/login`
-      )
-      .then(function (response) {
-        console.log('로그아웃 했다!');
-        window.sessionStorage.clear();
-      })
-      .catch(function (err) {
-        console.log(err);
-      });
+    window.sessionStorage.clear();
+    window.location.href = `https://kauth.kakao.com/oauth/logout?client_id=${ClientID}&logout_redirect_uri=http://localhost:3000/login`;
+    //axios
+    //  .get(
+    //    `https://kauth.kakao.com/oauth/logout?client_id=${ClientID}&logout_redirect_uri=http://localhost:3000/login`
+    //  )
+    //  .then(function (response) {
+    //    console.log('로그아웃 했다!');
+    //    window.sessionStorage.clear();
+    //  })
+    //  .catch(function (err) {
+    //    console.log(err);
+    //  });
   }
   return (
     <IconWrapper>
@@ -88,17 +90,19 @@ const PowerOffChlid = styled(FontAwesomeIcon)`
   color: #8595a8;
 `;
 
-function Setting() {
+function Camera() {
   return (
     <IconWrapper>
-      <IconButton>
-        <SettingChild icon={faCog} />
-      </IconButton>
+      <Link to="/camera">
+        <IconButton>
+          <CameraChild icon={faCamera} />
+        </IconButton>
+      </Link>
     </IconWrapper>
   );
 }
 
-const SettingChild = styled(FontAwesomeIcon)`
+const CameraChild = styled(FontAwesomeIcon)`
   color: #8595a8;
 `;
 
@@ -138,14 +142,8 @@ function NavBar() {
       <Link to="/calendar">
         <Calendar />
       </Link>
-      <Link to="/">
-        {/* mypage? */}
-        <Setting />
-      </Link>
-      <Link to="/">
-        {/* 로그아웃 */}
-        <PowerOff />
-      </Link>
+      <Camera />
+      <PowerOff />
     </Nav>
   );
 }

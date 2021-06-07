@@ -1,10 +1,13 @@
 import React, { useCallback, useState, useEffect } from 'react';
-import ReactDOM from 'react-dom';
+import { useDispatch } from 'react-redux';
+import { setBase64URL } from '../../store/actions';
 import { useDropzone } from 'react-dropzone';
 
-function DragDrop() {
+function DragDrop({ setButtonEnabled }) {
+  const dispatch = useDispatch();
   const [file, setFile] = useState(null);
   const onDrop = useCallback((acceptedFiles) => {
+    setButtonEnabled(false);
     let file = acceptedFiles[0];
     setFile(
       Object.assign(file, {
@@ -23,7 +26,7 @@ function DragDrop() {
       reader.readAsDataURL(file);
       reader.onloadend = function () {
         let base64String = reader.result.split('base64,')[1];
-        window.sessionStorage.setItem('uploadedImage', base64String);
+        dispatch(setBase64URL(base64String));
         file && URL.revokeObjectURL(file.preview);
       };
     }
@@ -33,7 +36,7 @@ function DragDrop() {
     <div>
       <div {...getRootProps({ className: 'dropzone' })}>
         <input {...getInputProps()} />
-        {!file && <p>Drag 'n' drop here !</p>}
+        {!file && <p>클릭하거나 이미지를 끌어놔주세요!</p>}
         {file && (
           <img
             witdh="400px"

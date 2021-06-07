@@ -1,6 +1,8 @@
 import tensorflow as tf
 
-def get_prediction(image_path):
+def get_prediction(image_path, model_path, user_gender):
+
+    user_gender = user_gender
 
     img = tf.keras.preprocessing.image.load_img(
         image_path,
@@ -13,7 +15,7 @@ def get_prediction(image_path):
     img = img / 255.
     input_data = tf.expand_dims(img, axis=0)
 
-    interpreter = tf.lite.Interpreter(model_path='/home/azure/passion/AI/Demo/output/demo_model_serving.tflite')
+    interpreter = tf.lite.Interpreter(model_path=model_path)
     interpreter.allocate_tensors()
 
     input_details = interpreter.get_input_details()
@@ -31,13 +33,10 @@ def get_prediction(image_path):
 
     output_data = interpreter.get_tensor(output_details[0]['index'])
     # print("output_data: ", output_data)
-
-    class_indices = {'Blazer': 0, 'Blouse': 1, 'Cardigan': 2,
-    'Coat': 3, 'Cutoffs': 4, 'Dress': 5, 'Hoodie': 6,
-    'Jacket': 7, 'Jeans': 8, 'Joggers': 9, 'Jumpsuit': 10,
-    'Leggings': 11, 'Parka': 12, 'Romper': 13, 'Shirts': 14,
-    'Shorts': 15, 'Skirt': 16, 'Sweater': 17, 'Tank': 18,
-    'Tee': 19, 'Top': 20, 'Trunks': 21}
+    if user_gender == 'female':
+        class_indices = {'Blazer': 0, 'Blouse-Shirts': 1, 'Cardigan': 2, 'Coat': 3, 'Cottonpants': 4, 'Cutoffs': 5, 'Dress': 6, 'Hoodie': 7, 'Jacket': 8, 'Jeans': 9, 'Joggers': 10, 'Jumpsuit-Romper': 11, 'Leggings': 12, 'Parka': 13, 'Shorts': 14, 'Skirt': 15, 'Sweater': 16, 'Sweatpants': 17, 'Tee': 18}
+    else:
+        class_indices = {'Blazer': 0, 'Shirts': 1, 'Cardigan': 2, 'Coat': 3, 'Cottonpants': 4, 'Cutoffs': 5, 'Dress': 6, 'Hoodie': 7, 'Jacket': 8, 'Jeans': 9, 'Joggers': 10, 'Jumpsuit-Romper': 11, 'Leggings': 12, 'Parka': 13, 'Shorts': 14, 'Pants': 15, 'Sweater': 16, 'Sweatpants': 17, 'Tee': 18}
 
     new_class_indices = {}
 
@@ -53,26 +52,27 @@ def get_prediction(image_path):
 
     results = sorted(results.items(), key=lambda x: x[1], reverse=True)
 
-    tmp = results[:3]
+    tmp = results[:5]
 
     top_3_results = []
 
-    for i in tmp:
+    for i in tmp[:3]:
         label, pred = i
-        t = (label, str(pred))
+        t = label
         top_3_results.append(t)
+
+    # top_5_results = []
+
+    # for i in tmp:
+    #     label, pred = i
+    #     t = label
+    #     top_5_results.append(t)
+
+    # print(top_3_results)
 
     return top_3_results
 
-# # class indices of test dataset:
-# # {'Blazer': 0, 'Blouse': 1, 'Cardigan': 2, 'Coat': 3,
-# # 'Cutoffs': 4, 'Dress': 5, 'Hoodie': 6, 'Jacket': 7,
-# # 'Jeans': 8, 'Joggers': 9, 'Jumpsuit': 10, 'Leggings': 11,
-# # 'Nightdress': 12, 'Parka': 13, 'Poncho': 14, 'Romper': 15,
-# # 'Shirtdress': 16, 'Shirts': 17, 'Shorts': 18, 'Skirt': 19,
-# # 'Sundress': 20, 'Sweater': 21, 'Tank': 22, 'Tee': 23,
-# # 'Top': 24, 'Trunks': 25}
-
-image_path = '/home/azure/passion/flask-server/ootd_storage/42142123.jpg'
-results = get_prediction(image_path)
-print(results)
+# image_path = '/home/azure/passion/flask-server/ootd_storage/42142123.jpg'
+# model_path = '/home/azure/passion/AI/Demo/output/resnet50_model_serving2.tflite'
+# results = get_prediction(image_path, model_path)
+# print(results)

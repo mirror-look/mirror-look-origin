@@ -8,6 +8,8 @@ instance/*
 .env
 flask-server/config.py
 flask-server/data
+flask-server/ootd_storage
+flask-server/object_detected_image
 
 ### Flask.Python Stack ###
 # Byte-compiled / optimized / DLL files
@@ -137,7 +139,8 @@ Eval/
 Img/
 DeepFashion/
 static/
-object_detected_image/
+# model
+final1.h5
 
 # Spyder project settings
 .spyderproject

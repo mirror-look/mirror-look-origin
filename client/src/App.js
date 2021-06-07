@@ -1,7 +1,9 @@
 import { Route, useLocation, Redirect } from 'react-router-dom';
+import { useState } from 'react';
 import Login from './pages/Login.js';
 import Dashboard from './pages/Dashboard.js';
 import Detail from './pages/Detail.js';
+import SelectTop3 from './pages/SelectTop3.js';
 import Camera from './pages/Camera.js';
 import FashionCalendar from './pages/FashionCalendar.js';
 import Main from './pages/Main.js';
@@ -19,6 +21,10 @@ import FriendPage from './pages/FriendPage.js';
 function App() {
   let { pathname } = useLocation();
   console.log('pathname == ', pathname);
+  const [userAgreement, setUserAgreement] = useState();
+  const [agreement, setAgreement] = useState();
+  const [userKakaoId, setUserKakaoId] = useState('');
+
   return (
     <div>
       {!sessionStorage.getItem('token') ? <Redirect to="/login" /> : ''}
@@ -33,13 +39,27 @@ function App() {
               <Header />
               <Route path="/dashboard" component={Dashboard} />
               <Route path="/camera" component={Camera} />
-              <Route path="/calendar" component={FashionCalendar} />
+              <Route
+                path="/calendar"
+                render={() => <FashionCalendar userId={userKakaoId} />}
+              />
               <Route path="/detail" component={Detail} />
+              <Route path="/select" component={SelectTop3} />
               <Route
                 path="/oauth/callback/kakao"
                 component={OAuthRedirectHandler}
               />
-              <Route exact path="/" component={Main} />
+              <Route
+                exact
+                path="/"
+                render={() => (
+                  <Main
+                    setUserAgreement={setUserAgreement}
+                    setUserKakaoId={setUserKakaoId}
+                    setAgreement={setAgreement}
+                  />
+                )}
+              />
               <Route path="/friends-list" component={FriendsList} />
               <Route path="/friend-page" component={FriendPage} />
             </MainLayout>

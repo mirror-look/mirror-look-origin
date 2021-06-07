@@ -309,9 +309,13 @@ user-search URI에서 가져온 user_id값으로 request 요청
         "2021-05-22 04:00": "맑음",
         "2021-05-22 05:00": "맑음",
         "2021-05-22 06:00": "맑음"
-    }
+    },
+    "current_temperatures" : 24, // 기온
+    "current_weather_icon" : "01d" // 날씨 아이콘
 }
 ```
+이후 날씨 아이콘은 "http://openweathermap.org/img/w/" + current_weather_icon + ".png" url을 이용해 불러와야 함    
+참고 : https://pythonq.com/so/html/451506
 
 ## UserInfo API
 
