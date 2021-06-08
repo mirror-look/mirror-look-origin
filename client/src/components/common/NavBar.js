@@ -16,14 +16,14 @@ function LogoIcon() {
   return (
     <LogoWrap>
       <IconButton>
-        <LogoIconChild icon={faCodepen} />
+        <img src={'/mirrorLookLogo.svg'} width={40} height={40} />
       </IconButton>
     </LogoWrap>
   );
 }
 
 const LogoWrap = styled('div')`
-  margin: 0 0 50px 0;
+  margin: 5px 0 50px 0;
 `;
 
 const LogoIconChild = styled(FontAwesomeIcon)`
