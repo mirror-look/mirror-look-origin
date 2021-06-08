@@ -79,46 +79,33 @@ function SelectedBox({ result, userSelectList, setUserSelectList }) {
 }
 
 function SelectTop3() {
-  let location = useLocation();
   let history = useHistory();
   const dispatch = useDispatch();
-  const geolocationInfo = useSelector((store) => store.geolocationReducer);
+  const temperature = useSelector((store) => store.temperatureReducer);
+  const prediction = useSelector((store) => store.predictionReducer);
   const [userSelectList, setUserSelectList] = useState();
-  const [temperature, setTemperature] = useState();
   const [modalOpen, setModalOpen] = useState();
-  const resultList = location.state.results;
   const modalTitle = '입고 계신 옷을 찾지 못했어요 ㅠ';
   const modalComment = `튜토리얼을 참고하여 다시 찍어주세요!`;
-  let results = '';
+  const [results, setResults] = useState();
 
   useEffect(() => {
-    if (resultList.length !== 0) {
-      results = resultList.map((result, index) => (
-        <SelectedBox
-          result={result}
-          userSelectList={userSelectList}
-          setUserSelectList={setUserSelectList}
-          key={index}
-        ></SelectedBox>
-      ));
-      if (!temperature) {
-        axios
-          .post('http://localhost:5000/weather', {
-            latitude: geolocationInfo[0],
-            longitude: geolocationInfo[1]
-          })
-          .then(function (response) {
-            console.log('기온 받아왔다!');
-            setTemperature(response.data.current_temperatures);
-          })
-          .catch(function (err) {
-            console.log(err);
-          });
+    if (!!prediction) {
+      if (prediction.length !== 0) {
+        let _results = prediction.map((result, index) => (
+          <SelectedBox
+            result={result}
+            userSelectList={userSelectList}
+            setUserSelectList={setUserSelectList}
+            key={index}
+          ></SelectedBox>
+        ));
+        setResults(_results);
+      } else {
+        setModalOpen(true);
       }
-    } else {
-      setModalOpen(true);
     }
-  });
+  }, [prediction]);
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -143,12 +130,9 @@ function SelectTop3() {
         console.log(err);
       });
   }
+
   return (
     <div>
-      <WindowWrapper>
-        <Body>{results}</Body>
-      </WindowWrapper>
-
       {modalOpen === true ? (
         <ExceptionModal
           setModalOpen={setModalOpen}
@@ -157,28 +141,33 @@ function SelectTop3() {
           modalComment={modalComment}
         />
       ) : (
-        <center>
-          <Button
-            onClick={() => {
-              dispatch(setBase64URL(''));
-              history.push('/camera');
-            }}
-            variant="contained"
-            color="secondary"
-            size="large"
-          >
-            다시 찍을래요
-          </Button>
-          &nbsp;
-          <Button
-            onClick={handleSubmit}
-            variant="contained"
-            color="primary"
-            size="large"
-          >
-            선택했어요
-          </Button>
-        </center>
+        <div>
+          <WindowWrapper>
+            <Body>{results}</Body>
+          </WindowWrapper>
+          <center>
+            <Button
+              onClick={() => {
+                dispatch(setBase64URL(''));
+                history.push('/camera');
+              }}
+              variant="contained"
+              color="secondary"
+              size="large"
+            >
+              다시 찍을래요
+            </Button>
+            &nbsp;
+            <Button
+              onClick={handleSubmit}
+              variant="contained"
+              color="primary"
+              size="large"
+            >
+              선택했어요
+            </Button>
+          </center>
+        </div>
       )}
     </div>
   );
