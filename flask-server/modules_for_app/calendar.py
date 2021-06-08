@@ -29,6 +29,7 @@ api = Api(calendar)
 
 # request 요청 변수 parser
 parser_calendar = reqparse.RequestParser()
+parser_calendar.add_argument('user_id')
 parser_calendar.add_argument('date')
 parser_calendar.add_argument(
     'ootd_img', type=FileStorage, location='files')
@@ -56,7 +57,7 @@ class Calendar(Resource):
     @calendar_api.response(200, 'Success', calendar_model)
     def post(self):
         args = parser_calendar.parse_args()
-        kakao_id = get_jwt_identity()
+        kakao_id = args['user_id']
 
         local_file_name, local_file_path = make_file_path()
         save_ootd_img(args['ootd_img'], local_file_path)
@@ -74,7 +75,7 @@ class Calendar(Resource):
     def get(self):
         # Read
         args = parser_calendar.parse_args()
-        kakao_id = get_jwt_identity()
+        kakao_id = args['user_id']
         # user_id, date가 함께 params로 요청되는 경우 : OOTD 이미지 반환
         if args['date']:
             local_file_path = get_file_path(args['date'], kakao_id)
@@ -102,7 +103,7 @@ class Calendar(Resource):
     def put(self):
         # Update
         args = parser_calendar.parse_args()
-        kakao_id = get_jwt_identity()
+        kakao_id = args['user_id']
         delete_ootd_img(kakao_id, args['date'])
 
         local_file_name, local_file_path = make_file_path()
