@@ -112,6 +112,14 @@ def object_detection(image_path, labelsPath, weightsPath, configPath, DETECTED_I
                             crop_img_paths.append(crop_img_path)
                     except cv2.error as e:
                         print("There is no cropped image")
+                else:
+                    try:
+                        cv2.imwrite(crop_img_path, crop_img)
+                        if crop_label not in crop_labels:
+                            crop_labels.append(crop_label)
+                            crop_img_paths.append(crop_img_path)
+                    except cv2.error as e:
+                        print("There is no cropped image")
 
     # print(crop_labels)
     # print(crop_img_paths)
