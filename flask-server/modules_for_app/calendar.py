@@ -80,13 +80,14 @@ class Calendar(Resource):
         # user_id, date가 함께 params로 요청되는 경우 : OOTD 이미지 반환
         if args['date']:
             local_file_path = get_file_path(args['date'], kakao_id)
+            return send_file(local_file_path)
 
-            with open(local_file_path, 'rb') as img_file:
-                base64_string = b64encode(img_file.read())
+            # with open(local_file_path, 'rb') as img_file:
+            #     base64_string = b64encode(img_file.read())
 
-            return jsonify(
-                image_base64_string=base64_string.decode("utf-8")
-            )
+            # return jsonify(
+            #     image_base64_string=base64_string.decode("utf-8")
+            # )
 
         # user_id, month가 전달되는 경우 : 유저가 OOTD를 등록한 날짜 리스트 반환
         else:
