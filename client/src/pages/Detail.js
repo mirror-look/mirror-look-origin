@@ -81,7 +81,7 @@ function Recommend({ userName, comment }) {
 
 function Detail() {
   const userName = '김윤주';
-  let location = useLocation();
+  const location = useLocation();
 
   console.log('추천페이지로 넘어왔다!');
   console.log(location.state);
