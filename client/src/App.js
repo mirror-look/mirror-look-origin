@@ -21,6 +21,7 @@ import FriendPage from './pages/FriendPage.js';
 function App() {
   let { pathname } = useLocation();
   console.log('pathname == ', pathname);
+  const [userName, setUserName] = useState('꼬부기');
   const [userAgreement, setUserAgreement] = useState();
   const [agreement, setAgreement] = useState();
   const [userKakaoId, setUserKakaoId] = useState('');
@@ -38,12 +39,19 @@ function App() {
             <MainLayout>
               <Header />
               <Route path="/dashboard" component={Dashboard} />
-              <Route path="/camera" component={Camera} />
+              <Route
+                exact
+                path="/camera"
+                render={() => <Camera userName={userName} />}
+              />
               <Route
                 path="/calendar"
                 render={() => <FashionCalendar userId={userKakaoId} />}
               />
-              <Route path="/detail" component={Detail} />
+              <Route
+                path="/detail"
+                render={() => <Detail userName={userName} />}
+              />
               <Route path="/select" component={SelectTop3} />
               <Route
                 path="/oauth/callback/kakao"
@@ -57,6 +65,8 @@ function App() {
                     setUserAgreement={setUserAgreement}
                     setUserKakaoId={setUserKakaoId}
                     setAgreement={setAgreement}
+                    userName={userName}
+                    setUserName={setUserName}
                   />
                 )}
               />

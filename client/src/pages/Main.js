@@ -32,9 +32,8 @@ function Calendar() {
   );
 }
 
-function Main({ setAgreement, setUserKakaoId }) {
+function Main({ setAgreement, setUserKakaoId, userName, setUserName }) {
   const dispatch = useDispatch();
-  const [userName, setUserName] = useState('꼬부기');
   const [userProfileImage, setUserProfileImage] = useState();
   const [lat, setLat] = useState();
   const [lng, setLng] = useState();
