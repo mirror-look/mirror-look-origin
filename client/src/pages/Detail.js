@@ -1,12 +1,12 @@
 import styled from 'styled-components';
 import Box from '@material-ui/core/Box';
 import { useLocation } from 'react-router-dom';
-import { useEffect } from 'react';
+import { useSelector } from 'react-redux';
 
-function Photo() {
+function Photo({ imagePath }) {
   return (
     <img
-      src="https://images.unsplash.com/photo-1545249390-6bdfa286032f?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=2232&q=80"
+      src={'data:image/*;base64,' + imagePath}
       alt="사진"
       width="364px"
       height="740px"
@@ -80,6 +80,7 @@ function Recommend({ userName, comment }) {
 }
 
 function Detail() {
+  const imagePath = useSelector((store) => store.imageBase64Reducer);
   const userName = '김윤주';
   const location = useLocation();
 
@@ -89,7 +90,7 @@ function Detail() {
   return (
     <ShowDetail>
       <PhotoBox>
-        <Photo />
+        <Photo imagePath={imagePath} />
       </PhotoBox>
       <Story>
         <Recommend userName={userName} comment={location.state}></Recommend>
