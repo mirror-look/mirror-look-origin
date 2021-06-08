@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { setGeolocation } from '../store/actions';
+import { setTemperature } from '../store/actions';
 import axios from 'axios';
 import styled from 'styled-components';
 import Box from '@material-ui/core/Box';
@@ -67,20 +67,24 @@ function Main({ setAgreement, setUserKakaoId }) {
       });
   }, []);
 
-  if ('geolocation' in navigator) {
-    navigator.geolocation.getCurrentPosition((position) => {
-      console.log('위치 받아왔다!');
-      dispatch(
-        setGeolocation([
-          String(position.coords.latitude),
-          String(position.coords.longitude)
-        ])
-      );
-      setLat(position.coords.latitude);
-      setLng(position.coords.longitude);
-    });
-  } else {
-    console.log('위치 못받아왔다!');
+  if (!lat && !lng) {
+    if ('geolocation' in navigator) {
+      navigator.geolocation.getCurrentPosition((position) => {
+        console.log('위치 받아왔다!');
+        setLat(position.coords.latitude);
+        setLng(position.coords.longitude);
+        axios
+          .post('http://localhost:5000/weather', {
+            latitude: position.coords.latitude,
+            longitude: position.coords.longitude
+          })
+          .then(function (response) {
+            dispatch(setTemperature(response.data.current_temperatures));
+          });
+      });
+    } else {
+      console.log('위치 못받아왔다!');
+    }
   }
 
   return (
