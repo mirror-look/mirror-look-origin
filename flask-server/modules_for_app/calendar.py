@@ -52,7 +52,6 @@ calendar_model = calendar_api.model('Model', {
 class Calendar(Resource):
     # 캘린더 CRUD
     # Create
-    @jwt_required()
     @calendar_api.expect(parser_calendar)
     @calendar_api.response(200, 'Success', calendar_model)
     def post(self):
@@ -70,7 +69,6 @@ class Calendar(Resource):
 
         return calendar_schema.dump(calendar_document)
 
-    @jwt_required()
     @calendar_api.expect(parser_calendar)
     @calendar_api.response(200, 'Success', calendar_model)
     def get(self):
@@ -99,7 +97,6 @@ class Calendar(Resource):
                 ootd_enrolled_dates=ootd_enrolled_dates
             )
 
-    @jwt_required()
     @calendar_api.expect(parser_calendar)
     @calendar_api.response(200, 'Success', calendar_model)
     def put(self):
