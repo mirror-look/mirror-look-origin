@@ -10,7 +10,7 @@ import WindowWrapper from '../components/common/WindowWrapper';
 import AgreementModal from '../components/common/AgreementModal';
 import Weather from '../components/main/Weather';
 
-const URL = `http://localhost:56552`;
+const URL = `http://localhost:5000`;
 
 function Hello({ userName }) {
   return <StyledHello>{userName}님 안녕하세요!</StyledHello>;
@@ -74,7 +74,7 @@ function Main({ setAgreement, setUserKakaoId }) {
         setLat(position.coords.latitude);
         setLng(position.coords.longitude);
         axios
-          .post('http://localhost:56552/weather', {
+          .post('http://localhost:5000/weather', {
             latitude: position.coords.latitude,
             longitude: position.coords.longitude
           })
