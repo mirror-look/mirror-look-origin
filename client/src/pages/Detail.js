@@ -2,11 +2,13 @@ import styled from 'styled-components';
 import Box from '@material-ui/core/Box';
 import { useLocation } from 'react-router-dom';
 import { useEffect } from 'react';
+const URL = `http://localhost:5000`;
 
-function Photo() {
+function Photo({ date }) {
+  console.log(date);
   return (
     <img
-      src="https://images.unsplash.com/photo-1545249390-6bdfa286032f?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=2232&q=80"
+      src={`${URL}/calendar?date=${date}`}
       alt="사진"
       width="364px"
       height="740px"
@@ -79,17 +81,26 @@ function Recommend({ userName, comment }) {
   );
 }
 
-function Detail() {
-  const userName = '김윤주';
+function getFormatDate(date) {
+  var year = date.getFullYear();
+  var month = 1 + date.getMonth();
+  month = month >= 10 ? month : '0' + month;
+  var day = date.getDate();
+  day = day >= 10 ? day : '0' + day;
+  return year + '-' + month + '-' + day;
+}
+
+function Detail({ userName }) {
   let location = useLocation();
 
   console.log('추천페이지로 넘어왔다!');
-  console.log(location.state);
+  let date = new Date();
+  console.log(getFormatDate(date));
 
   return (
     <ShowDetail>
       <PhotoBox>
-        <Photo />
+        <Photo date={getFormatDate(date)} />
       </PhotoBox>
       <Story>
         <Recommend userName={userName} comment={location.state}></Recommend>

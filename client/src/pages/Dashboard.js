@@ -29,8 +29,7 @@ function Photo({ src, alt }) {
   return <img src={src} alt={alt} style={styledPhoto} />;
 }
 
-function Dashboard() {
-  const username = '김윤주';
+function Dashboard({ userName }) {
   const imgAlt = 'clothes img';
   const { search } = useLocation();
   const { userId, date } = queryString.parse(search);
@@ -58,7 +57,7 @@ function Dashboard() {
         <Photo src={imgSrc} alt={imgAlt} />
       </PhotoBox>
       <Story>
-        <Info date={date} username={username}></Info>
+        <Info date={date} username={userName}></Info>
       </Story>
     </ShowDetail>
   );
