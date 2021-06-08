@@ -1,5 +1,10 @@
 import { combineReducers } from 'redux';
-import geolocationReducer from './geolocationReducer';
+import temperatureReducer from './temperatureReducer';
 import imageBase64Reducer from './imageBase64Reducer';
+import predictionReducer from './predictionReducer';
 
-export default combineReducers({ geolocationReducer, imageBase64Reducer });
+export default combineReducers({
+  temperatureReducer,
+  imageBase64Reducer,
+  predictionReducer
+});
