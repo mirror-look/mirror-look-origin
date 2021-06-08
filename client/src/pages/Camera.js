@@ -103,7 +103,8 @@ const Window = styled(Box)`
   width: 1230px;
   height: 682px;
   background: #f4f5fa;
-  box-shadow: 0px 20px 100px #0057ff;
+  box-shadow: 0px 4px 50px rgba(0, 0, 0, 0.25);
+
   border-radius: 30px;
 
   font-family: Rubik;
