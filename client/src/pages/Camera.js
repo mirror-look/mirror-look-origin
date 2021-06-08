@@ -1,68 +1,26 @@
-import { useCallback, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { setPrediction } from '../store/actions';
 import axios from 'axios';
 import styled from 'styled-components';
 import Button from '@material-ui/core/Button';
 import Box from '@material-ui/core/Box';
-import Webcam from 'react-webcam';
+import Cam from '../components/camera/Cam';
 import DragDrop from '../components/camera/DragDrop';
-import Countdown from '../components/camera/Countdown';
 import Tutorial from '../components/camera/Tutorial';
 
-const videoConstraints = {
-  facingMode: 'user'
-};
-
 function Camera() {
+  const dispatch = useDispatch();
   const uploadImageBase64 = useSelector((store) => store.imageBase64Reducer);
   const history = useHistory();
   const token = `Bearer ${window.sessionStorage.getItem('token')}`;
-  const [countdown, setCountdown] = useState();
   const [cam, setCam] = useState();
   const [dragDrop, setDragDrop] = useState();
   const [buttonEnabled, setButtonEnabled] = useState(true);
-  const webcamRef = useRef(null);
-  const capture = useCallback(() => {
-    let imageSrc = webcamRef.current.getScreenshot();
-    console.log('촬영했다!');
-    let imageBase64 = imageSrc.split(',')[1];
-    axios
-      .post(
-        'http://localhost:5000/classification/upload',
-        {
-          image_base64: imageBase64
-        },
-        {
-          headers: {
-            Authorization: token
-          }
-        }
-      )
-      .then(function (response) {
-        console.log('촬영된 Base64 이미지 보내서 예측 결과 가져왔다!');
-        console.log('선택 페이지로 간다!');
-        history.push({
-          pathname: '/select',
-          state: { results: response.data.result.top_3_result }
-        });
-      })
-      .catch(function (err) {
-        console.log('촬영된 Base64 이미지 보냈는데 예측 결과 못가져왔다!');
-        console.log(err);
-      });
-  }, [webcamRef]);
 
-  function handleConfirm() {
-    console.log('이미지 확인 클릭했다!');
-    if (cam === true) {
-      setCountdown(true);
-      setTimeout(function () {
-        setCountdown(false);
-        console.log('촬영 준비!');
-        capture();
-      }, 5000);
-    } else if ((dragDrop === true) & !!uploadImageBase64) {
+  useEffect(() => {
+    if (!!uploadImageBase64) {
       console.log('업로드된 이미지 보낼 준비!');
       const imageBase64 = uploadImageBase64;
       axios
@@ -79,44 +37,28 @@ function Camera() {
         )
         .then(function (response) {
           console.log('업로드된 Base64 이미지 보내서 예측 결과 가져왔다!');
-          console.log('선택 페이지로 간다!');
-          history.push({
-            pathname: '/select',
-            state: { results: response.data.result.top_3_result }
-          });
+          console.log(response.data.result.top_3_result);
+          console.log('예측 결과 넣는다!');
+          dispatch(setPrediction(response.data.result.top_3_result));
         })
         .catch(function (err) {
           console.log('업로드된 Base64 이미지 보냈는데 예측 결과 못가져왔다!');
           console.log(err);
         });
     }
+  }, [uploadImageBase64]);
+
+  function handleConfirm(e) {
+    e.preventDefault();
+    console.log('이미지 확인 클릭했다!');
+    history.push('/select');
   }
 
   return (
     <StyledBox>
       <Window>
         {!cam && !dragDrop ? <Tutorial /> : ''}
-        {cam === true ? (
-          <Webcam
-            style={{
-              height: '100%',
-              width: '100%'
-            }}
-            audio={false}
-            ref={webcamRef}
-            screenshotFormat="image/*"
-            videoConstraints={videoConstraints}
-          />
-        ) : (
-          ''
-        )}
-        {countdown === true ? (
-          <CountdownBox>
-            <Countdown />
-          </CountdownBox>
-        ) : (
-          ''
-        )}
+        {cam === true ? <Cam setButtonEnabled={setButtonEnabled} /> : ''}
         {dragDrop === true ? (
           <DragDrop setButtonEnabled={setButtonEnabled} />
         ) : (
@@ -138,13 +80,12 @@ function Camera() {
             console.log('촬영하기 클릭했다!');
             setCam(true);
             setDragDrop(false);
-            setButtonEnabled(false);
           }}
         >
-          촬영하기
+          카메라
         </TakePhoto>
         <Confirm disabled={buttonEnabled} onClick={handleConfirm}>
-          확인
+          결과보기
         </Confirm>
       </StyledButton>
     </StyledBox>
@@ -249,10 +190,6 @@ const Confirm = styled(Button)`
   text-align: center;
 
   color: #f4f5fa;
-`;
-
-const CountdownBox = styled(Box)`
-  position: absolute;
 `;
 
 export default Camera;
