@@ -132,7 +132,7 @@ const ShowDetail = styled('div')`
 const PhotoBox = styled(Box)`
   width: 364px;
   height: 740px;
-  overflow="hidden";
+  overflow: 'hidden';
 
   background: #ffffff;
   box-shadow: 0px 20px 100px #0057ff;

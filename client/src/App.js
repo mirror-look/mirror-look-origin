@@ -73,8 +73,8 @@ function App() {
                   />
                 )}
               />
-              <Route path="/friends-list" component={FriendsList} />
-              <Route path="/friend-page" component={FriendPage} />
+              {/*<Route path="/friends-list" component={FriendsList} />
+              <Route path="/friend-page" component={FriendPage} />*/}
             </MainLayout>
           </WindowWrapper>
         )}
