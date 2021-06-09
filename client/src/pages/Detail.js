@@ -7,16 +7,17 @@ import axios from 'axios';
 
 function Photo({ imagePath }) {
   return (
-    <img
-      src={'data:image/*;base64,' + imagePath}
-      alt="사진"
-      width="364px"
-      height="740px"
-      border="1px solid black"
-      border-radius="30%"
-      overflow="hidden"
-      object-fit="cover"
-    />
+    <PhotoBox>
+      <img
+        style={{
+          width: '100%',
+          height: '100%',
+          border: '1px solid black'
+        }}
+        src={'data:image/*;base64,' + imagePath}
+        alt="사진"
+      />
+    </PhotoBox>
   );
 }
 
@@ -112,9 +113,7 @@ function Detail() {
   }
   return (
     <ShowDetail>
-      <PhotoBox>
-        <Photo imagePath={imagePath} />
-      </PhotoBox>
+      <Photo imagePath={imagePath} />
       <Story>
         <Recommend userName={userName} comment={location.state}></Recommend>
         <Button onClick={handleClick} variant="contained" color="primary">
@@ -133,6 +132,7 @@ const ShowDetail = styled('div')`
 const PhotoBox = styled(Box)`
   width: 364px;
   height: 740px;
+  overflow="hidden";
 
   background: #ffffff;
   box-shadow: 0px 20px 100px #0057ff;
