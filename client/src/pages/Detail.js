@@ -1,14 +1,12 @@
 import styled from 'styled-components';
 import Box from '@material-ui/core/Box';
 import { useLocation } from 'react-router-dom';
-import { useEffect } from 'react';
-const URL = `http://localhost:5000`;
+import { useSelector } from 'react-redux';
 
-function Photo({ date }) {
-  console.log(date);
+function Photo({ imagePath }) {
   return (
     <img
-      src={`${URL}/calendar?date=${date}`}
+      src={'data:image/*;base64,' + imagePath}
       alt="사진"
       width="364px"
       height="740px"
@@ -81,17 +79,10 @@ function Recommend({ userName, comment }) {
   );
 }
 
-function getFormatDate(date) {
-  var year = date.getFullYear();
-  var month = 1 + date.getMonth();
-  month = month >= 10 ? month : '0' + month;
-  var day = date.getDate();
-  day = day >= 10 ? day : '0' + day;
-  return year + '-' + month + '-' + day;
-}
-
-function Detail({ userName }) {
-  let location = useLocation();
+function Detail() {
+  const imagePath = useSelector((store) => store.imageBase64Reducer);
+  const userName = '김윤주';
+  const location = useLocation();
 
   console.log('추천페이지로 넘어왔다!');
   let date = new Date();
@@ -100,7 +91,7 @@ function Detail({ userName }) {
   return (
     <ShowDetail>
       <PhotoBox>
-        <Photo date={getFormatDate(date)} />
+        <Photo imagePath={imagePath} />
       </PhotoBox>
       <Story>
         <Recommend userName={userName} comment={location.state}></Recommend>
