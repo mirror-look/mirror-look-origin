@@ -1,20 +1,23 @@
 import styled from 'styled-components';
 import Box from '@material-ui/core/Box';
-import { useLocation } from 'react-router-dom';
+import Button from '@material-ui/core/Button';
+import { useHistory, useLocation } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import axios from 'axios';
 
 function Photo({ imagePath }) {
   return (
-    <img
-      src={'data:image/*;base64,' + imagePath}
-      alt="사진"
-      width="364px"
-      height="740px"
-      border="1px solid black"
-      border-radius="30%"
-      overflow="hidden"
-      object-fit="cover"
-    />
+    <PhotoBox>
+      <img
+        style={{
+          width: '100%',
+          height: '100%',
+          border: '1px solid black'
+        }}
+        src={'data:image/*;base64,' + imagePath}
+        alt="사진"
+      />
+    </PhotoBox>
   );
 }
 
@@ -80,21 +83,42 @@ function Recommend({ userName, comment }) {
 }
 
 function Detail() {
+  const history = useHistory();
+  const userInfo = useSelector((store) => store.userInfoReducer);
+  const imageFullPath = useSelector((store) => store.imagePathReducer);
   const imagePath = useSelector((store) => store.imageBase64Reducer);
   const userName = '김윤주';
   const location = useLocation();
 
   console.log('추천페이지로 넘어왔다!');
-  let date = new Date();
-  console.log(getFormatDate(date));
+  console.log(location.state);
 
+  function handleClick() {
+    const date = new Date();
+    console.log('캘린더에 저장하기 클릭했다!');
+    axios
+      .post('http://localhost:5000/calendar', {
+        ootd_img_path: imageFullPath,
+        user_id: userInfo.user_id,
+        clothes_subcategory: location.state.clothes_for_weather,
+        date: date
+      })
+      .then(function (response) {
+        console.log('캘린더에 분석결과 저장했다!');
+        history.push('/calendar');
+      })
+      .catch(function (err) {
+        console.log(err);
+      });
+  }
   return (
     <ShowDetail>
-      <PhotoBox>
-        <Photo imagePath={imagePath} />
-      </PhotoBox>
+      <Photo imagePath={imagePath} />
       <Story>
         <Recommend userName={userName} comment={location.state}></Recommend>
+        <Button onClick={handleClick} variant="contained" color="primary">
+          캘린더에 저장하기
+        </Button>
       </Story>
     </ShowDetail>
   );
@@ -108,6 +132,7 @@ const ShowDetail = styled('div')`
 const PhotoBox = styled(Box)`
   width: 364px;
   height: 740px;
+  overflow="hidden";
 
   background: #ffffff;
   box-shadow: 0px 20px 100px #0057ff;

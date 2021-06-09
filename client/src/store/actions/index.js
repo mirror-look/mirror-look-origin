@@ -18,3 +18,17 @@ export const setPrediction = (item) => {
     payload: item
   };
 };
+
+export const setImagePath = (item) => {
+  return {
+    type: 'SET_IMAGE_PATH',
+    payload: item
+  };
+};
+
+export const setUserInfo = (item) => {
+  return {
+    type: 'SET_USER_INFO',
+    payload: item
+  };
+};

@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { setPrediction } from '../store/actions';
+import { setImagePath } from '../store/actions';
 import axios from 'axios';
 import styled from 'styled-components';
 import Button from '@material-ui/core/Button';
@@ -39,6 +40,7 @@ function Camera() {
           console.log('업로드된 Base64 이미지 보내서 예측 결과 가져왔다!');
           console.log(response.data.result.top_3_result);
           console.log('예측 결과 넣는다!');
+          dispatch(setImagePath(response.data.result.original_image_path));
           dispatch(setPrediction(response.data.result.top_3_result));
         })
         .catch(function (err) {
@@ -104,7 +106,6 @@ const Window = styled(Box)`
   height: 682px;
   background: #f4f5fa;
   box-shadow: 0px 4px 50px rgba(0, 0, 0, 0.25);
-
   border-radius: 30px;
 
   font-family: Rubik;
