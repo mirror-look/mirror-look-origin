@@ -33,7 +33,7 @@ parser_calendar.add_argument('user_id')
 parser_calendar.add_argument('date')
 parser_calendar.add_argument('ootd_img_path')
 
-# clothes_feature
+# clothes_subcategory
 parser_calendar.add_argument('clothes_subcategory', action='append')
 
 # 캘린더 화면 OOTD 등록 표시용
@@ -43,7 +43,7 @@ calendar_model = calendar_api.model('Model', {
     'user_id': fields.Integer(),
     'date': fields.String(),
     'ootd_img_path': fields.String(),
-    'clothes_feature': fields.Dict()
+    'clothes_subcategory': fields.Dict()
 
 })
 
