@@ -57,9 +57,9 @@ class Calendar(Resource):
     def post(self):
         args = parser_calendar.parse_args()
         kakao_id = args['user_id']
-
+        date = args['date'].split('T')[0]
         calendar_document = create_calendar_document(
-            kakao_id, args['date'], args['clothes_subcategory'], args['ootd_img_path'])
+            kakao_id, date, args['clothes_subcategory'], args['ootd_img_path'])
 
         calendar_document.save()
         calendar_schema = CalendarSchema()
