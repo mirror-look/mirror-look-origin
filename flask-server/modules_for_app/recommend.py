@@ -68,10 +68,13 @@ class Recommend(Resource):
         args = parser_recommend.parse_args()
         date = args['date']
         kakao_id = args['user_id']
+        print(date)
+        print(kakao_id)
 
         sub_category = CalendarDocument.objects.get(
             Q(date=date) & Q(user_id=kakao_id)).clothes_subcategory
 
+        print(sub_category)
         laundry_recommended = recommend_laundry(sub_category)
 
         return jsonify(
