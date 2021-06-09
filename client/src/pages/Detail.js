@@ -1,7 +1,9 @@
 import styled from 'styled-components';
 import Box from '@material-ui/core/Box';
-import { useLocation } from 'react-router-dom';
+import Button from '@material-ui/core/Button';
+import { useHistory, useLocation } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import axios from 'axios';
 
 function Photo({ imagePath }) {
   return (
@@ -80,14 +82,34 @@ function Recommend({ userName, comment }) {
 }
 
 function Detail() {
+  const history = useHistory();
+  const userInfo = useSelector((store) => store.userInfoReducer);
+  const imageFullPath = useSelector((store) => store.imagePathReducer);
   const imagePath = useSelector((store) => store.imageBase64Reducer);
   const userName = '김윤주';
   const location = useLocation();
 
   console.log('추천페이지로 넘어왔다!');
-  let date = new Date();
-  console.log(getFormatDate(date));
+  console.log(location.state);
 
+  function handleClick() {
+    const date = new Date();
+    console.log('캘린더에 저장하기 클릭했다!');
+    axios
+      .post('http://localhost:5000/calendar', {
+        ootd_img_path: imageFullPath,
+        user_id: userInfo.user_id,
+        clothes_subcategory: location.state.clothes_for_weather,
+        date: date
+      })
+      .then(function (response) {
+        console.log('캘린더에 분석결과 저장했다!');
+        history.push('/calendar');
+      })
+      .catch(function (err) {
+        console.log(err);
+      });
+  }
   return (
     <ShowDetail>
       <PhotoBox>
@@ -95,6 +117,9 @@ function Detail() {
       </PhotoBox>
       <Story>
         <Recommend userName={userName} comment={location.state}></Recommend>
+        <Button onClick={handleClick} variant="contained" color="primary">
+          캘린더에 저장하기
+        </Button>
       </Story>
     </ShowDetail>
   );

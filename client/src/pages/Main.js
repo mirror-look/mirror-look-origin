@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { setTemperature } from '../store/actions';
+import { setUserInfo } from '../store/actions';
 import axios from 'axios';
 import styled from 'styled-components';
 import Box from '@material-ui/core/Box';
@@ -55,6 +56,7 @@ function Main({ setAgreement, setUserKakaoId, userName, setUserName }) {
         setUserProfileImage(response.data.user_info.profile_img);
         setUserKakaoId(response.data.user_info.user_id);
         setAgreement(response.data.user_info.agreement);
+        dispatch(setUserInfo(response.data.user_info));
         console.log('사용자 정보 받았다!');
         if (response.data.user_info.agreement === 'false') {
           console.log('동의여부가 false 여서 Modal 띄운다!');
