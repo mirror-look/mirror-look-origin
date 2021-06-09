@@ -103,12 +103,13 @@ const StyledBox = styled('div')`
   flex-direction: column;
   align-items: center;
   width: 100%;
+  height: 100%;
 `;
 
 const Window = styled(Box)`
   border-radius: 30px;
   width: 95%;
-  height: 550px;
+  height: 100%;
   background: #f4f5fa;
   filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
 
