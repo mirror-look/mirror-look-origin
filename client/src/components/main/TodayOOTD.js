@@ -20,7 +20,7 @@ const StyledFontRight = {
   color: 'white',
   position: 'absolute',
   top: '45%',
-  left: '25%',
+  left: '30%',
   fontSize: '50px',
   zIndex: '1',
   textShadow: '-1px 0 gray, 0 1px gray, 1px 0 gray, 0 -1px gray'

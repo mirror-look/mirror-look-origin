@@ -10,6 +10,7 @@ import Box from '@material-ui/core/Box';
 import Cam from '../components/camera/Cam';
 import DragDrop from '../components/camera/DragDrop';
 import Tutorial from '../components/camera/Tutorial';
+import WindowWrapper from '../components/common/WindowWrapper';
 
 function Camera() {
   const dispatch = useDispatch();
@@ -58,40 +59,42 @@ function Camera() {
   }
 
   return (
-    <StyledBox>
-      <Window>
-        {!cam && !dragDrop ? <Tutorial /> : ''}
-        {cam === true ? <Cam setButtonEnabled={setButtonEnabled} /> : ''}
-        {dragDrop === true ? (
-          <DragDrop setButtonEnabled={setButtonEnabled} />
-        ) : (
-          ''
-        )}
-      </Window>
-      <StyledButton>
-        <SearchFile
-          onClick={() => {
-            console.log('파일업로드 클릭했다!');
-            setCam(false);
-            setDragDrop(true);
-          }}
-        >
-          파일업로드
-        </SearchFile>
-        <TakePhoto
-          onClick={() => {
-            console.log('촬영하기 클릭했다!');
-            setCam(true);
-            setDragDrop(false);
-          }}
-        >
-          카메라
-        </TakePhoto>
-        <Confirm disabled={buttonEnabled} onClick={handleConfirm}>
-          결과보기
-        </Confirm>
-      </StyledButton>
-    </StyledBox>
+    <WindowWrapper>
+      <StyledBox>
+        <Window>
+          {!cam && !dragDrop ? <Tutorial /> : ''}
+          {cam === true ? <Cam setButtonEnabled={setButtonEnabled} /> : ''}
+          {dragDrop === true ? (
+            <DragDrop setButtonEnabled={setButtonEnabled} />
+          ) : (
+            ''
+          )}
+        </Window>
+        <StyledButton>
+          <SearchFile
+            onClick={() => {
+              console.log('파일업로드 클릭했다!');
+              setCam(false);
+              setDragDrop(true);
+            }}
+          >
+            파일업로드
+          </SearchFile>
+          <TakePhoto
+            onClick={() => {
+              console.log('촬영하기 클릭했다!');
+              setCam(true);
+              setDragDrop(false);
+            }}
+          >
+            카메라
+          </TakePhoto>
+          <Confirm disabled={buttonEnabled} onClick={handleConfirm}>
+            결과보기
+          </Confirm>
+        </StyledButton>
+      </StyledBox>
+    </WindowWrapper>
   );
 }
 
@@ -99,14 +102,17 @@ const StyledBox = styled('div')`
   display: flex;
   flex-direction: column;
   align-items: center;
+  width: 100%;
 `;
 
 const Window = styled(Box)`
   border-radius: 30px;
-  width: 1230px;
-  height: 682px;
+  width: 95%;
+  height: 550px;
   background: #f4f5fa;
-  box-shadow: 0px 4px 50px rgba(0, 0, 0, 0.25);
+  filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+
+  /*box-shadow: 0px 4px 50px rgba(0, 0, 0, 0.25);*/
   border-radius: 30px;
 
   font-family: Rubik;
@@ -130,7 +136,7 @@ const StyledButton = styled('div')`
   flex-direction: row;
   justify-content: space-between;
   height: 50px;
-  width: 1230px;
+  width: 95%;
   /* width 크기에 따라서 버튼 위치와 간격이 달라짐.. 어떻게 할 것인지? */
   margin: 50px;
 `;

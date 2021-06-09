@@ -168,7 +168,7 @@ const Nav = styled(Toolbar)`
   position: fixed;
   display: flex;
   flex-direction: column;
-  width: 50px;
+  width: 60px;
   background-color: #f4f5fa;
   left: 0;
   height: 100%;
