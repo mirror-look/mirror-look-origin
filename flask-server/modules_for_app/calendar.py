@@ -34,7 +34,7 @@ parser_calendar.add_argument('date')
 parser_calendar.add_argument('ootd_img_path')
 
 # clothes_feature
-parser_calendar.add_argument('clothes_subcategory')
+parser_calendar.add_argument('clothes_subcategory', action='append')
 
 # 캘린더 화면 OOTD 등록 표시용
 parser_calendar.add_argument('month')
@@ -58,6 +58,7 @@ class Calendar(Resource):
         args = parser_calendar.parse_args()
         kakao_id = args['user_id']
         date = args['date'].split('T')[0]
+        print(args['clothes_subcategory'])
         calendar_document = create_calendar_document(
             kakao_id, date, args['clothes_subcategory'], args['ootd_img_path'])
 
