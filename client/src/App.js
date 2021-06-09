@@ -87,6 +87,7 @@ const MainLayout = styled('div')`
   display: flex;
   flex-direction: column;
   margin-left: 75px;
+  width: 100%;
 `;
 
 export default App;

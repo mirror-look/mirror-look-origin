@@ -12,7 +12,8 @@ function Photo({ imagePath }) {
         style={{
           width: '100%',
           height: '100%',
-          border: '1px solid black'
+          border: '1px solid black',
+          borderRadius: '30px'
         }}
         src={'data:image/*;base64,' + imagePath}
         alt="사진"
@@ -73,21 +74,20 @@ function Recommend({ userName, comment }) {
     }
   }
   return (
-    <div>
+    <StyledAdvice>
       <h3>오늘 {userName}님은 이런 옷을 입었군요!</h3>
       <p>{advice1}</p>
       <p>{advice2}</p>
       <p>{advice3}</p>
-    </div>
+    </StyledAdvice>
   );
 }
 
-function Detail() {
+function Detail({ userName }) {
   const history = useHistory();
   const userInfo = useSelector((store) => store.userInfoReducer);
   const imageFullPath = useSelector((store) => store.imagePathReducer);
   const imagePath = useSelector((store) => store.imageBase64Reducer);
-  const userName = '김윤주';
   const location = useLocation();
 
   console.log('추천페이지로 넘어왔다!');
@@ -116,7 +116,12 @@ function Detail() {
       <Photo imagePath={imagePath} />
       <Story>
         <Recommend userName={userName} comment={location.state}></Recommend>
-        <Button onClick={handleClick} variant="contained" color="primary">
+        <Button
+          style={styledButton}
+          onClick={handleClick}
+          variant="contained"
+          color="primary"
+        >
           캘린더에 저장하기
         </Button>
       </Story>
@@ -124,20 +129,34 @@ function Detail() {
   );
 }
 
+const styledButton = {
+  marginTop: '15px',
+  borderRadius: '10px',
+  filter: 'drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25))',
+  backgroundColor: '#8f00ff'
+};
+
 const ShowDetail = styled('div')`
   display: flex;
   flex-direction: row;
+  width: calc(100vw - 75px);
+  height: calc(100vh - 90px);
+  padding-bottom: 15px;
+  padding-right: 20px;
 `;
 
 const PhotoBox = styled(Box)`
-  width: 364px;
-  height: 740px;
+  width: 35%;
+  height: 100%;
   overflow: 'hidden';
+  flex-grow: 1;
 
   background: #ffffff;
-  box-shadow: 0px 20px 100px #0057ff;
+  /*box-shadow: 0px 20px 100px #0057ff;*/
+  filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+
   border-radius: 30px;
-  margin: 50px;
+  margin: 0 15px;
 `;
 
 const Story = styled('div')`
@@ -148,11 +167,28 @@ const Story = styled('div')`
   font-weight: 500;
   font-size: 25px;
   line-height: 40px;
+  flex-grow: 1;
+  height: 100%;
+
   /* or 160% */
 
-  margin: 50px;
+  margin: 0 15px;
+  /*filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));*/
 
   color: #000000;
+`;
+
+const StyledAdvice = styled.div`
+  display: flex;
+  flex-direction: column;
+  /*justify-content: center;*/
+  align-items: center;
+  padding: 45px;
+  border: 1px solid white;
+  border-radius: 30px;
+  background: #ffffff;
+  height: 100%;
+  filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
 `;
 
 export default Detail;
