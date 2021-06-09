@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import Button from '@material-ui/core/Button';
 import Box from '@material-ui/core/Box';
+import Weather from './Weather';
 
 function Hello({ userName }) {
   return <StyledHello>{userName}님 안녕하세요!</StyledHello>;
@@ -14,33 +15,20 @@ const StyledFriendImage = {
   margin: '10px'
 };
 
-function Profile(props) {
-  console.log(props);
+function UserInfo({ userName, profileImg, lat, lng }) {
   return (
-    <ProfileBox>
-      <Hello userName={props.username} />
-      <img
-        src={props.profileImg}
-        alt={props.username}
-        style={StyledFriendImage}
-      />
-      <ProfileContent>
-        <h3>{props.username}</h3>
-      </ProfileContent>
-    </ProfileBox>
+    <StyledUserInfo>
+      <ProfileBox>
+        {/*<Hello userName={userName} />*/}
+        <img src={profileImg} alt={userName} style={StyledFriendImage} />
+        <ProfileContent>
+          <h3>{userName}</h3>
+        </ProfileContent>
+        {!!lat && !!lng ? <Weather lat={lat} lng={lng} /> : ''}
+      </ProfileBox>
+    </StyledUserInfo>
   );
 }
-
-Profile.defaultProps = {
-  profileImg:
-    'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQo2JQNgUBTWG8HjybCv26CSckhyQyol_O0tA&usqp=CAU'
-};
-
-const StyledUserName = styled(Button)`
-  font-size: 15px;
-  font-weight: bold;
-  margin-top: 20px;
-`;
 
 const ProfileContent = styled(Box)`
   margin: 15px;
@@ -55,27 +43,32 @@ const ProfileContent = styled(Box)`
 
 const ProfileBox = styled(Box)`
   width: 100%;
-  height: 380px;
-  left: 131px;
-  top: 216px;
+  height: 100%;
 
   background: #ffffff;
   filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
   border-radius: 30px;
-  margin: 30px;
 
   display: flex;
   flex-direction: column;
-  align-items: center;
   justify-content: center;
+  align-items: center;
 `;
 
 const StyledHello = styled('div')`
   font-family: Rubik;
   font-style: normal;
   font-weight: 500;
-  font-size: 30px;
+  font-size: 25px;
   line-height: 40px;
 `;
 
-export default Profile;
+const StyledUserInfo = styled.div`
+  /*min-width: 300px;*/
+  flex-grow: 1;
+  width: 100%;
+  height: 100%;
+  margin: 0 15px;
+`;
+
+export default UserInfo;

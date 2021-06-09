@@ -4,7 +4,7 @@ import { setTemperature } from '../store/actions';
 import styled from 'styled-components';
 import { setUserInfo } from '../store/actions';
 import axios from 'axios';
-import Profile from '../components/main/Profile';
+import UserInfo from '../components/main/UserInfo';
 import WindowWrapper from '../components/common/WindowWrapper';
 import AgreementModal from '../components/common/AgreementModal';
 import Weather from '../components/main/Weather';
@@ -71,11 +71,20 @@ function Main({ setAgreement, setUserKakaoId, userName, setUserName }) {
   return (
     <WindowWrapper>
       <Body>
-        <UserInfo>
+        <UserInfo
+          userName={userName}
+          profileImg={userProfileImage}
+          StyledFriendImage={StyledFriendImage}
+          lat={lat}
+          lng={lng}
+        />
+        {/*<StyledOOTD></StyledOOTD>*/}
+        {/*<UserInfo>
           <Profile username={userName} profileImg={userProfileImage} />
           {!!lat && !!lng ? <Weather lat={lat} lng={lng} /> : ''}
-        </UserInfo>
+        </UserInfo>*/}
         <TodayOOTD />
+        {/*<StyledCalendar></StyledCalendar>*/}
         <CalendarBox />
       </Body>
       {modalOpen === true ? (
@@ -92,20 +101,47 @@ function Main({ setAgreement, setUserKakaoId, userName, setUserName }) {
   );
 }
 
+const StyledFriendImage = {
+  border: '1px solid black',
+  borderRadius: '70%',
+  width: '50%',
+  margin: '10px'
+};
+
 const Body = styled('div')`
+  width: 100%;
   display: flex;
   flex-direction: row;
   justify-content: center;
   align-items: center;
 `;
 
-const UserInfo = styled('div')`
-  min-width: 300px;
-  flex-grow: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-`;
+//const StyledUserInfo = styled.div`
+//  /*min-width: 300px;*/
+//  flex-grow: 1;
+//  width: 100%;
+//  height: 100%;
+//  display: flex;
+//  /*flex-direction: column;
+//  justify-content: center;
+//  align-items: center;*/
+//  background-color: pink;
+//`;
+
+//const StyledCalendar = styled.div`
+//  /*min-width: 300px;*/
+//  width: 100%;
+//  flex-grow: 1;
+//  height: 100%;
+//  background-color: black;
+//`;
+
+//const StyledOOTD = styled.div`
+//  /*min-width: 300px;*/
+//  width: 100%;
+//  flex-grow: 1;
+//  height: 100%;
+//  background-color: mintcream;
+//`;
 
 export default Main;

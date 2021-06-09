@@ -15,8 +15,8 @@ import styled from 'styled-components';
 
 import './App.css';
 import { Divider, StylesProvider } from '@material-ui/core';
-import FriendsList from './pages/FriendsList.js';
-import FriendPage from './pages/FriendPage.js';
+//import FriendsList from './pages/FriendsList.js';
+//import FriendPage from './pages/FriendPage.js';
 
 function App() {
   let { pathname } = useLocation();
@@ -86,7 +86,7 @@ function App() {
 const MainLayout = styled('div')`
   display: flex;
   flex-direction: column;
-  width: 95%;
+  margin-left: 50px;
 `;
 
 export default App;

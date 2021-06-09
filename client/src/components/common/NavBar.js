@@ -163,14 +163,16 @@ function NavBar() {
 }
 
 const Nav = styled(Toolbar)`
-  padding: 10px;
-  /*position: fixed;*/
+  padding: 0;
+  margin: 0;
+  position: fixed;
   display: flex;
   flex-direction: column;
-  height: 135%;
   width: 50px;
   background-color: #f4f5fa;
   left: 0;
+  height: 100%;
+  overflow: auto;
 `;
 
 export default NavBar;
