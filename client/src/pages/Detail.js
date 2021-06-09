@@ -4,8 +4,6 @@ import { useLocation } from 'react-router-dom';
 import { useEffect } from 'react';
 const URL = `http://localhost:5000`;
 
-const URL = `http://localhost:5000`;
-
 function Photo({ date }) {
   console.log(date);
   return (
