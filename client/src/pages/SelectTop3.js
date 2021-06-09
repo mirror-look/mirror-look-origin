@@ -105,7 +105,7 @@ function SelectTop3() {
         setModalOpen(true);
       }
     }
-  }, [prediction]);
+  }, [prediction, userSelectList]);
 
   function handleSubmit(e) {
     e.preventDefault();
