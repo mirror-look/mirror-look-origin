@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { setTemperature } from '../store/actions';
+import Carousel from 'react-material-ui-carousel';
+import { Paper, Button } from '@material-ui/core';
 import { setUserInfo } from '../store/actions';
 import axios from 'axios';
 import styled from 'styled-components';
@@ -17,18 +19,82 @@ function Hello({ userName }) {
   return <StyledHello>{userName}님 안녕하세요!</StyledHello>;
 }
 
-function TodayOOTD() {
+function TodayOOTD(props) {
+  var items = [
+    {
+      label: 'mirror1',
+      imgPath: '/images/mirror_1.jpg'
+    },
+    {
+      label: 'mirror2',
+      imgPath: '/images/mirror_2.jpg'
+    },
+    {
+      label: 'mirror3',
+      imgPath: '/images/mirror_3.jpg'
+    }
+  ];
   return (
     <Link to="/camera">
-      <TodayOOTDBox>오늘의 OOTD</TodayOOTDBox>
+      <TodayOOTDBox>
+        OOTD CAMERA
+        <Carousel
+          indicators={false}
+          timeout={500}
+          navButtonsAlwaysInvisible={true}
+        >
+          {items.map((item, i) => (
+            <Item key={i} item={item} />
+          ))}
+        </Carousel>
+      </TodayOOTDBox>
     </Link>
   );
 }
 
+function Item(props) {
+  return (
+    <Paper>
+      <img
+        style={{
+          width: '100%',
+          height: '764px'
+        }}
+        src={props.item.imgPath}
+      />
+    </Paper>
+  );
+}
+
 function Calendar() {
+  var items = [
+    {
+      label: 'mirror1',
+      imgPath: '/images/calendar_1.jpg'
+    },
+    {
+      label: 'mirror2',
+      imgPath: '/images/calendar_2.jpg'
+    },
+    {
+      label: 'mirror3',
+      imgPath: '/images/calendar_3.jpg'
+    }
+  ];
   return (
     <Link to="/calendar">
-      <StyledCalender>OOTD 캘린더</StyledCalender>
+      <StyledCalender>
+        OOTD CALENDAR
+        <Carousel
+          indicators={false}
+          timeout={500}
+          navButtonsAlwaysInvisible={true}
+        >
+          {items.map((item, i) => (
+            <Item key={i} item={item} />
+          ))}
+        </Carousel>
+      </StyledCalender>
     </Link>
   );
 }
@@ -130,10 +196,11 @@ const UserInfo = styled('div')`
 const StyledCalender = styled(Box)`
   width: 417px;
   height: 764px;
+  overflow: hidden;
 
   background: #ffffff;
-  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-  border-radius: 30px;
+  // box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  // border-radius: 30px;
   margin: 30px;
   padding: 30px;
   text-align: center;
@@ -189,8 +256,9 @@ const TodayOOTDBox = styled(Box)`
   width: 395px;
   height: 764px;
   background: #ffffff;
-  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-  border-radius: 30px;
+  // box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  // border-radius: 30px;
+  overflow: hidden;
 
   font-family: Rubik;
   font-style: normal;
