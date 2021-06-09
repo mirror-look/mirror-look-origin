@@ -40,6 +40,7 @@ function Camera() {
           console.log(response.data.result.top_3_result);
           console.log('예측 결과 넣는다!');
           dispatch(setPrediction(response.data.result.top_3_result));
+          setButtonEnabled(false);
         })
         .catch(function (err) {
           console.log('업로드된 Base64 이미지 보냈는데 예측 결과 못가져왔다!');

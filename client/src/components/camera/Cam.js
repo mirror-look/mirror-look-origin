@@ -13,7 +13,7 @@ const videoConstraints = {
   facingMode: 'user'
 };
 
-function Cam({ setButtonEnabled }) {
+function Cam() {
   const dispatch = useDispatch();
   const webcamRef = useRef(null);
   const [countdown, setCountdown] = useState();
@@ -65,7 +65,6 @@ function Cam({ setButtonEnabled }) {
                   setCountdown(false);
                   console.log('촬영 준비!');
                   capture();
-                  setButtonEnabled(false);
                 }, 5000);
               }}
             >
