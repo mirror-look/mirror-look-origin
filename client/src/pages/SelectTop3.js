@@ -3,6 +3,7 @@ import { useHistory, useLocation } from 'react-router-dom';
 import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
 import { setBase64URL } from '../store/actions';
+import { setUserSelects } from '../store/actions';
 import styled from 'styled-components';
 import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
@@ -109,7 +110,7 @@ function SelectTop3() {
 
   function handleSubmit(e) {
     e.preventDefault();
-    console.log(userSelectList);
+    dispatch(setUserSelects(userSelectList));
     let category = [];
     for (let key in userSelectList) {
       console.log(key);

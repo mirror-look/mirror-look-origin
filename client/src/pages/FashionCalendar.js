@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { setLaundryRecommend } from '../store/actions';
 import Calendar from 'react-calendar';
 import styled from 'styled-components';
 import 'react-calendar/dist/Calendar.css';
@@ -20,6 +22,7 @@ function getFormatDate(date) {
 const tileClassName = ({ date }) => (date.getDay() === 0 ? 'sunday' : '');
 
 function FashionCalendar({ userId }) {
+  const dispatch = useDispatch();
   const [value, setValue] = useState(new Date());
   const [dates, setDates] = useState([]);
   const history = useHistory();
@@ -31,8 +34,19 @@ function FashionCalendar({ userId }) {
 
   // 날짜를 클릭했을 때, 페이지 전환 후 해당 날짜에 해당하는 데이터를 서버에 요청. 쿼리스트링 방식.
   const onClickDay = (date, event) => {
-    console.log(getFormatDate(date));
-    history.push(`/dashboard?userId=${userId}&date=${getFormatDate(date)}`);
+    axios
+      .get(`${URL}/recommend`, { user_id: userId, date: date })
+      .then(function (response) {
+        console.log(response.data);
+        console.log('세탁방법 받아왔다!');
+        dispatch(setLaundryRecommend(response.data.laundry_recommended));
+        console.log(getFormatDate(date));
+        history.push(`/dashboard?userId=${userId}&date=${getFormatDate(date)}`);
+      })
+      .catch(function (err) {
+        console.log('세탁방법 못받아왔다!');
+        console.log(err);
+      });
   };
 
   useEffect(() => {

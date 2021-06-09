@@ -32,3 +32,17 @@ export const setUserInfo = (item) => {
     payload: item
   };
 };
+
+export const setLaundryRecommend = (item) => {
+  return {
+    type: 'SET_LAUNDRY_RECOMMEND',
+    payload: item
+  };
+};
+
+export const setUserSelects = (item) => {
+  return {
+    type: 'SET_USER_SELECTS',
+    payload: item
+  };
+};
