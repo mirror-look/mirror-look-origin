@@ -103,9 +103,10 @@ clothes_for_recommend = {
 
 # test
 laundry_recommend = {
-    "세탁방법 1" : {"옷 종류"},
-    "세탁방법 2" : {"옷 종류"}
+    "세탁방법 1": {"옷 종류"},
+    "세탁방법 2": {"옷 종류"}
 }
+
 
 def user_clothes_by_category(user_clothes_on_fit):
     user_clothes_on_fit_by_category = list()
@@ -133,7 +134,10 @@ def recommend_clothes(temperature, categories):
     for category in categories:
         for temperature_range in clothes_for_recommend[category]:
             if temperature > temperature_range:
-                continue
+                if temperature_range < 27:
+                    continue
+                else:
+                    recommended_clothes_by_category[category] = clothes_for_recommend[category][temperature_range]
             else:
                 recommended_clothes_by_category[category] = clothes_for_recommend[category][temperature_range]
                 break
@@ -155,7 +159,7 @@ def say_hot_or_cold(user_clothes_on_fit, temperature, categories):
 
 
 if __name__ == '__main__':
-    temperature_for_test = 10
+    temperature_for_test = 18
     user_clothes_on_fit_for_test = ['short_sleeve_top', "shorts"]
 
     user_clothes_on_fit_by_category = user_clothes_by_category(

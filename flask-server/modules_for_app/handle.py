@@ -14,7 +14,7 @@ database = get_database()
 
 def make_file_path():
     local_file_name = str(uuid.uuid4()) + '.png'
-    local_file_path = os.path.join('ootd_storage', local_file_name)
+    local_file_path = os.path.join('object_detected_image', local_file_name)
 
     return local_file_name, local_file_path
 
@@ -25,11 +25,11 @@ def save_ootd_img(ootd_img, local_file_path):
     return
 
 
-def create_calendar_document(user_id, date, clothes_subcategory, local_file_name):
+def create_calendar_document(user_id, date, clothes_subcategory, ootd_img_path):
     calendar_document = CalendarDocument(
         user_id=user_id,
         date=date,
-        ootd_path=local_file_name,
+        ootd_img_path=ootd_img_path,
         clothes_feature={
             'clothes_subcategory': clothes_subcategory
         }
@@ -54,16 +54,17 @@ def create_date_array(user_id, month):
 
 def get_file_path(date, user_id):
     local_file_name = CalendarDocument.objects.get(
-        Q(date=date) & Q(user_id=user_id)).ootd_path
-    local_file_path = os.path.join('ootd_storage', local_file_name)
+        Q(date=date) & Q(user_id=user_id)).ootd_img_path
+    local_file_path = os.path.join('object_detected_image', local_file_name)
 
     return local_file_path
 
 
 def delete_ootd_img(user_id, date):
     old_local_file_name = CalendarDocument.objects.get(
-        Q(user_id=user_id) & Q(date=date)).ootd_path
-    old_local_file_path = os.path.join('ootd_storage', old_local_file_name)
+        Q(user_id=user_id) & Q(date=date)).ootd_img_path
+    old_local_file_path = os.path.join(
+        'object_detected_image', old_local_file_name)
     os.remove(old_local_file_path)
 
     return
@@ -71,7 +72,7 @@ def delete_ootd_img(user_id, date):
 
 def update_calendar_document(user_id, date, local_file_name):
     CalendarDocument.objects(Q(user_id=user_id) & Q(
-        date=date)).update_one(set__ootd_path=local_file_name)
+        date=date)).update_one(set__ootd_img_path=local_file_name)
     calendar_schema = CalendarSchema()
 
     calendar_document = CalendarDocument.objects.get(

@@ -85,7 +85,8 @@ function Detail() {
   const location = useLocation();
 
   console.log('추천페이지로 넘어왔다!');
-  console.log(location.state);
+  let date = new Date();
+  console.log(getFormatDate(date));
 
   return (
     <ShowDetail>
