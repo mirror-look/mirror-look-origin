@@ -3,11 +3,10 @@ import { useDispatch } from 'react-redux';
 import { setBase64URL } from '../../store/actions';
 import { useDropzone } from 'react-dropzone';
 
-function DragDrop({ setButtonEnabled }) {
+function DragDrop() {
   const dispatch = useDispatch();
   const [file, setFile] = useState(null);
   const onDrop = useCallback((acceptedFiles) => {
-    setButtonEnabled(false);
     let file = acceptedFiles[0];
     setFile(
       Object.assign(file, {

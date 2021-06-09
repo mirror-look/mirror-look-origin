@@ -31,8 +31,7 @@ api = Api(calendar)
 parser_calendar = reqparse.RequestParser()
 parser_calendar.add_argument('user_id')
 parser_calendar.add_argument('date')
-parser_calendar.add_argument(
-    'ootd_img', type=FileStorage, location='files')
+parser_calendar.add_argument('ootd_img_path')
 
 # clothes_feature
 parser_calendar.add_argument('clothes_subcategory')
@@ -43,7 +42,7 @@ parser_calendar.add_argument('month')
 calendar_model = calendar_api.model('Model', {
     'user_id': fields.Integer(),
     'date': fields.String(),
-    'ootd_path': fields.String(),
+    'ootd_img_path': fields.String(),
     'clothes_feature': fields.Dict()
 
 })
@@ -59,11 +58,8 @@ class Calendar(Resource):
         args = parser_calendar.parse_args()
         kakao_id = args['user_id']
 
-        local_file_name, local_file_path = make_file_path()
-        save_ootd_img(args['ootd_img'], local_file_path)
-
         calendar_document = create_calendar_document(
-            kakao_id, args['date'], args['clothes_subcategory'], local_file_name)
+            kakao_id, args['date'], args['clothes_subcategory'], args['ootd_img_path'])
 
         calendar_document.save()
         calendar_schema = CalendarSchema()
@@ -98,21 +94,21 @@ class Calendar(Resource):
                 ootd_enrolled_dates=ootd_enrolled_dates
             )
 
-    @calendar_api.expect(parser_calendar)
-    @calendar_api.response(200, 'Success', calendar_model)
-    def put(self):
-        # Update
-        args = parser_calendar.parse_args()
-        kakao_id = args['user_id']
-        delete_ootd_img(kakao_id, args['date'])
+    # @calendar_api.expect(parser_calendar)
+    # @calendar_api.response(200, 'Success', calendar_model)
+    # def put(self):
+    #     # Update
+    #     args = parser_calendar.parse_args()
+    #     kakao_id = args['user_id']
+    #     delete_ootd_img(kakao_id, args['date'])
 
-        local_file_name, local_file_path = make_file_path()
-        save_ootd_img(args['ootd_img'], local_file_path)
-        calendar_schema = CalendarSchema()
-        calendar_document = update_calendar_document(
-            kakao_id, args['date'], local_file_name)
+    #     local_file_name, local_file_path = make_file_path()
+    #     save_ootd_img(args['ootd_img_path'], local_file_path)
+    #     calendar_schema = CalendarSchema()
+    #     calendar_document = update_calendar_document(
+    #         kakao_id, args['date'], local_file_name)
 
-        return calendar_schema.dump(calendar_document)
+    #     return calendar_schema.dump(calendar_document)
 
 
 api.add_resource(Calendar, '/calendar')

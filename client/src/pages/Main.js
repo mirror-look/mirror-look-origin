@@ -4,6 +4,7 @@ import { useDispatch } from 'react-redux';
 import { setTemperature } from '../store/actions';
 import Carousel from 'react-material-ui-carousel';
 import { Paper, Button } from '@material-ui/core';
+import { setUserInfo } from '../store/actions';
 import axios from 'axios';
 import styled from 'styled-components';
 import Box from '@material-ui/core/Box';
@@ -98,9 +99,8 @@ function Calendar() {
   );
 }
 
-function Main({ setAgreement, setUserKakaoId }) {
+function Main({ setAgreement, setUserKakaoId, userName, setUserName }) {
   const dispatch = useDispatch();
-  const [userName, setUserName] = useState('꼬부기');
   const [userProfileImage, setUserProfileImage] = useState();
   const [lat, setLat] = useState();
   const [lng, setLng] = useState();
@@ -122,6 +122,7 @@ function Main({ setAgreement, setUserKakaoId }) {
         setUserProfileImage(response.data.user_info.profile_img);
         setUserKakaoId(response.data.user_info.user_id);
         setAgreement(response.data.user_info.agreement);
+        dispatch(setUserInfo(response.data.user_info));
         console.log('사용자 정보 받았다!');
         if (response.data.user_info.agreement === 'false') {
           console.log('동의여부가 false 여서 Modal 띄운다!');
