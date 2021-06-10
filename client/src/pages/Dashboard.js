@@ -43,6 +43,9 @@ function Dashboard({ userName }) {
       <Story>
         <StyledAdvice>
           <Info date={date} username={userName} />
+        </StyledAdvice>
+        <div style={{ margin: '10px' }}></div>
+        <StyledAdvice>
           <LaundryInfo comment={laundryRecommend} />
         </StyledAdvice>
       </Story>
