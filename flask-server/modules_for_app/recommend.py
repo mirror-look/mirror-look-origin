@@ -76,9 +76,10 @@ class Recommend(Resource):
 
         print(sub_category)
         laundry_recommended = recommend_laundry(sub_category)
-
+        print(laundry_recommended)
         return jsonify(
-            laundry_recommended = laundry_recommended
+            laundry_recommended=laundry_recommended
         )
+
 
 api.add_resource(Recommend, '/recommend')
