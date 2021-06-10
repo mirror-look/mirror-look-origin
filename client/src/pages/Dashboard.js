@@ -2,35 +2,24 @@ import queryString from 'query-string';
 import { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import styled from 'styled-components';
-import Box from '@material-ui/core/Box';
+import ShowDetail from '../components/common/ShowDetail';
+import Photo from '../components/common/Photo';
+import Story from '../components/common/Story';
 
 const URL = `http://localhost:5000`;
-
-const styledPhoto = {
-  width: '364px',
-  height: '740px',
-  borderRadius: '5%',
-  overflow: 'hidden',
-  objectFit: 'cover'
-};
 
 function Info({ date, username }) {
   return (
     <div>
       <h3>
-        {date.slice(0, 4)}년 {date.slice(5, 7)}월 {date.slice(8)}일 {username}
-        님은 이런 옷을 입었네요!
+        {date.slice(0, 4)}년 {date.slice(5, 7)}월 {date.slice(8)}일
       </h3>
+      <h3>{username} 님은 이런 옷을 입었네요!</h3>
     </div>
   );
 }
 
-function Photo({ src, alt }) {
-  return <img src={src} alt={alt} style={styledPhoto} />;
-}
-
 function Dashboard({ userName }) {
-  const imgAlt = 'clothes img';
   const { search } = useLocation();
   const { userId, date } = queryString.parse(search);
   const [imgSrc, setImgSrc] = useState(
@@ -53,11 +42,11 @@ function Dashboard({ userName }) {
 
   return (
     <ShowDetail>
-      <PhotoBox>
-        <Photo src={imgSrc} alt={imgAlt} />
-      </PhotoBox>
+      <Photo imagePath={imgSrc} />
       <Story>
-        <Info date={date} username={userName}></Info>
+        <StyledAdvice>
+          <Info date={date} username={userName}></Info>
+        </StyledAdvice>
       </Story>
     </ShowDetail>
   );
@@ -74,34 +63,16 @@ const StyledBox = styled('div')`
   font-weight: bold;
 `;
 
-const ShowDetail = styled('div')`
-  display: flex;
-  flex-direction: row;
-`;
-
-const PhotoBox = styled(Box)`
-  width: 364px;
-  height: 740px;
-
-  background: #ffffff;
-  box-shadow: 0px 20px 100px #0057ff;
-  border-radius: 30px;
-  margin: 50px;
-`;
-
-const Story = styled('div')`
+const StyledAdvice = styled.div`
   display: flex;
   flex-direction: column;
-  font-family: Rubik;
-  font-style: normal;
-  font-weight: 500;
-  font-size: 25px;
-  line-height: 40px;
-  /* or 160% */
-
-  margin: 50px;
-
-  color: #000000;
+  align-items: center;
+  padding: 45px;
+  border: 1px solid white;
+  border-radius: 30px;
+  background: #ffffff;
+  height: 100%;
+  filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
 `;
 
 export default Dashboard;

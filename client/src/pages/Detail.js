@@ -4,23 +4,9 @@ import Button from '@material-ui/core/Button';
 import { useHistory, useLocation } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import axios from 'axios';
-
-function Photo({ imagePath }) {
-  return (
-    <PhotoBox>
-      <img
-        style={{
-          width: '100%',
-          height: '100%',
-          border: '1px solid black',
-          borderRadius: '30px'
-        }}
-        src={'data:image/*;base64,' + imagePath}
-        alt="사진"
-      />
-    </PhotoBox>
-  );
-}
+import ShowDetail from '../components/common/ShowDetail';
+import Photo from '../components/common/Photo';
+import Story from '../components/common/Story';
 
 function Recommend({ userName, comment }) {
   let advice1 = '';
@@ -113,7 +99,7 @@ function Detail({ userName }) {
   }
   return (
     <ShowDetail>
-      <Photo imagePath={imagePath} />
+      <Photo imagePath={'data:image/*;base64,' + imagePath} />
       <Story>
         <Recommend userName={userName} comment={location.state}></Recommend>
         <Button
@@ -131,63 +117,28 @@ function Detail({ userName }) {
 
 const styledButton = {
   marginTop: '15px',
-  borderRadius: '10px',
-  filter: 'drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25))',
-  backgroundColor: '#8f00ff'
+  filter: 'drop-shadow(0px 2px 2px rgba(0, 0, 0, 0.25))',
+  backgroundColor: '#8f00ff',
+  borderRadius: '30px',
+  height: '50px',
+
+  fontFamily: 'Rubik',
+  fontStyle: 'normal',
+  fontWeight: 'bold',
+  fontSize: '21px',
+  lineHeight: '24px'
 };
-
-const ShowDetail = styled('div')`
-  display: flex;
-  flex-direction: row;
-  width: calc(100vw - 75px);
-  height: calc(100vh - 90px);
-  padding-bottom: 15px;
-  padding-right: 20px;
-`;
-
-const PhotoBox = styled(Box)`
-  width: 35%;
-  height: 100%;
-  overflow: 'hidden';
-  flex-grow: 1;
-
-  background: #ffffff;
-  /*box-shadow: 0px 20px 100px #0057ff;*/
-  filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
-
-  border-radius: 30px;
-  margin: 0 15px;
-`;
-
-const Story = styled('div')`
-  display: flex;
-  flex-direction: column;
-  font-family: Rubik;
-  font-style: normal;
-  font-weight: 500;
-  font-size: 25px;
-  line-height: 40px;
-  flex-grow: 1;
-  height: 100%;
-
-  /* or 160% */
-
-  margin: 0 15px;
-  /*filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));*/
-
-  color: #000000;
-`;
 
 const StyledAdvice = styled.div`
   display: flex;
   flex-direction: column;
-  /*justify-content: center;*/
   align-items: center;
   padding: 45px;
   border: 1px solid white;
   border-radius: 30px;
   background: #ffffff;
   height: 100%;
+  margin-bottom: 15px;
   filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
 `;
 
