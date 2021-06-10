@@ -19,32 +19,4 @@ function Login() {
   );
 }
 
-//const FlexDiv = styled('div')`
-//  display: flex;
-//  width: 100%;
-//  height: 100vh;
-//  flex-direction: column;
-//  justify-content: center;
-//  align-items: center;
-//  transform: translate(0px, -32px);
-//`;
-
-//const KakaoButton = styled(Button)`
-//  background-color: #f7e600;
-//  color: #3a1d1d;
-//  padding: 10px 150px;
-//  font-weight: bold;
-//  font-size: 18px;
-//`;
-
-//const StyledLogo = styled(Box)`
-//  font-family: Rubik;
-//  font-style: normal;
-//  font-weight: bold;
-//  font-size: 75px;
-//  line-height: 40px;
-//  color: #8f00ff;
-//  margin: 50px;
-//`;
-
 export default Login;

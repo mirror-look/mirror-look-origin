@@ -51,7 +51,7 @@ const StyledPaper = styled(Paper)`
   height: 30vh;
   padding: 50px;
   position: 'absolute';
-  backgroundcolor: 'white';
+  background-color: 'white';
   border: '2px solid #000';
   border-radius: 30px;
 `;
@@ -63,7 +63,7 @@ const StyledModal = styled(Modal)`
   inset: 10% 5% 5% 5%;
   width: 40vw;
   height: 380px;
-  backgroundcolor: 'white';
+  background-color: 'white';
   border: '2px solid #000';
   border-radius: 30px;
 `;

@@ -1,12 +1,13 @@
-import styled from 'styled-components';
 import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
 import { useHistory, useLocation } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import axios from 'axios';
-import ShowDetail from '../components/common/ShowDetail';
-import Photo from '../components/common/Photo';
-import Story from '../components/common/Story';
+import ShowDetail from '../components/detail/ShowDetail';
+import Photo from '../components/detail/Photo';
+import Story from '../components/detail/Story';
+import StyledAdvice from '../components/detail/StyledAdvice';
+import StyledButton from '../components/detail/StyledButton';
 
 function Recommend({ userName, comment }) {
   let advice1 = '';
@@ -103,7 +104,7 @@ function Detail({ userName }) {
       <Story>
         <Recommend userName={userName} comment={location.state}></Recommend>
         <Button
-          style={styledButton}
+          style={StyledButton}
           onClick={handleClick}
           variant="contained"
           color="primary"
@@ -114,32 +115,5 @@ function Detail({ userName }) {
     </ShowDetail>
   );
 }
-
-const styledButton = {
-  marginTop: '15px',
-  filter: 'drop-shadow(0px 2px 2px rgba(0, 0, 0, 0.25))',
-  backgroundColor: '#8f00ff',
-  borderRadius: '30px',
-  height: '50px',
-
-  fontFamily: 'Rubik',
-  fontStyle: 'normal',
-  fontWeight: 'bold',
-  fontSize: '21px',
-  lineHeight: '24px'
-};
-
-const StyledAdvice = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 45px;
-  border: 1px solid white;
-  border-radius: 30px;
-  background: #ffffff;
-  height: 100%;
-  margin-bottom: 15px;
-  filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
-`;
 
 export default Detail;
