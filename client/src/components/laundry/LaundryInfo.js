@@ -1,4 +1,4 @@
-import { minorCategory } from '../components/common/Category';
+import { minorCategory } from '../common/Category';
 import styled from 'styled-components';
 import Box from '@material-ui/core/Box';
 

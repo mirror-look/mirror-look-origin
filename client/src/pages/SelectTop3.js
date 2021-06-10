@@ -1,9 +1,11 @@
 import { useState, useEffect } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
 import { setBase64URL } from '../store/actions';
 import { setUserSelects } from '../store/actions';
+import styled from 'styled-components';
+import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
 import WindowWrapper from '../components/common/WindowWrapper';
 import ExceptionModal from '../components/camera/ExceptionModal';
@@ -98,14 +100,13 @@ function SelectTop3() {
             userSelectList={userSelectList}
             setUserSelectList={setUserSelectList}
             key={index}
-          />
+          ></SelectedBox>
         ));
         setResults(_results);
       } else {
         setModalOpen(true);
       }
     }
-    console.log(userSelectList);
   }, [prediction, userSelectList]);
 
   function handleSubmit(e) {
@@ -173,5 +174,52 @@ function SelectTop3() {
     </div>
   );
 }
+
+const styledButton = {
+  filter: 'drop-shadow(0px 2px 2px rgba(0, 0, 0, 0.25))',
+  backgroundColor: '#8f00ff',
+  margin: '75px 15px'
+};
+
+const styledButtonAgain = {
+  filter: 'drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25))',
+  backgroundColor: '#ccacff',
+  margin: '15px'
+};
+
+const Selected = styled(Box)`
+  height: 50vh;
+  width: 330px;
+  background: #ffffff;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 30px;
+
+  font-family: Rubik;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 20px;
+  line-height: 24px;
+  margin: 0 15px 50px 15px;
+  padding: 0 15px 50px 15px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  /*align-items: center;*/
+`;
+
+const ButtonBox = styled(Box)`
+  /*margin-top: 50px;*/
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+`;
+
+const Body = styled('div')`
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+`;
 
 export default SelectTop3;
