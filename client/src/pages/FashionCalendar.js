@@ -35,8 +35,17 @@ function FashionCalendar({ userId }) {
 
   // 날짜를 클릭했을 때, 페이지 전환 후 해당 날짜에 해당하는 데이터를 서버에 요청. 쿼리스트링 방식.
   const onClickDay = (date, event) => {
+    console.log(date, userId);
     axios
-      .get(`${URL}/recommend`, { user_id: userId, date: date })
+      .get(`${URL}/recommend`, {
+        params: {
+          user_id: userId,
+          date: date
+        },
+        headers: {
+          'Access-Control-Allow-Origin': '*'
+        }
+      })
       .then(function (response) {
         console.log(response.data);
         console.log('세탁방법 받아왔다!');

@@ -66,7 +66,7 @@ class Recommend(Resource):
 
     def get(self):
         args = parser_recommend.parse_args()
-        date = args['date']
+        date = args['date'].split('T')[0]
         kakao_id = args['user_id']
         print(date)
         print(kakao_id)
