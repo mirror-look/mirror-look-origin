@@ -4,6 +4,7 @@ import { useLocation } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 import Box from '@material-ui/core/Box';
+import { minorCategory } from '../components/common/Category';
 
 const URL = `http://localhost:5000`;
 
@@ -24,7 +25,7 @@ function Laundry({ subCategory, recommend }) {
   return (
     <div>
       <LaundryBox>
-        <LaundryComment>{subCategory}</LaundryComment>
+        <LaundryComment>{minorCategory[subCategory]}</LaundryComment>
         <LaundryComment>{recommendList}</LaundryComment>
       </LaundryBox>
     </div>
