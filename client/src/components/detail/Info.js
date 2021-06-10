@@ -1,6 +1,6 @@
 export function Info({ date, username }) {
   return (
-    <div>
+    <div style={{ textAlign: 'center' }}>
       <h3>
         {date.slice(0, 4)}년 {date.slice(5, 7)}월 {date.slice(8)}일
       </h3>

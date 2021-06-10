@@ -4,7 +4,7 @@ const StyledAdvice = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 45px;
+  padding: 15px;
   border: 1px solid white;
   border-radius: 30px;
   background: #ffffff;
