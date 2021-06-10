@@ -9,69 +9,108 @@ import Button from '@material-ui/core/Button';
 import WindowWrapper from '../components/common/WindowWrapper';
 import ExceptionModal from '../components/camera/ExceptionModal';
 
+function onClickButton(
+  i,
+  userSelectList,
+  setUserSelectList,
+  disabled,
+  setDisaled,
+  result
+) {
+  console.log('i == ', i);
+  const isdisabled = disabled.map((item, idx) => {
+    console.log(idx);
+    if (idx === i - 1) {
+      return true;
+    } else {
+      return false;
+    }
+  });
+  console.log(isdisabled);
+  setDisaled(isdisabled);
+  let temp = { ...userSelectList };
+  temp[result[0]] = result[i];
+  setUserSelectList(temp);
+  console.log('선택');
+}
+
+const styledSelectButton = {
+  filter: 'drop-shadow(0px 2px 2px rgba(0, 0, 0, 0.25))',
+  //backgroundColor: '#8f00ff',
+  margin: '15px',
+  borderRadius: '30px',
+  height: '50px',
+  width: '300px',
+
+  fontFamily: 'Rubik',
+  fontStyle: 'normal',
+  fontWeight: 'bold',
+  fontSize: '25px',
+  lineHeight: '24px'
+};
+
+function SelectButton({
+  i,
+  userSelectList,
+  setUserSelectList,
+  disabled,
+  setDisaled,
+  result
+}) {
+  return (
+    <Button
+      variant="outlined"
+      color="primary"
+      style={styledSelectButton}
+      onClick={() => {
+        onClickButton(
+          i,
+          userSelectList,
+          setUserSelectList,
+          disabled,
+          setDisaled,
+          result
+        );
+      }}
+      disabled={disabled[i - 1]}
+    >
+      {result[i]}
+    </Button>
+  );
+}
+
 function SelectedBox({ result, userSelectList, setUserSelectList }) {
-  const [disabled1, setDisabled1] = useState(false);
-  const [disabled2, setDisabled2] = useState(false);
-  const [disabled3, setDisabled3] = useState(false);
+  const [disabled, setDisaled] = useState([false, false, false]);
 
   return (
     <div>
       <Selected>
-        {result[0]}
+        <h2>{result[0]}</h2>
         <ButtonBox>
-          <Button
-            variant="outlined"
-            color="primary"
-            style={{ marginTop: '20px' }}
-            onClick={() => {
-              setDisabled1(true);
-              setDisabled2(false);
-              setDisabled3(false);
-              let temp = { ...userSelectList };
-              temp[result[0]] = result[1];
-              setUserSelectList(temp);
-              console.log('선택');
-            }}
-            disabled={disabled1}
-          >
-            {result[1]}
-          </Button>
-          <br />
-          <Button
-            variant="outlined"
-            color="primary"
-            style={{ marginTop: '20px' }}
-            onClick={() => {
-              setDisabled1(false);
-              setDisabled2(true);
-              setDisabled3(false);
-              let temp = { ...userSelectList };
-              temp[result[0]] = result[2];
-              setUserSelectList(temp);
-              console.log('선택');
-            }}
-            disabled={disabled2}
-          >
-            {result[2]}
-          </Button>
-          <br />
-          <Button
-            variant="outlined"
-            color="primary"
-            style={{ marginTop: '20px' }}
-            onClick={() => {
-              setDisabled1(false);
-              setDisabled2(false);
-              setDisabled3(true);
-              let temp = { ...userSelectList };
-              temp[result[0]] = result[3];
-              setUserSelectList(temp);
-              console.log('선택');
-            }}
-            disabled={disabled3}
-          >
-            {result[3]}
-          </Button>
+          <SelectButton
+            i={1}
+            userSelectList={userSelectList}
+            setUserSelectList={setUserSelectList}
+            disabled={disabled}
+            setDisaled={setDisaled}
+            result={result}
+          />
+          <SelectButton
+            i={2}
+            userSelectList={userSelectList}
+            setUserSelectList={setUserSelectList}
+            disabled={disabled}
+            setDisaled={setDisaled}
+            result={result}
+          />
+          <SelectButton
+            i={3}
+            userSelectList={userSelectList}
+            setUserSelectList={setUserSelectList}
+            disabled={disabled}
+            setDisaled={setDisaled}
+            result={result}
+          />
         </ButtonBox>
       </Selected>
     </div>
@@ -105,6 +144,7 @@ function SelectTop3() {
         setModalOpen(true);
       }
     }
+    console.log(userSelectList);
   }, [prediction, userSelectList]);
 
   function handleSubmit(e) {
@@ -176,13 +216,31 @@ function SelectTop3() {
 const styledButton = {
   filter: 'drop-shadow(0px 2px 2px rgba(0, 0, 0, 0.25))',
   backgroundColor: '#8f00ff',
-  margin: '75px 15px'
+  margin: '50px 15px',
+  borderRadius: '30px',
+  height: '50px',
+  width: '300px',
+
+  fontFamily: 'Rubik',
+  fontStyle: 'normal',
+  fontWeight: 'bold',
+  fontSize: '25px',
+  lineHeight: '24px'
 };
 
 const styledButtonAgain = {
   filter: 'drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25))',
   backgroundColor: '#ccacff',
-  margin: '15px'
+  margin: '0 15px',
+  borderRadius: '30px',
+  height: '50px',
+  width: '300px',
+
+  fontFamily: 'Rubik',
+  fontStyle: 'normal',
+  fontWeight: 'bold',
+  fontSize: '25px',
+  lineHeight: '24px'
 };
 
 const Selected = styled(Box)`
@@ -198,7 +256,7 @@ const Selected = styled(Box)`
   font-size: 20px;
   line-height: 24px;
   margin: 0 15px 50px 15px;
-  padding: 0 15px 50px 15px;
+  /*padding: 0 15px 50px 15px;*/
   text-align: center;
   display: flex;
   flex-direction: column;
@@ -207,7 +265,7 @@ const Selected = styled(Box)`
 `;
 
 const ButtonBox = styled(Box)`
-  /*margin-top: 50px;*/
+  margin-top: 50px;
   display: flex;
   flex-direction: column;
   justify-content: center;
