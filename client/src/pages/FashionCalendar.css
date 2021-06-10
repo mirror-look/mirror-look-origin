@@ -1,5 +1,5 @@
 .react-calendar {
-  height: 95%;
+  height: 100%;
   width: 95%;
   margin: 25px 0px 25px 25px;
   padding: 10px;
@@ -15,7 +15,7 @@
 
 /* 날짜 */
 .react-calendar button {
-  padding: 20px 0px;
+  padding: 34px 0px;
   border: 0;
   font-size: 20px;
   outline: none;

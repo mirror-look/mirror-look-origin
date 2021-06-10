@@ -1,103 +1,17 @@
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { setTemperature } from '../store/actions';
-import Carousel from 'react-material-ui-carousel';
-import { Paper, Button } from '@material-ui/core';
+import styled from 'styled-components';
 import { setUserInfo } from '../store/actions';
 import axios from 'axios';
-import styled from 'styled-components';
-import Box from '@material-ui/core/Box';
-import Profile from '../components/common/Profile';
+import UserInfo from '../components/main/UserInfo';
 import WindowWrapper from '../components/common/WindowWrapper';
 import AgreementModal from '../components/common/AgreementModal';
 import Weather from '../components/main/Weather';
+import TodayOOTD from '../components/main/TodayOOTD';
+import CalendarBox from '../components/main/CalendarBox';
 
 const URL = `http://localhost:5000`;
-
-function Hello({ userName }) {
-  return <StyledHello>{userName}님 안녕하세요!</StyledHello>;
-}
-
-function TodayOOTD(props) {
-  var items = [
-    {
-      label: 'mirror1',
-      imgPath: '/images/mirror_1.jpg'
-    },
-    {
-      label: 'mirror2',
-      imgPath: '/images/mirror_2.jpg'
-    },
-    {
-      label: 'mirror3',
-      imgPath: '/images/mirror_3.jpg'
-    }
-  ];
-  return (
-    <Link to="/camera">
-      <TodayOOTDBox>
-        OOTD CAMERA
-        <Carousel
-          indicators={false}
-          timeout={500}
-          navButtonsAlwaysInvisible={true}
-        >
-          {items.map((item, i) => (
-            <Item key={i} item={item} />
-          ))}
-        </Carousel>
-      </TodayOOTDBox>
-    </Link>
-  );
-}
-
-function Item(props) {
-  return (
-    <Paper>
-      <img
-        style={{
-          width: '100%',
-          height: '764px'
-        }}
-        src={props.item.imgPath}
-      />
-    </Paper>
-  );
-}
-
-function Calendar() {
-  var items = [
-    {
-      label: 'mirror1',
-      imgPath: '/images/calendar_1.jpg'
-    },
-    {
-      label: 'mirror2',
-      imgPath: '/images/calendar_2.jpg'
-    },
-    {
-      label: 'mirror3',
-      imgPath: '/images/calendar_3.jpg'
-    }
-  ];
-  return (
-    <Link to="/calendar">
-      <StyledCalender>
-        OOTD CALENDAR
-        <Carousel
-          indicators={false}
-          timeout={500}
-          navButtonsAlwaysInvisible={true}
-        >
-          {items.map((item, i) => (
-            <Item key={i} item={item} />
-          ))}
-        </Carousel>
-      </StyledCalender>
-    </Link>
-  );
-}
 
 function Main({ setAgreement, setUserKakaoId, userName, setUserName }) {
   const dispatch = useDispatch();
@@ -157,13 +71,14 @@ function Main({ setAgreement, setUserKakaoId, userName, setUserName }) {
   return (
     <WindowWrapper>
       <Body>
-        <UserInfo>
-          <Hello userName={userName} />
-          <Profile username={userName} profileImg={userProfileImage} />
-          {!!lat && !!lng ? <Weather lat={lat} lng={lng} /> : ''}
-        </UserInfo>
+        <UserInfo
+          userName={userName}
+          profileImg={userProfileImage}
+          lat={lat}
+          lng={lng}
+        />
         <TodayOOTD />
-        <Calendar />
+        <CalendarBox />
       </Body>
       {modalOpen === true ? (
         <AgreementModal
@@ -180,93 +95,11 @@ function Main({ setAgreement, setUserKakaoId, userName, setUserName }) {
 }
 
 const Body = styled('div')`
+  width: 100%;
   display: flex;
   flex-direction: row;
   justify-content: center;
   align-items: center;
 `;
 
-const UserInfo = styled('div')`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-`;
-
-const StyledCalender = styled(Box)`
-  width: 417px;
-  height: 764px;
-  overflow: hidden;
-
-  background: #ffffff;
-  // box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-  // border-radius: 30px;
-  margin: 30px;
-  padding: 30px;
-  text-align: center;
-
-  font-family: Rubik;
-  font-style: normal;
-  font-weight: bold;
-  font-size: 20px;
-  line-height: 24px;
-  a {
-    text-decoration: none;
-    color: #8f00ff;
-  }
-  /* identical to box height, or 120% */
-`;
-
-const StyledHello = styled('div')`
-  font-family: Rubik;
-  font-style: normal;
-  font-weight: 500;
-  font-size: 30px;
-  line-height: 40px;
-`;
-
-const WeatherBox = styled(Box)`
-  width: 365px;
-  height: 315px;
-  border-radius: 30px;
-  background: linear-gradient(1.51deg, #ebf1ff 5.34%, #f2f5fe 72.41%);
-  box-shadow: 0px 4px 50px rgba(0, 0, 0, 0.25);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-`;
-
-const WeatherText = styled(Box)`
-  font-family: Rubik;
-  font-style: normal;
-  font-weight: bold;
-  font-size: 20px;
-  line-height: 24px;
-  text-align: center;
-  margin: 20px;
-`;
-
-const RealWeather = styled(Box)`
-  border: 3px dotted black;
-  border-radius: 150px;
-  padding: 100px;
-`;
-
-const TodayOOTDBox = styled(Box)`
-  width: 395px;
-  height: 764px;
-  background: #ffffff;
-  // box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-  // border-radius: 30px;
-  overflow: hidden;
-
-  font-family: Rubik;
-  font-style: normal;
-  font-weight: bold;
-  font-size: 20px;
-  line-height: 24px;
-  margin: 30px;
-  padding: 30px;
-  text-align: center;
-`;
 export default Main;

@@ -7,6 +7,7 @@ import styled from 'styled-components';
 import 'react-calendar/dist/Calendar.css';
 import './FashionCalendar.css';
 import axios from 'axios';
+import WindowWrapper from '../components/common/WindowWrapper';
 
 const URL = 'http://localhost:5000';
 
@@ -83,23 +84,25 @@ function FashionCalendar({ userId }) {
   console.log('0' + (value.getMonth() + 1));
 
   return (
-    <FlexDiv>
-      <Calendar
-        //onChange={setValue}
-        onClickDay={onClickDay}
-        nextLabel={<NextLabel />}
-        next2Label={<Next2Label />}
-        prevLabel={<PrevLabel />}
-        prev2Label={<Prev2Label />}
-        value={value}
-        tileDisabled={isData}
-        tileClassName={tileClassName}
-        onActiveStartDateChange={({ activeStartDate }) => {
-          setValue(activeStartDate);
-          console.log(activeStartDate);
-        }}
-      />
-    </FlexDiv>
+    <WindowWrapper>
+      <FlexDiv>
+        <Calendar
+          //onChange={setValue}
+          onClickDay={onClickDay}
+          nextLabel={<NextLabel />}
+          next2Label={<Next2Label />}
+          prevLabel={<PrevLabel />}
+          prev2Label={<Prev2Label />}
+          value={value}
+          tileDisabled={isData}
+          tileClassName={tileClassName}
+          onActiveStartDateChange={({ activeStartDate }) => {
+            setValue(activeStartDate);
+            console.log(activeStartDate);
+          }}
+        />
+      </FlexDiv>
+    </WindowWrapper>
   );
 }
 

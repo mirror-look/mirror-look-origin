@@ -15,8 +15,8 @@ import styled from 'styled-components';
 
 import './App.css';
 import { Divider, StylesProvider } from '@material-ui/core';
-import FriendsList from './pages/FriendsList.js';
-import FriendPage from './pages/FriendPage.js';
+//import FriendsList from './pages/FriendsList.js';
+//import FriendPage from './pages/FriendPage.js';
 
 function App() {
   let { pathname } = useLocation();
@@ -73,8 +73,8 @@ function App() {
                   />
                 )}
               />
-              <Route path="/friends-list" component={FriendsList} />
-              <Route path="/friend-page" component={FriendPage} />
+              {/*<Route path="/friends-list" component={FriendsList} />
+              <Route path="/friend-page" component={FriendPage} />*/}
             </MainLayout>
           </WindowWrapper>
         )}
@@ -86,7 +86,8 @@ function App() {
 const MainLayout = styled('div')`
   display: flex;
   flex-direction: column;
-  width: 95%;
+  margin-left: 75px;
+  width: 100%;
 `;
 
 export default App;

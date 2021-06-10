@@ -142,10 +142,8 @@ function SelectTop3() {
           modalComment={modalComment}
         />
       ) : (
-        <div>
-          <WindowWrapper>
-            <Body>{results}</Body>
-          </WindowWrapper>
+        <WindowWrapper>
+          <Body>{results}</Body>
           <center>
             <Button
               onClick={() => {
@@ -155,6 +153,7 @@ function SelectTop3() {
               variant="contained"
               color="secondary"
               size="large"
+              style={styledButtonAgain}
             >
               다시 찍을래요
             </Button>
@@ -164,19 +163,32 @@ function SelectTop3() {
               variant="contained"
               color="primary"
               size="large"
+              style={styledButton}
             >
               선택했어요
             </Button>
           </center>
-        </div>
+        </WindowWrapper>
       )}
     </div>
   );
 }
 
+const styledButton = {
+  filter: 'drop-shadow(0px 2px 2px rgba(0, 0, 0, 0.25))',
+  backgroundColor: '#8f00ff',
+  margin: '75px 15px'
+};
+
+const styledButtonAgain = {
+  filter: 'drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25))',
+  backgroundColor: '#ccacff',
+  margin: '15px'
+};
+
 const Selected = styled(Box)`
   height: 50vh;
-  width: 395px;
+  width: 330px;
   background: #ffffff;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   border-radius: 30px;
@@ -186,13 +198,21 @@ const Selected = styled(Box)`
   font-weight: bold;
   font-size: 20px;
   line-height: 24px;
-  margin: 30px;
-  padding: 30px;
+  margin: 0 15px 50px 15px;
+  padding: 0 15px 50px 15px;
   text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  /*align-items: center;*/
 `;
 
 const ButtonBox = styled(Box)`
-  margin-top: 50px;
+  /*margin-top: 50px;*/
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 `;
 
 const Body = styled('div')`
