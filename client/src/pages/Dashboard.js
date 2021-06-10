@@ -1,16 +1,22 @@
 import queryString from 'query-string';
 import { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+
 import ShowDetail from '../components/detail/ShowDetail';
 import Photo from '../components/detail/Photo';
 import Story from '../components/detail/Story';
 import StyledAdvice from '../components/detail/StyledAdvice';
 import StyledBox from '../components/detail/StyledBox';
 import { Info } from '../components/detail/Info';
+import LaundryInfo from '../components/laundry/LaundryInfo';
 
 const URL = `http://localhost:5000`;
 
 function Dashboard({ userName }) {
+  const laundryRecommend = useSelector(
+    (store) => store.laundryRecommendReducer
+  );
   const { search } = useLocation();
   const { userId, date } = queryString.parse(search);
   const [imgSrc, setImgSrc] = useState(
@@ -36,7 +42,8 @@ function Dashboard({ userName }) {
       <Photo imagePath={imgSrc} />
       <Story>
         <StyledAdvice>
-          <Info date={date} username={userName}></Info>
+          <Info date={date} username={userName} />
+          <LaundryInfo comment={laundryRecommend} />
         </StyledAdvice>
       </Story>
     </ShowDetail>
