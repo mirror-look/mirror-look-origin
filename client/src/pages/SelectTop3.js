@@ -7,10 +7,76 @@ import { setUserSelects } from '../store/actions';
 import Button from '@material-ui/core/Button';
 import WindowWrapper from '../components/common/WindowWrapper';
 import ExceptionModal from '../components/camera/ExceptionModal';
-import Body from '../components/select/Body';
-import styledButton from '../components/select/StyledButton';
-import styledButtonAgain from '../components/select/StyledButtonAgain';
-import SelectedBox from '../components/select/SelectedBox';
+import { majorCategory, minorCategory } from '../components/common/Category';
+
+function SelectedBox({ result, userSelectList, setUserSelectList }) {
+  const [disabled1, setDisabled1] = useState(false);
+  const [disabled2, setDisabled2] = useState(false);
+  const [disabled3, setDisabled3] = useState(false);
+
+  return (
+    <div>
+      <Selected>
+        {majorCategory[result[0]]}
+        <ButtonBox>
+          <Button
+            variant="outlined"
+            color="primary"
+            style={{ marginTop: '20px' }}
+            onClick={() => {
+              setDisabled1(true);
+              setDisabled2(false);
+              setDisabled3(false);
+              let temp = { ...userSelectList };
+              temp[result[0]] = result[1];
+              setUserSelectList(temp);
+              console.log('선택');
+            }}
+            disabled={disabled1}
+          >
+            {minorCategory[result[1]]}
+          </Button>
+          <br />
+          <Button
+            variant="outlined"
+            color="primary"
+            style={{ marginTop: '20px' }}
+            onClick={() => {
+              setDisabled1(false);
+              setDisabled2(true);
+              setDisabled3(false);
+              let temp = { ...userSelectList };
+              temp[result[0]] = result[2];
+              setUserSelectList(temp);
+              console.log('선택');
+            }}
+            disabled={disabled2}
+          >
+            {minorCategory[result[2]]}
+          </Button>
+          <br />
+          <Button
+            variant="outlined"
+            color="primary"
+            style={{ marginTop: '20px' }}
+            onClick={() => {
+              setDisabled1(false);
+              setDisabled2(false);
+              setDisabled3(true);
+              let temp = { ...userSelectList };
+              temp[result[0]] = result[3];
+              setUserSelectList(temp);
+              console.log('선택');
+            }}
+            disabled={disabled3}
+          >
+            {minorCategory[result[3]]}
+          </Button>
+        </ButtonBox>
+      </Selected>
+    </div>
+  );
+}
 
 function SelectTop3() {
   let history = useHistory();
