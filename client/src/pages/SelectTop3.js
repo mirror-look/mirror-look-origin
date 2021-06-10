@@ -9,6 +9,7 @@ import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
 import WindowWrapper from '../components/common/WindowWrapper';
 import ExceptionModal from '../components/camera/ExceptionModal';
+import { majorCategory, minorCategory } from '../components/common/Category';
 
 function SelectedBox({ result, userSelectList, setUserSelectList }) {
   const [disabled1, setDisabled1] = useState(false);
@@ -18,7 +19,7 @@ function SelectedBox({ result, userSelectList, setUserSelectList }) {
   return (
     <div>
       <Selected>
-        {result[0]}
+        {majorCategory[result[0]]}
         <ButtonBox>
           <Button
             variant="outlined"
@@ -35,7 +36,7 @@ function SelectedBox({ result, userSelectList, setUserSelectList }) {
             }}
             disabled={disabled1}
           >
-            {result[1]}
+            {minorCategory[result[1]]}
           </Button>
           <br />
           <Button
@@ -53,7 +54,7 @@ function SelectedBox({ result, userSelectList, setUserSelectList }) {
             }}
             disabled={disabled2}
           >
-            {result[2]}
+            {minorCategory[result[2]]}
           </Button>
           <br />
           <Button
@@ -71,7 +72,7 @@ function SelectedBox({ result, userSelectList, setUserSelectList }) {
             }}
             disabled={disabled3}
           >
-            {result[3]}
+            {minorCategory[result[3]]}
           </Button>
         </ButtonBox>
       </Selected>
