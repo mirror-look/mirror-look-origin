@@ -3,22 +3,17 @@ import { useHistory } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { setLaundryRecommend } from '../store/actions';
 import Calendar from 'react-calendar';
-import styled from 'styled-components';
 import 'react-calendar/dist/Calendar.css';
 import './FashionCalendar.css';
 import axios from 'axios';
 import WindowWrapper from '../components/common/WindowWrapper';
+import { getFormatDate } from '../utils';
+import NextLabel from '../components/calendar/NextLabel';
+import Next2Label from '../components/calendar/Next2Label';
+import PrevLabel from '../components/calendar/PrevLabel';
+import Prev2Label from '../components/calendar/Prev2Label';
 
 const URL = 'http://localhost:5000';
-
-function getFormatDate(date) {
-  var year = date.getFullYear();
-  var month = 1 + date.getMonth();
-  month = month >= 10 ? month : '0' + month;
-  var day = date.getDate();
-  day = day >= 10 ? day : '0' + day;
-  return year + '-' + month + '-' + day;
-}
 
 const tileClassName = ({ date }) => (date.getDay() === 0 ? 'sunday' : '');
 
@@ -96,50 +91,23 @@ function FashionCalendar({ userId }) {
 
   return (
     <WindowWrapper>
-      <FlexDiv>
-        <Calendar
-          //onChange={setValue}
-          onClickDay={onClickDay}
-          nextLabel={<NextLabel />}
-          next2Label={<Next2Label />}
-          prevLabel={<PrevLabel />}
-          prev2Label={<Prev2Label />}
-          value={value}
-          tileDisabled={isData}
-          tileClassName={tileClassName}
-          onActiveStartDateChange={({ activeStartDate }) => {
-            setValue(activeStartDate);
-            console.log(activeStartDate);
-          }}
-        />
-      </FlexDiv>
+      <Calendar
+        //onChange={setValue}
+        onClickDay={onClickDay}
+        nextLabel={<NextLabel />}
+        next2Label={<Next2Label />}
+        prevLabel={<PrevLabel />}
+        prev2Label={<Prev2Label />}
+        value={value}
+        tileDisabled={isData}
+        tileClassName={tileClassName}
+        onActiveStartDateChange={({ activeStartDate }) => {
+          setValue(activeStartDate);
+          console.log(activeStartDate);
+        }}
+      />
     </WindowWrapper>
   );
-}
-
-const FlexDiv = styled('div')`
-  display: flex;
-  width: 100%;
-  flex-direction: column;
-`;
-
-const StyledLabel = {
-  color: '#8f00ff'
-};
-
-function NextLabel() {
-  return <div style={StyledLabel}>▶</div>;
-}
-
-function Next2Label() {
-  return <div style={StyledLabel}>▷</div>;
-}
-
-function PrevLabel() {
-  return <div style={StyledLabel}>◀</div>;
-}
-function Prev2Label() {
-  return <div style={StyledLabel}>◁</div>;
 }
 
 export default FashionCalendar;

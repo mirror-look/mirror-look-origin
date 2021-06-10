@@ -1,7 +1,7 @@
-import styled from 'styled-components';
-import Button from '@material-ui/core/Button';
-import Box from '@material-ui/core/Box';
 import { ClientID } from '../Config';
+import StyledLogo from '../components/login/StyledLogo';
+import KakaoButton from '../components/login/KakaoButton';
+import FlexDiv from '../components/login/FlexDiv';
 
 function Login() {
   function handleClick() {
@@ -18,32 +18,5 @@ function Login() {
     </FlexDiv>
   );
 }
-
-const FlexDiv = styled('div')`
-  display: flex;
-  width: 100%;
-  height: 100vh;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  transform: translate(0px, -32px);
-`;
-
-const KakaoButton = styled(Button)`
-  background-color: #f7e600;
-  color: #3a1d1d;
-  padding: 5px 100px;
-  font-weight: bold;
-`;
-
-const StyledLogo = styled(Box)`
-  font-family: Rubik;
-  font-style: normal;
-  font-weight: bold;
-  font-size: 50px;
-  line-height: 40px;
-  color: #8f00ff;
-  margin: 50px;
-`;
 
 export default Login;

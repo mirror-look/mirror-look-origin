@@ -3,7 +3,6 @@ import Carousel from 'react-material-ui-carousel';
 import styled from 'styled-components';
 import Box from '@material-ui/core/Box';
 import Item from '../common/Item';
-import zIndex from '@material-ui/core/styles/zIndex';
 
 const StyledFontLeft = {
   textAlign: 'center',
@@ -65,16 +64,13 @@ function CalendarBox() {
 }
 
 const StyledCalender = styled(Box)`
-  /*width: 417px;*/
   flex-grow: 1;
 
   height: 100%;
   overflow: hidden;
 
   background: #ffffff;
-  /*box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);*/
   border-radius: 30px;
-  /*padding: 30px;*/
   text-align: center;
 
   position: relative;
@@ -87,11 +83,9 @@ const StyledCalender = styled(Box)`
     text-decoration: none;
     color: #8f00ff;
   }
-  /* identical to box height, or 120% */
 `;
 
 const StyledCalendarWrapper = styled.div`
-  /*min-width: 300px;*/
   width: 100%;
   flex-grow: 1;
   height: 100%;

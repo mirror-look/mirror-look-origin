@@ -1,15 +1,14 @@
 import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { setTemperature } from '../store/actions';
-import styled from 'styled-components';
 import { setUserInfo } from '../store/actions';
 import axios from 'axios';
 import UserInfo from '../components/main/UserInfo';
 import WindowWrapper from '../components/common/WindowWrapper';
 import AgreementModal from '../components/common/AgreementModal';
-import Weather from '../components/main/Weather';
 import TodayOOTD from '../components/main/TodayOOTD';
 import CalendarBox from '../components/main/CalendarBox';
+import Body from '../components/main/Body';
 
 const URL = `http://localhost:5000`;
 
@@ -93,13 +92,5 @@ function Main({ setAgreement, setUserKakaoId, userName, setUserName }) {
     </WindowWrapper>
   );
 }
-
-const Body = styled('div')`
-  width: 100%;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-`;
 
 export default Main;

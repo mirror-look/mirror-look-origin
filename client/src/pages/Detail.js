@@ -1,26 +1,13 @@
-import styled from 'styled-components';
 import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
 import { useHistory, useLocation } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import axios from 'axios';
-
-function Photo({ imagePath }) {
-  return (
-    <PhotoBox>
-      <img
-        style={{
-          width: '100%',
-          height: '100%',
-          border: '1px solid black',
-          borderRadius: '30px'
-        }}
-        src={'data:image/*;base64,' + imagePath}
-        alt="사진"
-      />
-    </PhotoBox>
-  );
-}
+import ShowDetail from '../components/detail/ShowDetail';
+import Photo from '../components/detail/Photo';
+import Story from '../components/detail/Story';
+import StyledAdvice from '../components/detail/StyledAdvice';
+import StyledButton from '../components/detail/StyledButton';
 
 function Recommend({ userName, comment }) {
   let advice1 = '';
@@ -118,11 +105,11 @@ function Detail({ userName }) {
   }
   return (
     <ShowDetail>
-      <Photo imagePath={imagePath} />
+      <Photo imagePath={'data:image/*;base64,' + imagePath} />
       <Story>
         <Recommend userName={userName} comment={location.state}></Recommend>
         <Button
-          style={styledButton}
+          style={StyledButton}
           onClick={handleClick}
           variant="contained"
           color="primary"
@@ -133,67 +120,5 @@ function Detail({ userName }) {
     </ShowDetail>
   );
 }
-
-const styledButton = {
-  marginTop: '15px',
-  borderRadius: '10px',
-  filter: 'drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25))',
-  backgroundColor: '#8f00ff'
-};
-
-const ShowDetail = styled('div')`
-  display: flex;
-  flex-direction: row;
-  width: calc(100vw - 75px);
-  height: calc(100vh - 90px);
-  padding-bottom: 15px;
-  padding-right: 20px;
-`;
-
-const PhotoBox = styled(Box)`
-  width: 35%;
-  height: 100%;
-  overflow: 'hidden';
-  flex-grow: 1;
-
-  background: #ffffff;
-  /*box-shadow: 0px 20px 100px #0057ff;*/
-  filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
-
-  border-radius: 30px;
-  margin: 0 15px;
-`;
-
-const Story = styled('div')`
-  display: flex;
-  flex-direction: column;
-  font-family: Rubik;
-  font-style: normal;
-  font-weight: 500;
-  font-size: 25px;
-  line-height: 40px;
-  flex-grow: 1;
-  height: 100%;
-
-  /* or 160% */
-
-  margin: 0 15px;
-  /*filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));*/
-
-  color: #000000;
-`;
-
-const StyledAdvice = styled.div`
-  display: flex;
-  flex-direction: column;
-  /*justify-content: center;*/
-  align-items: center;
-  padding: 45px;
-  border: 1px solid white;
-  border-radius: 30px;
-  background: #ffffff;
-  height: 100%;
-  filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
-`;
 
 export default Detail;
