@@ -74,6 +74,7 @@ function Detail({ userName }) {
   const history = useHistory();
   const userInfo = useSelector((store) => store.userInfoReducer);
   const imageFullPath = useSelector((store) => store.imagePathReducer);
+  const userSelects = useSelector((store) => store.userSelectsReducer);
   const imagePath = useSelector((store) => store.imageBase64Reducer);
   const location = useLocation();
 
@@ -82,12 +83,16 @@ function Detail({ userName }) {
 
   function handleClick() {
     const date = new Date();
+    let subCategory = [];
+    for (let key in userSelects) {
+      subCategory.push(userSelects[key]);
+    }
     console.log('캘린더에 저장하기 클릭했다!');
     axios
       .post('http://localhost:5000/calendar', {
         ootd_img_path: imageFullPath,
         user_id: userInfo.user_id,
-        clothes_subcategory: location.state.clothes_for_weather,
+        clothes_subcategory: subCategory,
         date: date
       })
       .then(function (response) {

@@ -32,6 +32,7 @@ parser_recommend.add_argument('temperature_from_openweather_api', type=int)
 parser_recommend.add_argument(
     'selected_clothes_from_top_3_result', action='append')
 parser_recommend.add_argument('date')
+parser_recommend.add_argument('user_id')
 
 recommend_model = recommend_api.model('Model', {
     'temperature_from_openweather_api': fields.Integer(),
@@ -63,15 +64,17 @@ class Recommend(Resource):
             hot_or_cold=clothes_hot_or_cold
         )
 
-    @jwt_required()
     def get(self):
-        kakao_id = get_jwt_identity()
         args = parser_recommend.parse_args()
         date = args['date']
+        kakao_id = args['user_id']
+        print(date)
+        print(kakao_id)
 
         sub_category = CalendarDocument.objects.get(
             Q(date=date) & Q(user_id=kakao_id)).clothes_subcategory
 
+        print(sub_category)
         laundry_recommended = recommend_laundry(sub_category)
 
         return jsonify(

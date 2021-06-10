@@ -3,6 +3,7 @@ import { useHistory } from 'react-router-dom';
 import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
 import { setBase64URL } from '../store/actions';
+import { setUserSelects } from '../store/actions';
 import Button from '@material-ui/core/Button';
 import WindowWrapper from '../components/common/WindowWrapper';
 import ExceptionModal from '../components/camera/ExceptionModal';
@@ -43,7 +44,7 @@ function SelectTop3() {
 
   function handleSubmit(e) {
     e.preventDefault();
-    console.log(userSelectList);
+    dispatch(setUserSelects(userSelectList));
     let category = [];
     for (let key in userSelectList) {
       console.log(key);

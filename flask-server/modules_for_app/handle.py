@@ -30,9 +30,7 @@ def create_calendar_document(user_id, date, clothes_subcategory, ootd_img_path):
         user_id=user_id,
         date=date,
         ootd_img_path=ootd_img_path,
-        clothes_feature={
-            'clothes_subcategory': clothes_subcategory
-        }
+        clothes_subcategory=clothes_subcategory
     )
 
     return calendar_document
