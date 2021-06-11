@@ -76,7 +76,7 @@ class Calendar(Resource):
         # user_id, date가 함께 params로 요청되는 경우 : OOTD 이미지 반환
         if args['date']:
             local_file_path = get_file_path(args['date'], kakao_id)
-            return send_file(local_file_path)
+            return send_file(local_file_path, cache_timeout=0)
 
             # with open(local_file_path, 'rb') as img_file:
             #     base64_string = b64encode(img_file.read())
