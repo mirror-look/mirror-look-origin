@@ -35,8 +35,11 @@ def get_prediction(image_path, model_path, user_gender):
     # print("output_data: ", output_data)
     if user_gender == 'female':
         class_indices = {'Blazer': 0, 'Blouse-Shirts': 1, 'Cardigan': 2, 'Coat': 3, 'Cottonpants': 4, 'Cutoffs': 5, 'Dress': 6, 'Hoodie': 7, 'Jacket': 8, 'Jeans': 9, 'Joggers': 10, 'Jumpsuit-Romper': 11, 'Leggings': 12, 'Parka': 13, 'Shorts': 14, 'Skirt': 15, 'Sweater': 16, 'Sweatpants': 17, 'Tee': 18}
-    else:
+    elif user_gender == 'male':
         class_indices = {'Blazer': 0, 'Shirts': 1, 'Cardigan': 2, 'Coat': 3, 'Cottonpants': 4, 'Cutoffs': 5, 'Dress': 6, 'Hoodie': 7, 'Jacket': 8, 'Jeans': 9, 'Joggers': 10, 'Jumpsuit-Romper': 11, 'Leggings': 12, 'Parka': 13, 'Shorts': 14, 'Pants': 15, 'Sweater': 16, 'Sweatpants': 17, 'Tee': 18}
+    else:
+        class_indices = {'Blazer': 0, 'Blouse-Shirts': 1, 'Cardigan': 2, 'Coat': 3, 'Cottonpants': 4, 'Cutoffs': 5, 'Dress': 6, 'Hoodie': 7, 'Jacket': 8, 'Jeans': 9, 'Joggers': 10, 'Jumpsuit-Romper': 11, 'Leggings': 12, 'Parka': 13, 'Shorts': 14, 'Skirt': 15, 'Sweater': 16, 'Sweatpants': 17, 'Tee': 18}
+
 
     new_class_indices = {}
 

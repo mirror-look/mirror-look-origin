@@ -48,7 +48,7 @@ def object_detection(image_path, labelsPath, weightsPath, configPath, DETECTED_I
     # print(cap.shape)
 
     # Detecting objects
-    blob = cv2.dnn.blobFromImage(cap, 1/255, (255, 255), (0, 0, 0), True, crop=False)
+    blob = cv2.dnn.blobFromImage(cap, 1/255, (416, 416), (0, 0, 0), True, crop=False)
 
     # print('type: ', type(blob))
     # print('shape: ', blob.shape)
@@ -92,7 +92,7 @@ def object_detection(image_path, labelsPath, weightsPath, configPath, DETECTED_I
                 # print(crop_label)
                 # print(confidence)
 
-                crop_img = cap[yy:yy + hh, xx:xx + hh]
+                crop_img = cap[yy:yy + hh, xx:xx + ww]
                 crop_img_path = DETECTED_IMAGE_FOLDER + '/' + crop_label + "_" + str(count) + "_" + str(confidence) + ".jpg"
 
                 if user_gender == 'male':
@@ -105,6 +105,14 @@ def object_detection(image_path, labelsPath, weightsPath, configPath, DETECTED_I
                         except cv2.error as e:
                             print("There is no cropped image")
                 elif user_gender == 'female':
+                    try:
+                        cv2.imwrite(crop_img_path, crop_img)
+                        if crop_label not in crop_labels:
+                            crop_labels.append(crop_label)
+                            crop_img_paths.append(crop_img_path)
+                    except cv2.error as e:
+                        print("There is no cropped image")
+                else:
                     try:
                         cv2.imwrite(crop_img_path, crop_img)
                         if crop_label not in crop_labels:

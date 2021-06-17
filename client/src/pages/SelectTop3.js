@@ -3,11 +3,13 @@ import { useHistory, useLocation } from 'react-router-dom';
 import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
 import { setBase64URL } from '../store/actions';
+import { setUserSelects } from '../store/actions';
 import styled from 'styled-components';
 import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
 import WindowWrapper from '../components/common/WindowWrapper';
 import ExceptionModal from '../components/camera/ExceptionModal';
+import { majorCategory, minorCategory } from '../components/common/Category';
 
 function SelectedBox({ result, userSelectList, setUserSelectList }) {
   const [disabled1, setDisabled1] = useState(false);
@@ -17,7 +19,7 @@ function SelectedBox({ result, userSelectList, setUserSelectList }) {
   return (
     <div>
       <Selected>
-        {result[0]}
+        {majorCategory[result[0]]}
         <ButtonBox>
           <Button
             variant="outlined"
@@ -34,7 +36,7 @@ function SelectedBox({ result, userSelectList, setUserSelectList }) {
             }}
             disabled={disabled1}
           >
-            {result[1]}
+            {minorCategory[result[1]]}
           </Button>
           <br />
           <Button
@@ -52,7 +54,7 @@ function SelectedBox({ result, userSelectList, setUserSelectList }) {
             }}
             disabled={disabled2}
           >
-            {result[2]}
+            {minorCategory[result[2]]}
           </Button>
           <br />
           <Button
@@ -70,7 +72,7 @@ function SelectedBox({ result, userSelectList, setUserSelectList }) {
             }}
             disabled={disabled3}
           >
-            {result[3]}
+            {minorCategory[result[3]]}
           </Button>
         </ButtonBox>
       </Selected>
@@ -79,50 +81,37 @@ function SelectedBox({ result, userSelectList, setUserSelectList }) {
 }
 
 function SelectTop3() {
-  let location = useLocation();
   let history = useHistory();
   const dispatch = useDispatch();
-  const geolocationInfo = useSelector((store) => store.geolocationReducer);
+  const temperature = useSelector((store) => store.temperatureReducer);
+  const prediction = useSelector((store) => store.predictionReducer);
   const [userSelectList, setUserSelectList] = useState();
-  const [temperature, setTemperature] = useState();
   const [modalOpen, setModalOpen] = useState();
-  const resultList = location.state.results;
   const modalTitle = '입고 계신 옷을 찾지 못했어요 ㅠ';
   const modalComment = `튜토리얼을 참고하여 다시 찍어주세요!`;
-  let results = '';
+  const [results, setResults] = useState();
 
   useEffect(() => {
-    if (resultList.length !== 0) {
-      results = resultList.map((result, index) => (
-        <SelectedBox
-          result={result}
-          userSelectList={userSelectList}
-          setUserSelectList={setUserSelectList}
-          key={index}
-        ></SelectedBox>
-      ));
-      if (!temperature) {
-        axios
-          .post('http://localhost:5000/weather', {
-            latitude: geolocationInfo[0],
-            longitude: geolocationInfo[1]
-          })
-          .then(function (response) {
-            console.log('기온 받아왔다!');
-            setTemperature(response.data.current_temperatures);
-          })
-          .catch(function (err) {
-            console.log(err);
-          });
+    if (!!prediction) {
+      if (prediction.length !== 0) {
+        let _results = prediction.map((result, index) => (
+          <SelectedBox
+            result={result}
+            userSelectList={userSelectList}
+            setUserSelectList={setUserSelectList}
+            key={index}
+          ></SelectedBox>
+        ));
+        setResults(_results);
+      } else {
+        setModalOpen(true);
       }
-    } else {
-      setModalOpen(true);
     }
-  });
+  }, [prediction, userSelectList]);
 
   function handleSubmit(e) {
     e.preventDefault();
-    console.log(userSelectList);
+    dispatch(setUserSelects(userSelectList));
     let category = [];
     for (let key in userSelectList) {
       console.log(key);
@@ -143,12 +132,9 @@ function SelectTop3() {
         console.log(err);
       });
   }
+
   return (
     <div>
-      <WindowWrapper>
-        <Body>{results}</Body>
-      </WindowWrapper>
-
       {modalOpen === true ? (
         <ExceptionModal
           setModalOpen={setModalOpen}
@@ -157,36 +143,53 @@ function SelectTop3() {
           modalComment={modalComment}
         />
       ) : (
-        <center>
-          <Button
-            onClick={() => {
-              dispatch(setBase64URL(''));
-              history.push('/camera');
-            }}
-            variant="contained"
-            color="secondary"
-            size="large"
-          >
-            다시 찍을래요
-          </Button>
-          &nbsp;
-          <Button
-            onClick={handleSubmit}
-            variant="contained"
-            color="primary"
-            size="large"
-          >
-            선택했어요
-          </Button>
-        </center>
+        <WindowWrapper>
+          <Body>{results}</Body>
+          <center>
+            <Button
+              onClick={() => {
+                dispatch(setBase64URL(''));
+                history.push('/camera');
+              }}
+              variant="contained"
+              color="secondary"
+              size="large"
+              style={styledButtonAgain}
+            >
+              다시 찍을래요
+            </Button>
+            &nbsp;
+            <Button
+              onClick={handleSubmit}
+              variant="contained"
+              color="primary"
+              size="large"
+              style={styledButton}
+            >
+              선택했어요
+            </Button>
+          </center>
+        </WindowWrapper>
       )}
     </div>
   );
 }
 
+const styledButton = {
+  filter: 'drop-shadow(0px 2px 2px rgba(0, 0, 0, 0.25))',
+  backgroundColor: '#8f00ff',
+  margin: '75px 15px'
+};
+
+const styledButtonAgain = {
+  filter: 'drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25))',
+  backgroundColor: '#ccacff',
+  margin: '15px'
+};
+
 const Selected = styled(Box)`
   height: 50vh;
-  width: 395px;
+  width: 330px;
   background: #ffffff;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   border-radius: 30px;
@@ -196,13 +199,21 @@ const Selected = styled(Box)`
   font-weight: bold;
   font-size: 20px;
   line-height: 24px;
-  margin: 30px;
-  padding: 30px;
+  margin: 0 15px 50px 15px;
+  padding: 0 15px 50px 15px;
   text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  /*align-items: center;*/
 `;
 
 const ButtonBox = styled(Box)`
-  margin-top: 50px;
+  /*margin-top: 50px;*/
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 `;
 
 const Body = styled('div')`

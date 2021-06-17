@@ -1,4 +1,4 @@
-from mongoengine import Document, StringField, DictField, IntField, BooleanField
+from mongoengine import Document, StringField, DictField, IntField, ListField
 from marshmallow import Schema, fields
 
 
@@ -6,8 +6,8 @@ class CalendarDocument(Document):
     # mongoengine Document model 정의
     user_id = IntField(required=True)
     date = StringField(required=True)
-    ootd_path = StringField(required=True)
-    clothes_feature = DictField(required=True)
+    ootd_img_path = StringField(required=True)
+    clothes_subcategory = ListField(StringField())
     # DB Collection 이름 지정
     meta = {"collection": 'Calendar'}
 
@@ -16,8 +16,8 @@ class CalendarSchema(Schema):
     # marshmallow Schema 정의
     user_id = fields.Int()
     date = fields.Str()
-    ootd_path = fields.Str()
-    clothes_feature = fields.Dict()
+    ootd_img_path = fields.Str()
+    clothes_subcategory = fields.List(fields.String())
 
 
 class UserDocument(Document):

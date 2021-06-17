@@ -1,22 +1,13 @@
-import styled from 'styled-components';
 import Box from '@material-ui/core/Box';
-import { useLocation } from 'react-router-dom';
-import { useEffect } from 'react';
-
-function Photo() {
-  return (
-    <img
-      src="https://images.unsplash.com/photo-1545249390-6bdfa286032f?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=2232&q=80"
-      alt="사진"
-      width="364px"
-      height="740px"
-      border="1px solid black"
-      border-radius="30%"
-      overflow="hidden"
-      object-fit="cover"
-    />
-  );
-}
+import Button from '@material-ui/core/Button';
+import { useHistory, useLocation } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import axios from 'axios';
+import ShowDetail from '../components/detail/ShowDetail';
+import Photo from '../components/detail/Photo';
+import Story from '../components/detail/Story';
+import StyledAdvice from '../components/detail/StyledAdvice';
+import StyledButton from '../components/detail/StyledButton';
 
 function Recommend({ userName, comment }) {
   let advice1 = '';
@@ -70,62 +61,64 @@ function Recommend({ userName, comment }) {
     }
   }
   return (
-    <div>
+    <StyledAdvice>
       <h3>오늘 {userName}님은 이런 옷을 입었군요!</h3>
       <p>{advice1}</p>
       <p>{advice2}</p>
       <p>{advice3}</p>
-    </div>
+    </StyledAdvice>
   );
 }
 
-function Detail() {
-  const userName = '김윤주';
-  let location = useLocation();
+function Detail({ userName }) {
+  const history = useHistory();
+  const userInfo = useSelector((store) => store.userInfoReducer);
+  const imageFullPath = useSelector((store) => store.imagePathReducer);
+  const userSelects = useSelector((store) => store.userSelectsReducer);
+  const imagePath = useSelector((store) => store.imageBase64Reducer);
+  const location = useLocation();
 
   console.log('추천페이지로 넘어왔다!');
   console.log(location.state);
 
+  function handleClick() {
+    const date = new Date();
+    let subCategory = [];
+    for (let key in userSelects) {
+      subCategory.push(userSelects[key]);
+    }
+    console.log('캘린더에 저장하기 클릭했다!');
+    axios
+      .post('http://localhost:5000/calendar', {
+        ootd_img_path: imageFullPath,
+        user_id: userInfo.user_id,
+        clothes_subcategory: subCategory,
+        date: date
+      })
+      .then(function (response) {
+        console.log('캘린더에 분석결과 저장했다!');
+        history.push('/calendar');
+      })
+      .catch(function (err) {
+        console.log(err);
+      });
+  }
   return (
     <ShowDetail>
-      <PhotoBox>
-        <Photo />
-      </PhotoBox>
+      <Photo imagePath={'data:image/*;base64,' + imagePath} />
       <Story>
         <Recommend userName={userName} comment={location.state}></Recommend>
+        <Button
+          style={StyledButton}
+          onClick={handleClick}
+          variant="contained"
+          color="primary"
+        >
+          캘린더에 저장하기
+        </Button>
       </Story>
     </ShowDetail>
   );
 }
-
-const ShowDetail = styled('div')`
-  display: flex;
-  flex-direction: row;
-`;
-
-const PhotoBox = styled(Box)`
-  width: 364px;
-  height: 740px;
-
-  background: #ffffff;
-  box-shadow: 0px 20px 100px #0057ff;
-  border-radius: 30px;
-  margin: 50px;
-`;
-
-const Story = styled('div')`
-  display: flex;
-  flex-direction: column;
-  font-family: Rubik;
-  font-style: normal;
-  font-weight: 500;
-  font-size: 25px;
-  line-height: 40px;
-  /* or 160% */
-
-  margin: 50px;
-
-  color: #000000;
-`;
 
 export default Detail;

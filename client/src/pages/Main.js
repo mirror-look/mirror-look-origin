@@ -1,40 +1,19 @@
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { setGeolocation } from '../store/actions';
+import { setTemperature } from '../store/actions';
+import { setUserInfo } from '../store/actions';
 import axios from 'axios';
-import styled from 'styled-components';
-import Box from '@material-ui/core/Box';
-import Profile from '../components/common/Profile';
+import UserInfo from '../components/main/UserInfo';
 import WindowWrapper from '../components/common/WindowWrapper';
 import AgreementModal from '../components/common/AgreementModal';
-import Weather from '../components/main/Weather';
+import TodayOOTD from '../components/main/TodayOOTD';
+import CalendarBox from '../components/main/CalendarBox';
+import Body from '../components/main/Body';
 
 const URL = `http://localhost:5000`;
 
-function Hello({ userName }) {
-  return <StyledHello>{userName}님 안녕하세요!</StyledHello>;
-}
-
-function TodayOOTD() {
-  return (
-    <Link to="/camera">
-      <TodayOOTDBox>오늘의 OOTD</TodayOOTDBox>
-    </Link>
-  );
-}
-
-function Calendar() {
-  return (
-    <Link to="/calendar">
-      <StyledCalender>OOTD 캘린더</StyledCalender>
-    </Link>
-  );
-}
-
-function Main({ setAgreement, setUserKakaoId }) {
+function Main({ setAgreement, setUserKakaoId, userName, setUserName }) {
   const dispatch = useDispatch();
-  const [userName, setUserName] = useState('꼬부기');
   const [userProfileImage, setUserProfileImage] = useState();
   const [lat, setLat] = useState();
   const [lng, setLng] = useState();
@@ -56,6 +35,7 @@ function Main({ setAgreement, setUserKakaoId }) {
         setUserProfileImage(response.data.user_info.profile_img);
         setUserKakaoId(response.data.user_info.user_id);
         setAgreement(response.data.user_info.agreement);
+        dispatch(setUserInfo(response.data.user_info));
         console.log('사용자 정보 받았다!');
         if (response.data.user_info.agreement === 'false') {
           console.log('동의여부가 false 여서 Modal 띄운다!');
@@ -67,32 +47,37 @@ function Main({ setAgreement, setUserKakaoId }) {
       });
   }, []);
 
-  if ('geolocation' in navigator) {
-    navigator.geolocation.getCurrentPosition((position) => {
-      console.log('위치 받아왔다!');
-      dispatch(
-        setGeolocation([
-          String(position.coords.latitude),
-          String(position.coords.longitude)
-        ])
-      );
-      setLat(position.coords.latitude);
-      setLng(position.coords.longitude);
-    });
-  } else {
-    console.log('위치 못받아왔다!');
+  if (!lat && !lng) {
+    if ('geolocation' in navigator) {
+      navigator.geolocation.getCurrentPosition((position) => {
+        console.log('위치 받아왔다!');
+        setLat(position.coords.latitude);
+        setLng(position.coords.longitude);
+        axios
+          .post('http://localhost:5000/weather', {
+            latitude: position.coords.latitude,
+            longitude: position.coords.longitude
+          })
+          .then(function (response) {
+            dispatch(setTemperature(response.data.current_temperatures));
+          });
+      });
+    } else {
+      console.log('위치 못받아왔다!');
+    }
   }
 
   return (
     <WindowWrapper>
       <Body>
-        <UserInfo>
-          <Hello userName={userName} />
-          <Profile username={userName} profileImg={userProfileImage} />
-          {!!lat && !!lng ? <Weather lat={lat} lng={lng} /> : ''}
-        </UserInfo>
+        <UserInfo
+          userName={userName}
+          profileImg={userProfileImage}
+          lat={lat}
+          lng={lng}
+        />
         <TodayOOTD />
-        <Calendar />
+        <CalendarBox />
       </Body>
       {modalOpen === true ? (
         <AgreementModal
@@ -108,92 +93,4 @@ function Main({ setAgreement, setUserKakaoId }) {
   );
 }
 
-const Body = styled('div')`
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-`;
-
-const UserInfo = styled('div')`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-`;
-
-const StyledCalender = styled(Box)`
-  width: 417px;
-  height: 764px;
-
-  background: #ffffff;
-  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-  border-radius: 30px;
-  margin: 30px;
-  padding: 30px;
-  text-align: center;
-
-  font-family: Rubik;
-  font-style: normal;
-  font-weight: bold;
-  font-size: 20px;
-  line-height: 24px;
-  a {
-    text-decoration: none;
-    color: #8f00ff;
-  }
-  /* identical to box height, or 120% */
-`;
-
-const StyledHello = styled('div')`
-  font-family: Rubik;
-  font-style: normal;
-  font-weight: 500;
-  font-size: 30px;
-  line-height: 40px;
-`;
-
-const WeatherBox = styled(Box)`
-  width: 365px;
-  height: 315px;
-  border-radius: 30px;
-  background: linear-gradient(1.51deg, #ebf1ff 5.34%, #f2f5fe 72.41%);
-  box-shadow: 0px 4px 50px rgba(0, 0, 0, 0.25);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-`;
-
-const WeatherText = styled(Box)`
-  font-family: Rubik;
-  font-style: normal;
-  font-weight: bold;
-  font-size: 20px;
-  line-height: 24px;
-  text-align: center;
-  margin: 20px;
-`;
-
-const RealWeather = styled(Box)`
-  border: 3px dotted black;
-  border-radius: 150px;
-  padding: 100px;
-`;
-
-const TodayOOTDBox = styled(Box)`
-  width: 395px;
-  height: 764px;
-  background: #ffffff;
-  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-  border-radius: 30px;
-
-  font-family: Rubik;
-  font-style: normal;
-  font-weight: bold;
-  font-size: 20px;
-  line-height: 24px;
-  margin: 30px;
-  padding: 30px;
-  text-align: center;
-`;
 export default Main;

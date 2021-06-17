@@ -2,7 +2,7 @@ import axios from 'axios';
 import styled from 'styled-components';
 import IconButton from '@material-ui/core/IconButton';
 import Toolbar from '@material-ui/core/Toolbar';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCodepen } from '@fortawesome/free-brands-svg-icons';
 import { faLandmark } from '@fortawesome/free-solid-svg-icons';
@@ -16,14 +16,14 @@ function LogoIcon() {
   return (
     <LogoWrap>
       <IconButton>
-        <LogoIconChild icon={faCodepen} />
+        <img src={'/mirrorLookLogo.svg'} width={40} height={40} />
       </IconButton>
     </LogoWrap>
   );
 }
 
 const LogoWrap = styled('div')`
-  margin: 0 0 50px 0;
+  margin: 5px 0 50px 0;
 `;
 
 const LogoIconChild = styled(FontAwesomeIcon)`
@@ -32,18 +32,18 @@ const LogoIconChild = styled(FontAwesomeIcon)`
   transform: rotate(45deg);
 `;
 
-function HomeIcon() {
+function HomeIcon({ main }) {
   return (
     <IconWrapper>
       <IconButton>
-        <HomeIconChild icon={faLandmark} />
+        <HomeIconChild icon={faLandmark} $color={main} />
       </IconButton>
     </IconWrapper>
   );
 }
 
 const HomeIconChild = styled(FontAwesomeIcon)`
-  color: #8f00ff;
+  color: ${(props) => (props.$color ? '#8f00ff' : '#8595a8')};
 `;
 
 function User() {
@@ -57,7 +57,7 @@ function User() {
 }
 
 const UserChild = styled(FontAwesomeIcon)`
-  color: #8595a8;
+  color: ${(props) => (props.color ? '#8f00ff' : '#8595a8')};
 `;
 
 function PowerOff() {
@@ -90,12 +90,12 @@ const PowerOffChlid = styled(FontAwesomeIcon)`
   color: #8595a8;
 `;
 
-function Camera() {
+function Camera({ camera }) {
   return (
     <IconWrapper>
       <Link to="/camera">
         <IconButton>
-          <CameraChild icon={faCamera} />
+          <CameraChild icon={faCamera} $color={camera} />
         </IconButton>
       </Link>
     </IconWrapper>
@@ -103,21 +103,21 @@ function Camera() {
 }
 
 const CameraChild = styled(FontAwesomeIcon)`
-  color: #8595a8;
+  color: ${(props) => (props.$color ? '#8f00ff' : '#8595a8')};
 `;
 
-function Calendar() {
+function Calendar({ calendar }) {
   return (
     <IconWrapper>
       <IconButton>
-        <CalendarChild icon={faCalendarAlt} />
+        <CalendarChild icon={faCalendarAlt} $color={calendar} />
       </IconButton>
     </IconWrapper>
   );
 }
 
 const CalendarChild = styled(FontAwesomeIcon)`
-  color: #8595a8;
+  color: ${(props) => (props.$color ? '#8f00ff' : '#8595a8')};
 `;
 
 const IconWrapper = styled('div')`
@@ -125,6 +125,20 @@ const IconWrapper = styled('div')`
 `;
 
 function NavBar() {
+  const location = useLocation();
+  let main = true;
+  let calendar = false;
+  let camera = false;
+  console.log(location);
+
+  const isMyPath = (path) => {
+    if (location.pathname === path) {
+      return true;
+    }
+    return false;
+  };
+
+  console.log(location);
   return (
     <Nav>
       <div></div>
@@ -134,29 +148,31 @@ function NavBar() {
         </Link>
       </LogoWrap>
       <Link to="/">
-        <HomeIcon />
+        <HomeIcon main={isMyPath('/')} />
       </Link>
-      <Link to="friends-list">
+      {/*<Link to="friends-list">
         <User />
-      </Link>
+      </Link>*/}
       <Link to="/calendar">
-        <Calendar />
+        <Calendar calendar={isMyPath('/calendar')} />
       </Link>
-      <Camera />
+      <Camera camera={isMyPath('/camera')} />
       <PowerOff />
     </Nav>
   );
 }
 
 const Nav = styled(Toolbar)`
-  padding: 10px;
-  /*position: fixed;*/
+  padding: 0;
+  margin: 0;
+  position: fixed;
   display: flex;
   flex-direction: column;
-  height: 135%;
-  width: 50px;
+  width: 60px;
   background-color: #f4f5fa;
   left: 0;
+  height: 100%;
+  overflow: auto;
 `;
 
 export default NavBar;

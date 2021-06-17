@@ -1,25 +1,24 @@
 import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { setLaundryRecommend } from '../store/actions';
 import Calendar from 'react-calendar';
-import styled from 'styled-components';
 import 'react-calendar/dist/Calendar.css';
 import './FashionCalendar.css';
 import axios from 'axios';
+import WindowWrapper from '../components/common/WindowWrapper';
+import { getFormatDate } from '../utils';
+import NextLabel from '../components/calendar/NextLabel';
+import Next2Label from '../components/calendar/Next2Label';
+import PrevLabel from '../components/calendar/PrevLabel';
+import Prev2Label from '../components/calendar/Prev2Label';
 
 const URL = 'http://localhost:5000';
-
-function getFormatDate(date) {
-  var year = date.getFullYear();
-  var month = 1 + date.getMonth();
-  month = month >= 10 ? month : '0' + month;
-  var day = date.getDate();
-  day = day >= 10 ? day : '0' + day;
-  return year + '-' + month + '-' + day;
-}
 
 const tileClassName = ({ date }) => (date.getDay() === 0 ? 'sunday' : '');
 
 function FashionCalendar({ userId }) {
+  const dispatch = useDispatch();
   const [value, setValue] = useState(new Date());
   const [dates, setDates] = useState([]);
   const history = useHistory();
@@ -31,8 +30,30 @@ function FashionCalendar({ userId }) {
 
   // 날짜를 클릭했을 때, 페이지 전환 후 해당 날짜에 해당하는 데이터를 서버에 요청. 쿼리스트링 방식.
   const onClickDay = (date, event) => {
-    console.log(getFormatDate(date));
-    history.push(`/dashboard?userId=${userId}&date=${getFormatDate(date)}`);
+    console.log(date, userId);
+    let formatDate = getFormatDate(date);
+    let realDate = new Date(formatDate);
+    axios
+      .get(`${URL}/recommend`, {
+        params: {
+          user_id: userId,
+          date: realDate
+        },
+        headers: {
+          'Access-Control-Allow-Origin': '*'
+        }
+      })
+      .then(function (response) {
+        console.log(response.data);
+        console.log('세탁방법 받아왔다!');
+        dispatch(setLaundryRecommend(response.data.laundry_recommended));
+        console.log(getFormatDate(date));
+        history.push(`/dashboard?userId=${userId}&date=${getFormatDate(date)}`);
+      })
+      .catch(function (err) {
+        console.log('세탁방법 못받아왔다!');
+        console.log(err);
+      });
   };
 
   useEffect(() => {
@@ -69,7 +90,7 @@ function FashionCalendar({ userId }) {
   console.log('0' + (value.getMonth() + 1));
 
   return (
-    <FlexDiv>
+    <WindowWrapper>
       <Calendar
         //onChange={setValue}
         onClickDay={onClickDay}
@@ -85,33 +106,8 @@ function FashionCalendar({ userId }) {
           console.log(activeStartDate);
         }}
       />
-    </FlexDiv>
+    </WindowWrapper>
   );
-}
-
-const FlexDiv = styled('div')`
-  display: flex;
-  width: 100%;
-  flex-direction: column;
-`;
-
-const StyledLabel = {
-  color: '#8f00ff'
-};
-
-function NextLabel() {
-  return <div style={StyledLabel}>▶</div>;
-}
-
-function Next2Label() {
-  return <div style={StyledLabel}>▷</div>;
-}
-
-function PrevLabel() {
-  return <div style={StyledLabel}>◀</div>;
-}
-function Prev2Label() {
-  return <div style={StyledLabel}>◁</div>;
 }
 
 export default FashionCalendar;

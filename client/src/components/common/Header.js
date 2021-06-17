@@ -41,6 +41,7 @@ const StyledHeader = styled('div')`
   a {
     text-decoration: none;
   }
+  width: 100%;
 `;
 
 export default Header;
